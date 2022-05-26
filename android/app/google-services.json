@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "847040027463",
+    "project_id": "bangla-bazar-4c5d5",
+    "storage_bucket": "bangla-bazar-4c5d5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847040027463:android:9efedae1aafa91307c8a62",
+        "android_client_info": {
+          "package_name": "com.cherrybytes.bangla_bazar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847040027463-jukse1vmn4sg4ni4rq4ggb4lckueui8g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBm9FqNhYOJc51MpoAYtuMQKx2LKu4qOwA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847040027463-jukse1vmn4sg4ni4rq4ggb4lckueui8g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
