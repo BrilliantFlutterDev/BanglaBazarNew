@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>847040027463-mv40i47u0j05tjbkk541orrm2l5utg9p.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.847040027463-mv40i47u0j05tjbkk541orrm2l5utg9p</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>847040027463-b49k36ponp7j26l8fjvvq0bti0gbcr9h.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAaWZvl5E3qQv-P-H9pwAwPHbZBfd4KhXE</string>
+	<key>GCM_SENDER_ID</key>
+	<string>847040027463</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.cherrybytes.banglaBazar</string>
+	<key>PROJECT_ID</key>
+	<string>bangla-bazar-4c5d5</string>
+	<key>STORAGE_BUCKET</key>
+	<string>bangla-bazar-4c5d5.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:847040027463:ios:1597902ae76489f67c8a62</string>
+</dict>
+</plist>
