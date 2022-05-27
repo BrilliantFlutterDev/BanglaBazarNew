@@ -3,7 +3,6 @@ import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
-import 'package:bangla_bazar/Views/AuthenticationScreens/account_screen.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginscreen.dart';
 import 'package:bangla_bazar/Views/Chat/my_chats_screen.dart';
@@ -12,10 +11,10 @@ import 'package:bangla_bazar/Views/DeliveryViews/complete_delivery_screen.dart';
 import 'package:bangla_bazar/Views/DeliveryViews/deliveries_pending_screen.dart';
 import 'package:bangla_bazar/Views/DeliveryViews/delivery_dash_board.dart';
 import 'package:bangla_bazar/Views/MyOrders/my_orders_screen.dart';
+import 'package:bangla_bazar/Views/PrivacyPolicyScreen.dart';
 import 'package:bangla_bazar/Views/Product/categories.dart';
 import 'package:bangla_bazar/Views/Product/wish_list_screen.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
-import 'package:bangla_bazar/Widgets/photo_avatar.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -23,9 +22,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class MenuScreen extends StatefulWidget {
-  //static const String id = 'chatscreen';
+import 'HelpCenterScreen.dart';
 
+class MenuScreen extends StatefulWidget {
   const MenuScreen({
     Key? key,
   }) : super(key: key);
@@ -419,70 +418,90 @@ class _MenuScreenState extends State<MenuScreen> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kColorDarkGreyText
-                                              .withOpacity(0.2),
-                                          // border: Border.all(
-                                          //     color: kColorDarkGreyText, width: 3),
-                                          // image: DecorationImage(
-                                          //   image: Image.asset("assets/icons/eyeicon.png",),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: const Icon(
-                                          MyFlutterApp.privacy_policy,
-                                          color: kColorPrimary,
-                                          size: 18,
-                                        )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const Text(
-                                      'Privacy Policy',
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    ),
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const PrivacyPolicyScreen()),
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          width: 35,
+                                          height: 35,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: kColorDarkGreyText
+                                                .withOpacity(0.2),
+                                            // border: Border.all(
+                                            //     color: kColorDarkGreyText, width: 3),
+                                            // image: DecorationImage(
+                                            //   image: Image.asset("assets/icons/eyeicon.png",),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                          child: const Icon(
+                                            MyFlutterApp.privacy_policy,
+                                            color: kColorPrimary,
+                                            size: 18,
+                                          )),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Text(
+                                        'Privacy Policy',
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                Row(
-                                  children: [
-                                    Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kColorDarkGreyText
-                                              .withOpacity(0.2),
-                                          // border: Border.all(
-                                          //     color: kColorDarkGreyText, width: 3),
-                                          // image: DecorationImage(
-                                          //   image: Image.asset("assets/icons/eyeicon.png",),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: const Icon(
-                                          MyFlutterApp.help_center,
-                                          color: kColorPrimary,
-                                          size: 18,
-                                        )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const Text(
-                                      'Help Center',
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    ),
-                                  ],
+                                InkWell(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const HelpCenterScreen()),
+                                    );
+                                  },
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                          width: 35,
+                                          height: 35,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: kColorDarkGreyText
+                                                .withOpacity(0.2),
+                                            // border: Border.all(
+                                            //     color: kColorDarkGreyText, width: 3),
+                                            // image: DecorationImage(
+                                            //   image: Image.asset("assets/icons/eyeicon.png",),
+                                            //   fit: BoxFit.cover,
+                                            // ),
+                                          ),
+                                          child: const Icon(
+                                            MyFlutterApp.help_center,
+                                            color: kColorPrimary,
+                                            size: 18,
+                                          )),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      const Text(
+                                        'Help Center',
+                                        style: TextStyle(
+                                            color: Colors.black, fontSize: 16),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
                                   height: 20,

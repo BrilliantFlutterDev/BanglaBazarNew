@@ -330,112 +330,71 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 vertical: 15, horizontal: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                StreamBuilder<QuerySnapshot>(
-                                  stream: fireStore
-                                      .collection('messages')
-                                      .where('room_id',
-                                          isEqualTo: widget.roomId)
-                                      .orderBy('time_stamp', descending: false)
-                                      .snapshots(),
-                                  builder: (context, snapshots) {
-                                    if (!snapshots.hasData) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(
-                                          backgroundColor: kColorPrimary,
-                                        ),
-                                      );
-                                    }
-                                    final messages =
-                                        snapshots.data!.docs.reversed;
-                                    List<MessageWidgetSelector> messageBubbles =
-                                        [];
-                                    for (var message in messages) {
-                                      final messageText = message["text"];
-                                      final messageSender =
-                                          message["sender_id"];
-                                      final messageReceiver =
-                                          message["receiver_id"];
-                                      DateTime dateTime =
-                                          message["time_stamp"].toDate();
+                            child: StreamBuilder<QuerySnapshot>(
+                              stream: fireStore
+                                  .collection('messages')
+                                  .where('room_id', isEqualTo: widget.roomId)
+                                  .orderBy('time_stamp', descending: false)
+                                  .snapshots(),
+                              builder: (context, snapshots) {
+                                if (!snapshots.hasData) {
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      backgroundColor: kColorPrimary,
+                                    ),
+                                  );
+                                }
+                                final messages = snapshots.data!.docs.reversed;
+                                List<MessageWidgetSelector> messageBubbles = [];
+                                for (var message in messages) {
+                                  final messageText = message["text"];
+                                  final messageSender = message["sender_id"];
+                                  final messageReceiver =
+                                      message["receiver_id"];
+                                  DateTime dateTime =
+                                      message["time_stamp"].toDate();
 
-                                      String msgTime =
-                                          DateFormat('hh:mm a / dd-MM-yy')
-                                              .format(dateTime);
-                                      // String convertedDateTime =
-                                      //     "${dateTime.hour.toString()}-${dateTime.minute.toString()}";
-                                      // DateTime hours =
-                                      //     new DateTime(dateTime.hour);
-                                      // DateTime minutes =
-                                      //     new DateTime(dateTime.minute);
+                                  String msgTime =
+                                      DateFormat('hh:mm a / dd-MM-yy')
+                                          .format(dateTime);
+                                  // String convertedDateTime =
+                                  //     "${dateTime.hour.toString()}-${dateTime.minute.toString()}";
+                                  // DateTime hours =
+                                  //     new DateTime(dateTime.hour);
+                                  // DateTime minutes =
+                                  //     new DateTime(dateTime.minute);
 
-                                      if ((messageReceiver ==
-                                                  widget.receiverUserId &&
-                                              messageSender ==
-                                                  AppGlobal.userID) ||
-                                          (messageReceiver ==
-                                                  AppGlobal.userID &&
-                                              messageSender ==
-                                                  widget.receiverUserId)) {
-                                        final messageBubble =
-                                            messageSender == AppGlobal.userID
-                                                ? MessageWidgetSelector(
-                                                    myMessageFlag: true,
-                                                    msgText: messageText,
-                                                    screenSize: screenSize,
-                                                    time: msgTime,
-                                                    //time: convertedDateTime,
-                                                  )
-                                                : MessageWidgetSelector(
-                                                    myMessageFlag: false,
-                                                    msgText: messageText,
-                                                    screenSize: screenSize,
-                                                    time: msgTime,
-                                                  );
-                                        messageBubbles.add(messageBubble);
-                                      }
-                                    }
-                                    return Expanded(
-                                      child: ListView(
-                                        reverse: true,
-                                        children: messageBubbles,
-                                      ),
-                                    );
-                                  },
-                                )
-                                // SenderMessageWidget(
-                                //   screenSize: screenSize,
-                                //   messageText: 'Hi',
-                                //   messageTime: '10:43 am',
-                                // ),
-                                // SenderMessageWidget(
-                                //   screenSize: screenSize,
-                                //   messageText: 'Hello! Good morning',
-                                //   messageTime: '10:43 am',
-                                // ),
-                                // ReceiverMessageWidget(
-                                //   messageText: 'Morning',
-                                //   messageTime: '10:50 am',
-                                // ),
-                                // SenderMessageWidget(
-                                //   screenSize: screenSize,
-                                //   messageText:
-                                //       'I am busy. I have to attend a meeting, I will call you later we fhajgfhjag djhasgfagh hjagfjha',
-                                //   messageTime: '11:00 am',
-                                // ),
-                                // ReceiverMessageWidget(
-                                //   messageText: 'Ok no problem',
-                                //   messageTime: '10:50 am',
-                                // ),
-                                // SenderMessageWidget(
-                                //   screenSize: screenSize,
-                                //   messageText:
-                                //       'I am busy. I have to attend a meeting,',
-                                //   messageTime: '11:00 am',
-                                // ),
-                              ],
+                                  if ((messageReceiver ==
+                                              widget.receiverUserId &&
+                                          messageSender == AppGlobal.userID) ||
+                                      (messageReceiver == AppGlobal.userID &&
+                                          messageSender ==
+                                              widget.receiverUserId)) {
+                                    final messageBubble =
+                                        messageSender == AppGlobal.userID
+                                            ? MessageWidgetSelector(
+                                                myMessageFlag: true,
+                                                msgText: messageText,
+                                                screenSize: screenSize,
+                                                time: msgTime,
+                                                //time: convertedDateTime,
+                                              )
+                                            : MessageWidgetSelector(
+                                                myMessageFlag: false,
+                                                msgText: messageText,
+                                                screenSize: screenSize,
+                                                time: msgTime,
+                                              );
+                                    messageBubbles.add(messageBubble);
+                                  }
+                                }
+                                return Expanded(
+                                  child: ListView(
+                                    reverse: true,
+                                    children: messageBubbles,
+                                  ),
+                                );
+                              },
                             ),
                           ),
                         ), //ChatWidgets

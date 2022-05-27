@@ -65,7 +65,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 final senderUrl = contact["sender_url"];
                 final DateTime dateTime = contact["time_stamp"].toDate();
                 //print(dateTime);
-                // 12/31/2000, 10:00 PMhye
+                // 12/31/2000, 10:00 PM
                 //print(contact.reference.id);
                 final String roomId = contact.reference.id;
                 // var dt = DateTime.fromMillisecondsSinceEpoch(dateTime);

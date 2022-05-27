@@ -4,9 +4,7 @@ import 'package:bangla_bazar/ModelClasses/BangladeshPaymentUserData.dart';
 import 'package:bangla_bazar/ModelClasses/allowed_countries_list_response.dart';
 import 'package:bangla_bazar/ModelClasses/allowed_vendor_city_response.dart';
 import 'package:bangla_bazar/ModelClasses/allowed_vendor_states_response.dart';
-
 import 'package:bangla_bazar/ModelClasses/cart_details_response.dart';
-
 import 'package:bangla_bazar/ModelClasses/check_delivery_driver_model.dart';
 import 'package:bangla_bazar/ModelClasses/check_delivery_driver_response.dart';
 import 'package:bangla_bazar/ModelClasses/delivery_products_check_model.dart';
@@ -23,19 +21,15 @@ import 'package:bangla_bazar/ModelClasses/pathao_zones_response.dart';
 import 'package:bangla_bazar/ModelClasses/payment_history_response.dart';
 import 'package:bangla_bazar/ModelClasses/user_address_history.dart'
     as user_history;
-
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
-
 import 'package:bangla_bazar/Views/Cart/CartBloc/cart_bloc.dart';
 import 'package:bangla_bazar/Views/Cart/bangladesh_checkout_payment_screen.dart';
 import 'package:bangla_bazar/Views/Cart/checkout_payment_screen.dart';
+import 'package:bangla_bazar/Views/Cart/checkout_summary_screen.dart';
 import 'package:bangla_bazar/Views/Cart/stripe_payment_screen.dart';
-
-import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
-
 import 'package:country_pickers/country_picker_dialog.dart';
 import 'package:country_pickers/utils/utils.dart';
 import 'package:flutter/material.dart';
@@ -433,7 +427,7 @@ class _BangladeshCheckoutAddressScreenState
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) =>
-                                                BangladeshCheckoutPaymentScreen(
+                                                CheckoutSummaryScreen(
                                               cartDetailsResponse:
                                                   widget.cartDetailsResponse,
                                               bangladeshPaymentUserData:
@@ -688,8 +682,7 @@ class _BangladeshCheckoutAddressScreenState
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) =>
-                                        BangladeshCheckoutPaymentScreen(
+                                    builder: (context) => CheckoutSummaryScreen(
                                       cartDetailsResponse:
                                           widget.cartDetailsResponse,
                                       bangladeshPaymentUserData:
@@ -936,7 +929,7 @@ class _BangladeshCheckoutAddressScreenState
                               //color: kColorDarkGreyText,
                             ),
                             const Text(
-                              'Payment',
+                              'Summary',
                               style: TextStyle(
                                   color: kColorFieldsBorders, fontSize: 14),
                             ),
@@ -946,7 +939,7 @@ class _BangladeshCheckoutAddressScreenState
                               //color: kColorDarkGreyText,
                             ),
                             const Text(
-                              'Summary',
+                              'Payment',
                               style: TextStyle(
                                   color: kColorFieldsBorders, fontSize: 14),
                             ),

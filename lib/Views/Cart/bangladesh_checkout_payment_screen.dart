@@ -580,10 +580,10 @@ class _BangladeshCheckoutPaymentScreenState
                                 // ),
                               ),
                               child: const Center(
-                                child: Text(
-                                  '2',
-                                  style: TextStyle(
-                                      color: kColorWhite, fontSize: 16),
+                                child: Icon(
+                                  Icons.done,
+                                  color: kColorWhite,
+                                  size: 18,
                                 ),
                               ),
                             ),
@@ -595,11 +595,11 @@ class _BangladeshCheckoutPaymentScreenState
                             Container(
                               width: 30,
                               height: 30,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: kColorWhite,
-                                border: Border.all(
-                                    color: kColorFieldsBorders, width: 1),
+                                color: kColorPrimary,
+                                // border: Border.all(
+                                //     color: kColorFieldsBorders, width: 1),
                                 // image: DecorationImage(
                                 //   image: Image.asset("assets/icons/eyeicon.png",),
                                 //   fit: BoxFit.cover,
@@ -609,7 +609,7 @@ class _BangladeshCheckoutPaymentScreenState
                                 child: Text(
                                   '3',
                                   style: TextStyle(
-                                      color: kColorFieldsBorders, fontSize: 16),
+                                      color: kColorWhite, fontSize: 16),
                                 ),
                               ),
                             ),
@@ -632,7 +632,7 @@ class _BangladeshCheckoutPaymentScreenState
                               //color: kColorDarkGreyText,
                             ),
                             const Text(
-                              'Payment',
+                              'Summary',
                               style:
                                   TextStyle(color: Colors.black, fontSize: 14),
                             ),
@@ -642,9 +642,9 @@ class _BangladeshCheckoutPaymentScreenState
                               //color: kColorDarkGreyText,
                             ),
                             const Text(
-                              'Summary',
+                              'Payment',
                               style: TextStyle(
-                                  color: kColorFieldsBorders, fontSize: 14),
+                                  color: Colors.black, fontSize: 14),
                             ),
                           ],
                         ),
