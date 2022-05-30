@@ -88,6 +88,11 @@ class PathaoPriceCalculationState extends CartState {
   PathaoPriceCalculationState({required this.pathaoPriceCalculationResponse});
 }
 
+class CheckInventoryState extends CartState {
+  final GetInventoryCountResponse getInventoryCountResponse;
+  CheckInventoryState({required this.getInventoryCountResponse});
+}
+
 class GetInventoryState extends CartState {
   final GetInventoryCountResponse getInventoryCountResponse;
   GetInventoryState({required this.getInventoryCountResponse});

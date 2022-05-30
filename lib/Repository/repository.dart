@@ -151,6 +151,11 @@ class Repository {
   }) async =>
       LoginProvider.pathaoPriceCalculation(
           pathaoPriceCalculationModel: pathaoPriceCalculationModel);
+  Future checkInventory({
+    required CartDetailsResponse cartDetailsResponseTemp,
+  }) async =>
+      LoginProvider.checkInventory(
+          cartDetailsResponseTemp: cartDetailsResponseTemp);
   Future getInventory({
     required CartDetailsResponse cartDetailsResponseTemp,
   }) async =>
@@ -263,9 +268,10 @@ class Repository {
   }) async =>
       CartProvider.transectioninit(transInitModel: transInitModel);
   Future transectionInitStripe({
-    required  StripeTransInitModel stripeTransInitModel,
+    required StripeTransInitModel stripeTransInitModel,
   }) async =>
-      CartProvider.transectionInitStripe(stripeTransInitModel: stripeTransInitModel);
+      CartProvider.transectionInitStripe(
+          stripeTransInitModel: stripeTransInitModel);
   Future authNetTransectionInit({
     required AuthorizedNetPaymentModel transInitModel,
   }) async =>
@@ -302,7 +308,11 @@ class Repository {
     required UpdateCartModel productDetail,
   }) async =>
       CartProvider.updateCart(productDetail: productDetail);
-  Future getMyOrders() async => MyOrdersProvider.getMyOrders();
+  Future getMyOrders({
+    required String search,
+    required int offset,
+  }) async =>
+      MyOrdersProvider.getMyOrders(search: search, offset: offset);
   Future getOrderDetails({required String orderNumber}) async =>
       MyOrdersProvider.getOrderDetails(orderNumber: orderNumber);
   Future returnOrder({required OrderReturnModel orderReturnModel}) async =>

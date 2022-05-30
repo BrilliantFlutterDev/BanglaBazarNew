@@ -496,7 +496,6 @@ class CartBloc extends Bloc<CartEvent, CartState> {
         try {
           dynamic response = await Repository().pathaoPriceCalculation(
               pathaoPriceCalculationModel: event.pathaoPriceCalculationModel);
-          log('Bloc Response: ${jsonDecode(response.toString())}');
 
           if (response != null) {
             PathaoPriceCalculationResponse pathaoPriceCalculationResponse =
@@ -507,6 +506,35 @@ class CartBloc extends Bloc<CartEvent, CartState> {
               yield PathaoPriceCalculationState(
                   pathaoPriceCalculationResponse:
                       pathaoPriceCalculationResponse);
+            } else {
+              yield ErrorState(error: 'Error');
+            }
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid');
+        }
+      }
+    } else if (event is CheckInventory) {
+      yield LoadingState();
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response = await Repository().checkInventory(
+              cartDetailsResponseTemp: event.cartDetailsResponseTemp);
+
+          if (response != null) {
+            GetInventoryCountResponse getInventoryCountResponse =
+                GetInventoryCountResponse.fromJson(
+                    jsonDecode(response.toString()));
+
+            if (getInventoryCountResponse.status == true) {
+              yield CheckInventoryState(
+                  getInventoryCountResponse: getInventoryCountResponse);
             } else {
               yield ErrorState(error: 'Error');
             }

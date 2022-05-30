@@ -72,7 +72,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
               yield ErrorState(error: 'Timeout');
             }
           } catch (e) {
-            yield ErrorState(error: 'Invalid credentials');
+            yield ErrorState(error: 'Error');
           }
         }
       }
@@ -102,7 +102,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             yield ErrorState(error: 'Timeout');
           }
         } catch (e) {
-          yield ErrorState(error: 'Invalid');
+          yield ErrorState(error: 'Error');
         }
       }
     } else if (event is GetWishList) {
@@ -127,7 +127,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             yield ErrorState(error: 'Timeout');
           }
         } catch (e) {
-          yield ErrorState(error: 'Invalid');
+          yield ErrorState(error: 'Error');
         }
       }
     } else if (event is GetTrendingForYouItems) {
@@ -158,7 +158,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             yield ErrorState(error: 'Timeout');
           }
         } catch (e) {
-          yield ErrorState(error: 'Invalid');
+          yield ErrorState(error: 'Error');
         }
       }
     } else if (event is GetTopRatedItems) {
@@ -189,7 +189,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             yield ErrorState(error: 'Timeout');
           }
         } catch (e) {
-          yield ErrorState(error: 'Invalid');
+          yield ErrorState(error: 'Error');
         }
       }
     } else if (event is GetCategories) {
@@ -218,7 +218,7 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
             yield ErrorState(error: 'Timeout');
           }
         } catch (e) {
-          yield ErrorState(error: 'Invalid credentials');
+          yield ErrorState(error: 'Error');
         }
       }
     } else if (event is GetGeoLocation) {
@@ -229,23 +229,21 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         yield InternetErrorState(error: 'Internet not connected');
       } else {
         try {
-          print('|||||||||||');
           dynamic response = await Repository().getGeoLocation();
 
           print('Bloc Response: ${jsonDecode(response.toString())}');
 
           if (response != null) {
-            print('||||||||||12');
             GeoLocationResponse geoLocationResponse =
                 GeoLocationResponse.fromJson(jsonDecode(response.toString()));
-            print('||||||||||13');
-            AppGlobal.currentCountry = geoLocationResponse.countryName;
+
+            AppGlobal.currentCountry = geoLocationResponse.countryName!;
             yield GeoLocationData(geoLocationResponse: geoLocationResponse);
           } else {
             yield ErrorState(error: 'Timeout');
           }
         } catch (e) {
-          yield ErrorState(error: 'Invalid credentials');
+          yield ErrorState(error: 'Error');
         }
       }
     } else if (event is GetSubCategoriesProducts) {
@@ -436,14 +434,13 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         try {
           dynamic response = await Repository()
               .getHomePageProducts(id: event.id, country: event.country);
-          print('|||||||||||');
+
           print('Bloc Response: ${jsonDecode(response.toString())}');
 
           if (response != null) {
-            print('||||||||||12');
             HomePageApiResponse homePageApiResponse =
                 HomePageApiResponse.fromJson(jsonDecode(response.toString()));
-            print('||||||||||13');
+            print('>>>>>>>>>>13');
 
             yield HomePageProductsFetched(
                 homePageApiResponse: homePageApiResponse);

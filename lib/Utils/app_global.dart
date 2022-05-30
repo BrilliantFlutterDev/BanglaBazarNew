@@ -4,16 +4,16 @@ class AppGlobal {
   static String rememberMePassword = '';
 
   ///Office IP
-  // static String baseURL = 'http://192.168.100.19:3001/api/';
-  // static String photosBaseURL = 'http://192.168.100.19:3001/';
+  static String baseURL = 'http://192.168.100.25:3001/api/';
+  static String photosBaseURL = 'http://192.168.100.25:3001/';
 
   ///Flat Ip
   // static String baseURL = 'http://192.168.100.9:3001/api/';
   // static String photosBaseURL = 'http://192.168.100.9:3001/';
 
   ///Live IP
-  static String baseURL = 'https://api.banglabazar.com/api/';
-  static String photosBaseURL = 'https://api.banglabazar.com/';
+  // static String baseURL = 'https://api.banglabazar.com/api/';
+  // static String photosBaseURL = 'https://api.banglabazar.com/';
 
   static int userID = 0;
   static String userName = '';

@@ -33,13 +33,32 @@ class _MyOrdersState extends State<MyOrders> {
 
   myorders.OrderDetailsResponse? orderDetailsResponse;
 
+  List<myorders.OrderDetails>? orderDetails = [];
+
+  int offset = 0;
+  int totalPages = 0;
+  bool loadingNextPage = false;
+  final _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
 
     _myOrdersBloc = BlocProvider.of<MyOrdersBloc>(context);
+
     statusFilterValueChoose = 'Ongoing';
-    _myOrdersBloc.add(GetMyOrders());
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (offset < totalPages - 1) {
+          offset++;
+          loadingNextPage = true;
+          _myOrdersBloc.add(GetMyOrders(offset: offset, search: ''));
+          print('Load Next Page');
+        }
+      }
+    });
+    _myOrdersBloc.add(GetMyOrders(offset: 0, search: ''));
   }
 
   @override
@@ -67,7 +86,15 @@ class _MyOrdersState extends State<MyOrders> {
             textColor: Colors.white,
             fontSize: 12.0);
       } else if (state is GetMyOrdersState) {
-        orderDetailsResponse = state.orderDetailsResponse;
+        if (loadingNextPage == false) {
+          orderDetails!.clear();
+          orderDetailsResponse = state.orderDetailsResponse;
+          totalPages = (orderDetailsResponse!.totalRecords / 10).ceil();
+          orderDetails!.addAll(orderDetailsResponse!.orderDetails);
+          print('Total Pages: $totalPages');
+        } else {
+          orderDetails!.addAll(state.orderDetailsResponse.orderDetails);
+        }
       }
     }, builder: (context, state) {
       return ModalProgressHUD(
@@ -80,6 +107,7 @@ class _MyOrdersState extends State<MyOrders> {
               children: [
                 ///This is the body
                 SingleChildScrollView(
+                  controller: _scrollController,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
@@ -224,15 +252,14 @@ class _MyOrdersState extends State<MyOrders> {
                             ),
                           ],
                         ),
-                        orderDetailsResponse != null
-                            ? orderDetailsResponse!.orderDetails.isNotEmpty
+                        orderDetails != null
+                            ? orderDetails!.isNotEmpty
                                 ? ListView.builder(
                                     shrinkWrap: true,
                                     physics:
                                         const NeverScrollableScrollPhysics(),
-                                    itemCount: orderDetailsResponse != null
-                                        ? orderDetailsResponse!
-                                            .orderDetails.length
+                                    itemCount: orderDetails != null
+                                        ? orderDetails!.length
                                         : 0,
                                     scrollDirection: Axis.vertical,
                                     itemBuilder: (BuildContext context, int i) {
@@ -240,8 +267,7 @@ class _MyOrdersState extends State<MyOrders> {
                                           shrinkWrap: true,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
-                                          itemCount: orderDetailsResponse!
-                                              .orderDetails[i]
+                                          itemCount: orderDetails![i]
                                               .productDetail
                                               .length,
                                           scrollDirection: Axis.vertical,
@@ -283,7 +309,7 @@ class _MyOrdersState extends State<MyOrders> {
                                                                     .start,
                                                             children: [
                                                               Text(
-                                                                'Order Number: ${orderDetailsResponse!.orderDetails[i].OrderNumber}',
+                                                                'Order Number: ${orderDetails![i].OrderNumber}',
                                                                 style: const TextStyle(
                                                                     color:
                                                                         kColorBlueText,
@@ -294,7 +320,7 @@ class _MyOrdersState extends State<MyOrders> {
                                                                 height: 5,
                                                               ),
                                                               Text(
-                                                                'Placed Date: ${orderDetailsResponse!.orderDetails[i].OrderDate}',
+                                                                'Placed Date: ${orderDetails![i].OrderDate}',
                                                                 style: const TextStyle(
                                                                     color:
                                                                         kColorFieldsBorders,
@@ -323,7 +349,7 @@ class _MyOrdersState extends State<MyOrders> {
                                                             ),
                                                             child: Center(
                                                               child: Text(
-                                                                '      ${orderDetailsResponse!.orderDetails[i].PaymentStatus}      ',
+                                                                '      ${orderDetails![i].PaymentStatus}      ',
                                                                 //six spaces on each side
 
                                                                 maxLines: 1,
@@ -355,18 +381,17 @@ class _MyOrdersState extends State<MyOrders> {
                                                               OrderDetails(
                                                                 previousPage:
                                                                     'UserMyOrders',
-                                                                orderNumber: orderDetailsResponse!
-                                                                    .orderDetails[
-                                                                        i]
-                                                                    .productDetail[
-                                                                        j]
-                                                                    .OrderNumber,
+                                                                orderNumber:
+                                                                    orderDetails![
+                                                                            i]
+                                                                        .productDetail[
+                                                                            j]
+                                                                        .OrderNumber,
                                                               )),
                                                     );
                                                   },
                                                   productDetail:
-                                                      orderDetailsResponse!
-                                                          .orderDetails[i]
+                                                      orderDetails![i]
                                                           .productDetail[j],
                                                 ),
                                               ],

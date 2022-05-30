@@ -557,6 +557,21 @@ class LoginProvider extends BaseProvider {
     }
   }
 
+  static Future checkInventory({
+    required CartDetailsResponse cartDetailsResponseTemp,
+  }) async {
+    try {
+      String url = '${AppGlobal.baseURL}wish-list/get-inventory';
+
+      dynamic response =
+          await WebServices.apiPost(url, cartDetailsResponseTemp);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   static Future getInventory({
     required CartDetailsResponse cartDetailsResponseTemp,
   }) async {

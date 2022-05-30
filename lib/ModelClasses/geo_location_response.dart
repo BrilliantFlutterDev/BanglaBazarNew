@@ -1,32 +1,32 @@
 class GeoLocationResponse {
   GeoLocationResponse({
-    required this.countryCode,
-    required this.countryName,
-    required this.city,
-    required this.postal,
-    required this.latitude,
-    required this.longitude,
-    required this.IPv4,
-    required this.state,
+    this.countryCode,
+    this.countryName,
+    this.city,
+    this.postal,
+    this.latitude,
+    this.longitude,
+    this.IPv4,
+    this.state,
   });
-  late final String countryCode;
-  late final String countryName;
-  late final String city;
-  late final String postal;
-  late final double latitude;
-  late final double longitude;
-  late final String IPv4;
-  late final String state;
+  late final String? countryCode;
+  late final String? countryName;
+  late final String? city;
+  late final String? postal;
+  late final int? latitude;
+  late final int? longitude;
+  late final String? IPv4;
+  late final String? state;
 
   GeoLocationResponse.fromJson(Map<String, dynamic> json) {
     countryCode = json['country_code'];
     countryName = json['country_name'];
-    city = json['city'];
-    postal = json['postal'];
+    city = null;
+    postal = null;
     latitude = json['latitude'];
     longitude = json['longitude'];
     IPv4 = json['IPv4'];
-    state = json['state'];
+    state = null;
   }
 
   Map<String, dynamic> toJson() {

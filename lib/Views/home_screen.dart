@@ -6,7 +6,6 @@ import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Utils/user_click_local_db.dart';
-import 'package:bangla_bazar/Views/AuthenticationScreens/account_screen.dart';
 import 'package:bangla_bazar/Views/Product/ProductBloc/product_bloc.dart';
 import 'package:bangla_bazar/Views/Product/recently_viewed_products_screen.dart';
 import 'package:bangla_bazar/Views/Product/product_details_screen.dart';
@@ -15,10 +14,8 @@ import 'package:bangla_bazar/Views/Product/sub_category_screen.dart';
 import 'package:bangla_bazar/Views/Product/top_rated_product_screen.dart';
 import 'package:bangla_bazar/Views/Product/trending_for_you_screen.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
-import 'package:bangla_bazar/Widgets/photo_avatar.dart';
 import 'package:bangla_bazar/Widgets/product_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,10 +66,9 @@ class _HomeBodyState extends State<HomeBody> {
         addToCartModel.sessionID = AppGlobal.token;
       }
     }
+    getDeviceIP();
     _productBloc.add(GetGeoLocation());
     _productBloc.add(GetCategories());
-
-    getDeviceIP();
   }
 
   Future<void> getDeviceIP() async {
@@ -121,6 +117,7 @@ class _HomeBodyState extends State<HomeBody> {
             fontSize: 12.0);
       } else if (state is GeoLocationData) {
         print('>>>>>>>> Country: ${AppGlobal.currentCountry}');
+
         _productBloc.add(GetHomePageProducts(
             country: AppGlobal.currentCountry == ''
                 ? 'Bangladesh'

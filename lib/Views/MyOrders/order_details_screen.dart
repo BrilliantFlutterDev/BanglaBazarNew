@@ -466,9 +466,10 @@ class _OrderDetailsState extends State<OrderDetails> {
             fontSize: 12.0);
       } else if (state is GetOrderDetailsState) {
         getOrderDetailsResponse = state.getOrderDetailsResponse;
+        print('>>>>>>>>>>>Order Details State');
         if (getOrderDetailsResponse!.orderDetails.StatusHistory != '') {
           historyModel =
-              JSON.parse(getOrderDetailsResponse!.orderDetails.StatusHistory);
+              JSON.parse(getOrderDetailsResponse!.orderDetails.StatusHistory!);
 
           if (historyModel[0].toString() != 'null') {
             assignedDate = historyModel[0].toString();

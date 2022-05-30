@@ -3,7 +3,9 @@ part of 'myorder_bloc.dart';
 abstract class MyOrdersEvent {}
 
 class GetMyOrders extends MyOrdersEvent {
-  GetMyOrders();
+  final String search;
+  final int offset;
+  GetMyOrders({required this.offset, required this.search});
 }
 
 class GetOrderDetails extends MyOrdersEvent {

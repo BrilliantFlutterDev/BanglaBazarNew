@@ -42,7 +42,8 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
         yield InternetErrorState(error: 'Internet not connected');
       } else {
         try {
-          dynamic response = await Repository().getMyOrders();
+          dynamic response = await Repository()
+              .getMyOrders(offset: event.offset, search: event.search);
           //print('Bloc Response: ${jsonDecode(response.toString())}');
 
           if (response != null) {
@@ -117,6 +118,8 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
             GetOrderDetailsResponse getOrderDetailsResponse =
                 GetOrderDetailsResponse.fromJson(
                     jsonDecode(response.toString()));
+
+            print('||||||||||13');
 
             if (getOrderDetailsResponse.status == true) {
               getOrderDetailsResponse.orderDetails.OrderDate =

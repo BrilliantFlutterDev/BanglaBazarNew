@@ -12,12 +12,23 @@ import 'package:bangla_bazar/Utils/web_services.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
 
 class MyOrdersProvider extends BaseProvider {
-  static Future getMyOrders() async {
+  static Future getMyOrders({
+    required String search,
+    required int offset,
+  }) async {
     try {
       String url = '${AppGlobal.baseURL}payment/order-details';
       print(url);
 
-      dynamic response = await WebServices.apiGetAuthenticationBearerToken(url);
+      Map params = HashMap<String, dynamic>();
+
+      params.putIfAbsent('limit', () => 10);
+      params.putIfAbsent('offset', () => offset);
+      params.putIfAbsent('search', () => search);
+      params.putIfAbsent('sort', () => 'ASC');
+
+      dynamic response =
+          await WebServices.apiPostAuthenticationBearerToken(url, params);
       return response;
     } catch (e) {
       print(e.toString());
@@ -30,7 +41,7 @@ class MyOrdersProvider extends BaseProvider {
       String url = '${AppGlobal.baseURL}admin/orderDetails/$orderNumber';
       print(url);
 
-      dynamic response = await WebServices.apiGet(url);
+      dynamic response = await WebServices.apiGetAuthenticationBearerToken(url);
       return response;
     } catch (e) {
       print(e.toString());

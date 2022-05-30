@@ -38,7 +38,7 @@ dependencies:
   flutter_bloc: ^7.3.3
   dio: ^4.0.3
   bloc: ^7.2.1
-  fluttertoast: ^8.0.8
+  fluttertoast: ^8.0.9
   intl_phone_number_input: ^0.7.0+2
   pin_code_fields: ^7.3.0
   flutter_rating_bar: ^4.0.0

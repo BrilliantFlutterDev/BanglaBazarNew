@@ -89,6 +89,7 @@ class _CheckoutCountrySelectionState extends State<CheckoutCountrySelection> {
     super.initState();
 
     _cartBloc = BlocProvider.of<CartBloc>(context);
+    print('>>>>>>>>>>>>>>>>>>>>>Country Selection Screen');
     _cartBloc.add(GetVendorAllowedCountries());
   }
 
@@ -740,10 +741,10 @@ class _CheckoutCountrySelectionState extends State<CheckoutCountrySelection> {
                       allowedCountriesResponse.countries[i].CountryID;
                   countrySelected = true;
 
-                  _cartBloc.add(GetVendorAllowedStates(
-                      id: allowedCountriesResponse.countries[i].CountryID));
-                  _cartBloc.add(GetVendorAllowedCities(
-                      id: allowedCountriesResponse.countries[i].CountryID));
+                  // _cartBloc.add(GetVendorAllowedStates(
+                  //     id: allowedCountriesResponse.countries[i].CountryID));
+                  // _cartBloc.add(GetVendorAllowedCities(
+                  //     id: allowedCountriesResponse.countries[i].CountryID));
                   break;
                 }
               }

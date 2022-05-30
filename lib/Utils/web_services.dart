@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:bangla_bazar/ModelClasses/AddNewBussinessPage1Model.dart';
 import 'package:bangla_bazar/ModelClasses/add_driver_model.dart';
@@ -13,7 +14,7 @@ class WebServices {
     Dio dio = Dio();
     //FormData formData;
     print("url : $url");
-    print("params: $params");
+
     try {
       dio.options.headers["Accept"] = 'application/json';
       dio.options.headers["region"] = AppGlobal.region;

@@ -663,7 +663,7 @@ class _BangladeshCheckoutPaymentScreenState
                               initializePaymentProcess();
                             },
                             child: const Icon(
-                              Icons.album_sharp,
+                              Icons.refresh,
                               color: kColorPrimary,
                               size: 50,
                             )),

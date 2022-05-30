@@ -88,8 +88,9 @@ class TransectionInitSSLCommerce extends CartEvent {
   final SSLCommerceTransInitModel transInitModel;
   TransectionInitSSLCommerce({required this.transInitModel});
 }
+
 class TransectionInitStripe extends CartEvent {
-  final  StripeTransInitModel stripeTransInitModel;
+  final StripeTransInitModel stripeTransInitModel;
   TransectionInitStripe({required this.stripeTransInitModel});
 }
 
@@ -143,4 +144,9 @@ class UpdatePaymentStatus extends CartEvent {
 class GetInventory extends CartEvent {
   final CartDetailsResponse cartDetailsResponseTemp;
   GetInventory({required this.cartDetailsResponseTemp});
+}
+
+class CheckInventory extends CartEvent {
+  final CartDetailsResponse cartDetailsResponseTemp;
+  CheckInventory({required this.cartDetailsResponseTemp});
 }

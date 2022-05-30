@@ -30,9 +30,9 @@ class GetOrderDetailsResponse {
     final _data = <String, dynamic>{};
     _data['status'] = status;
     _data['orderDetails'] = orderDetails.toJson();
-    // _data['orderShippingDetail'] = orderShippingDetail!.toJson();
-    // _data['deliveryDriverDetails'] = deliveryDriverDetails!.toJson();
-    // _data['getStorePickupDetails'] = getStorePickupDetails!.toJson();
+    _data['orderShippingDetail'] = orderShippingDetail!.toJson();
+    _data['deliveryDriverDetails'] = deliveryDriverDetails!.toJson();
+    _data['getStorePickupDetails'] = getStorePickupDetails!.toJson();
     return _data;
   }
 }
@@ -47,9 +47,12 @@ class OrderDetails {
     required this.ReadyPickupForUser,
     required this.ReadyPickupForAdmin,
     required this.AllowAdminPickup,
-    required this.StatusHistory,
+    this.StatusHistory,
     required this.ProcessStatus,
     required this.productDetail,
+    required this.TrackingNumber,
+    required this.DeliveryStatus,
+    this.ConsignmentId,
   });
   late final String OrderNumber;
   String? OrderDate;
@@ -59,13 +62,18 @@ class OrderDetails {
   late final String ReadyPickupForUser;
   late final String ReadyPickupForAdmin;
   late final String AllowAdminPickup;
-  late final String StatusHistory;
+  late final String? StatusHistory;
   late final String ProcessStatus;
   late final String OrderTotal;
   late final String ShippingHandling;
 
   double totalOrderPrice = 0.0;
   late final List<ProductDetail> productDetail;
+
+  ///
+  late final String TrackingNumber;
+  late final String DeliveryStatus;
+  late final String? ConsignmentId;
 
   OrderDetails.fromJson(Map<String, dynamic> json) {
     OrderNumber = json['OrderNumber'];
@@ -80,7 +88,9 @@ class OrderDetails {
     ProcessStatus = json['ProcessStatus'];
     OrderTotal = json['OrderTotal'];
     ShippingHandling = json['ShippingHandling'];
-
+    TrackingNumber = json['TrackingNumber'];
+    DeliveryStatus = json['DeliveryStatus'];
+    ConsignmentId = json['ConsignmentId'];
     productDetail = List.from(json['ProductDetail'])
         .map((e) => ProductDetail.fromJson(e))
         .toList();
@@ -99,8 +109,10 @@ class OrderDetails {
     _data['StatusHistory'] = StatusHistory;
     _data['ProcessStatus'] = ProcessStatus;
     _data['OrderTotal'] = OrderTotal;
-
     _data['ShippingHandling'] = ShippingHandling;
+    _data['TrackingNumber'] = TrackingNumber;
+    _data['DeliveryStatus'] = DeliveryStatus;
+    _data['ConsignmentId'] = ConsignmentId;
     _data['ProductDetail'] = productDetail.map((e) => e.toJson()).toList();
     return _data;
   }
@@ -136,6 +148,10 @@ class ProductDetail {
     required this.StoreAddress,
     required this.StorePhone,
     required this.productCombinations,
+    required this.OrderTotal,
+    required this.ShippingHandling,
+    required this.DeliveryStatus,
+    required this.TrackingNumber,
   });
   late final int ProductID;
   late final String Title;
@@ -168,6 +184,14 @@ class ProductDetail {
   double totalProductPrice = 0.0;
   late final List<ProductCombinations> productCombinations;
 
+  ///
+
+  late final String OrderTotal;
+  late final String ShippingHandling;
+
+  late final String DeliveryStatus;
+  late final String TrackingNumber;
+
   ProductDetail.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'] ?? -1;
     Title = json['Title'] ?? '';
@@ -196,6 +220,11 @@ class ProductDetail {
     StoreName = json['StoreName'];
     StoreAddress = json['StoreAddress'];
     StorePhone = json['StorePhone'];
+
+    OrderTotal = json['OrderTotal'];
+    ShippingHandling = json['ShippingHandling'];
+    DeliveryStatus = json['DeliveryStatus'];
+    TrackingNumber = json['TrackingNumber'];
 
     productCombinations = List.from(json['ProductCombinations'])
         .map((e) => ProductCombinations.fromJson(e))
@@ -231,6 +260,12 @@ class ProductDetail {
     _data['StoreName'] = StoreName;
     _data['StoreAddress'] = StoreAddress;
     _data['StorePhone'] = StorePhone;
+
+    _data['OrderTotal'] = OrderTotal;
+    _data['ShippingHandling'] = ShippingHandling;
+
+    _data['DeliveryStatus'] = DeliveryStatus;
+    _data['TrackingNumber'] = TrackingNumber;
     _data['ProductCombinations'] =
         productCombinations.map((e) => e.toJson()).toList();
     return _data;
@@ -248,6 +283,7 @@ class ProductCombinations {
     required this.OptionName,
     required this.OptionValue,
     required this.OptionValueID,
+    required this.Currency,
   });
   late final int ProductID;
   late final int ProductVariantCombinationID;
@@ -259,6 +295,9 @@ class ProductCombinations {
   late final String OptionValue;
   late final int OptionValueID;
 
+  ///
+  late final String Currency;
+
   ProductCombinations.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'] ?? -1;
     ProductVariantCombinationID = json['ProductVariantCombinationID'] ?? -1;
@@ -269,6 +308,7 @@ class ProductCombinations {
     OptionName = json['OptionName'] ?? '';
     OptionValue = json['OptionValue'] ?? '';
     OptionValueID = json['OptionValueID'] ?? -1;
+    Currency = json['Currency'];
   }
 
   Map<String, dynamic> toJson() {
@@ -282,6 +322,7 @@ class ProductCombinations {
     _data['OptionName'] = OptionName;
     _data['OptionValue'] = OptionValue;
     _data['OptionValueID'] = OptionValueID;
+    _data['Currency'] = Currency;
     return _data;
   }
 }

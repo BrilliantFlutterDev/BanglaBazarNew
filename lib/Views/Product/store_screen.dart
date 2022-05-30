@@ -3,17 +3,11 @@ import 'package:bangla_bazar/ModelClasses/product_details_response.dart'
 import 'package:bangla_bazar/ModelClasses/store_response.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
-
-import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
-
 import 'package:bangla_bazar/Views/Product/ProductBloc/product_bloc.dart';
 import 'package:bangla_bazar/Views/Product/product_details_screen.dart';
-import 'package:bangla_bazar/Widgets/photo_avatar.dart';
 import 'package:bangla_bazar/Widgets/product_user_review_widget.dart';
 import 'package:bangla_bazar/Widgets/product_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

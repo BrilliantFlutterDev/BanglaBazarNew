@@ -1,13 +1,16 @@
 class OrderDetailsResponse {
   OrderDetailsResponse({
     required this.status,
+    required this.totalRecords,
     required this.orderDetails,
   });
   late final bool status;
+  late final int totalRecords;
   late final List<OrderDetails> orderDetails;
 
   OrderDetailsResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
+    totalRecords = json['total_records'];
     orderDetails = List.from(json['orderDetails'])
         .map((e) => OrderDetails.fromJson(e))
         .toList();
@@ -16,6 +19,7 @@ class OrderDetailsResponse {
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['status'] = status;
+    _data['total_records'] = totalRecords;
     _data['orderDetails'] = orderDetails.map((e) => e.toJson()).toList();
     return _data;
   }
@@ -26,17 +30,25 @@ class OrderDetails {
     required this.OrderNumber,
     required this.OrderDate,
     required this.PaymentStatus,
+    required this.TransactionID,
+    required this.ProcessStatus,
+    required this.OrderTotal,
     required this.productDetail,
   });
   late final String OrderNumber;
   late String OrderDate;
   late final String PaymentStatus;
   late final List<ProductDetail> productDetail;
+  late final String TransactionID;
+  late final String ProcessStatus;
+  late final String OrderTotal;
 
   OrderDetails.fromJson(Map<String, dynamic> json) {
     OrderNumber = json['OrderNumber'];
     OrderDate = json['OrderDate'];
     PaymentStatus = json['PaymentStatus'];
+    ProcessStatus = json['ProcessStatus'];
+    OrderTotal = json['OrderTotal'];
     productDetail = List.from(json['ProductDetail'])
         .map((e) => ProductDetail.fromJson(e))
         .toList();
@@ -47,6 +59,9 @@ class OrderDetails {
     _data['OrderNumber'] = OrderNumber;
     _data['OrderDate'] = OrderDate;
     _data['PaymentStatus'] = PaymentStatus;
+    _data['TransactionID'] = TransactionID;
+    _data['ProcessStatus'] = ProcessStatus;
+    _data['OrderTotal'] = OrderTotal;
     _data['ProductDetail'] = productDetail.map((e) => e.toJson()).toList();
     return _data;
   }
@@ -69,6 +84,9 @@ class ProductDetail {
     required this.REVIEWCOUNT,
     this.AVGRating,
     required this.productCombinations,
+    required this.TransactionID,
+    required this.ProcessStatus,
+    required this.OrderTotal,
   });
   late final int ProductID;
   late final String Title;
@@ -86,6 +104,11 @@ class ProductDetail {
   String? AVGRating;
   double totalProductPrice = 0.0;
   late final List<ProductCombinations> productCombinations;
+
+  ///
+  late final String TransactionID;
+  late final String ProcessStatus;
+  late final String OrderTotal;
 
   ProductDetail.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'];
@@ -105,6 +128,10 @@ class ProductDetail {
     productCombinations = List.from(json['ProductCombinations'])
         .map((e) => ProductCombinations.fromJson(e))
         .toList();
+
+    TransactionID = json['TransactionID'];
+    ProcessStatus = json['ProcessStatus'];
+    OrderTotal = json['OrderTotal'];
   }
 
   Map<String, dynamic> toJson() {
@@ -125,6 +152,10 @@ class ProductDetail {
     _data['AVG_Rating'] = AVGRating;
     _data['ProductCombinations'] =
         productCombinations.map((e) => e.toJson()).toList();
+
+    _data['TransactionID'] = TransactionID;
+    _data['ProcessStatus'] = ProcessStatus;
+    _data['OrderTotal'] = OrderTotal;
     return _data;
   }
 }
@@ -140,6 +171,7 @@ class ProductCombinations {
     required this.OptionName,
     required this.OptionValue,
     required this.OptionValueID,
+    required this.Currency,
   });
   late final int ProductID;
   late final int ProductVariantCombinationID;
@@ -151,6 +183,9 @@ class ProductCombinations {
   late final String OptionValue;
   late final int OptionValueID;
 
+  ///
+  late final String Currency;
+
   ProductCombinations.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'];
     ProductVariantCombinationID = json['ProductVariantCombinationID'];
@@ -161,6 +196,7 @@ class ProductCombinations {
     OptionName = json['OptionName'];
     OptionValue = json['OptionValue'];
     OptionValueID = json['OptionValueID'];
+    Currency = json['Currency'];
   }
 
   Map<String, dynamic> toJson() {
@@ -174,6 +210,7 @@ class ProductCombinations {
     _data['OptionName'] = OptionName;
     _data['OptionValue'] = OptionValue;
     _data['OptionValueID'] = OptionValueID;
+    _data['Currency'] = Currency;
     return _data;
   }
 }

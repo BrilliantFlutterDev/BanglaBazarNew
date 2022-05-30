@@ -266,63 +266,10 @@ class _BangladeshCheckoutAddressScreenState
         pathaoZonesResponse = state.pathaoZonesResponse;
       } else if (state is PathaoAreasState) {
         pathaoAreaResponse = state.pathaoAreaResponse;
-      } else if (state is PathaoPriceCalculationState) {
-        pathaoPriceCalculationResponse = state.pathaoPriceCalculationResponse;
-        shippingPrice = 0;
-        for (int i = 0;
-            i < pathaoPriceCalculationResponse!.saveResponse.length;
-            i++) {
-          shippingPrice = shippingPrice +
-              pathaoPriceCalculationResponse!.saveResponse[i].data.price +
-              pathaoPriceCalculationResponse!
-                  .saveResponse[i].data.additionalCharge;
-        }
-      } else if (state is CheckDriverAvailabilityState) {
-        checkDeliveryDriverResponse = state.checkDeliveryDriverResponse;
-        print(
-            '>>>>>>>>>>>Check driver availability${checkDeliveryDriverResponse!.deliveryDriverStatus}');
-      } else if (state is GetShippingStatusState) {
-        getShippingDetailsResponse = state.getShippingDetailsResponse;
-        if (AppGlobal.defaultPayment == 'Y') {
-          if (AppGlobal.nameOnCard != '') {
-            nameController.text = AppGlobal.nameOnCard;
-          }
-          // if (AppGlobal.address1 != '') {
-          //   address1Controller.text = AppGlobal.address1;
-          // }
-          // if (AppGlobal.address2 != '') {
-          //   address2Controller.text = AppGlobal.address2;
-          // }
-          // if (AppGlobal.zipCode != '') {
-          //   zipCodeController.text = AppGlobal.zipCode;
-          // }
-          // if (AppGlobal.userAddressCity != '') {
-          //   selectedCity = AppGlobal.userAddressCity;
-          // }
-          // if (AppGlobal.userAddressState != '') {
-          //   selectedState = AppGlobal.userAddressState;
-          // }
-          if (AppGlobal.countryId != -1) {
-            // widget.selectedCountryId = AppGlobal.countryId;
-
-            for (int i = 0;
-                i < widget.allowedCountriesResponse.countries.length;
-                i++) {
-              if (widget.allowedCountriesResponse.countries[i].CountryID ==
-                  widget.selectedCountryId) {
-                ///se = allowedCountriesResponse.countries[i].Country;
-                _selectedDialogCountry = CountryPickerUtils.getCountryByIsoCode(
-                    widget.allowedCountriesResponse.countries[i].ISO2);
-                break;
-              }
-            }
-
-            // _cartBloc.add(GetVendorAllowedStates(id: widget.selectedCountryId));
-            // _cartBloc.add(GetVendorAllowedCities(id: widget.selectedCountryId));
-          }
-        }
-      } else if (state is GetInventoryState) {
+      } else if (state is CheckInventoryState) {
+        print('>>>>>>>>>>>>>>Inventory Checked');
         getInventoryCountResponse = state.getInventoryCountResponse;
+
         if (getInventoryCountResponse!.outOfStockProducts.isEmpty) {
           ///Empty array means no product is out of stock
 
@@ -336,10 +283,13 @@ class _BangladeshCheckoutAddressScreenState
                       if (nameDeliveryController.text != '') {
                         if (address1DeliveryController.text.length > 25) {
                           if (phoneDeliveryNumberController.text.length == 11) {
+                            print('Proceeding the payment>>>>>>>>>146');
                             if (zipCodeDeliveryController.text != '') {
+                              print('Proceeding the payment>>>>>>>>>13');
                               if (selectedDeliveryCity != '') {
                                 if (selectedDeliveryZone != '') {
                                   if (selectedDeliveryArea != '') {
+                                    print('Proceeding the payment>>>>>>>>>12');
                                     if (selectedDeliveryCity !=
                                         widget.cartDetailsResponse
                                             .productCartList[0].City) {
@@ -524,9 +474,546 @@ class _BangladeshCheckoutAddressScreenState
                                   fontSize: 12.0);
                             }
                           } else {
+                            print(
+                                '<<<<<<<<<<Phone Number Length: ${phoneDeliveryNumberController.text.length}');
+                            // Fluttertoast.showToast(
+                            //     msg:
+                            //         'Please enter correct delivery phone number',
+                            //     toastLength: Toast.LENGTH_SHORT,
+                            //     gravity: ToastGravity.BOTTOM,
+                            //     timeInSecForIosWeb: 1,
+                            //     backgroundColor: Colors.grey.shade400,
+                            //     textColor: Colors.white,
+                            //     fontSize: 12.0);
+                            print(
+                                '<<<<<<<<<<Phone Number Length2: ${phoneDeliveryNumberController.text.length}');
+                          }
+                        } else {
+                          Fluttertoast.showToast(
+                              msg:
+                                  'Please enter delivery address 1 of length minimum 25 characters',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey.shade400,
+                              textColor: Colors.white,
+                              fontSize: 12.0);
+                        }
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: 'Please enter Name of person to deliver',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey.shade400,
+                            textColor: Colors.white,
+                            fontSize: 12.0);
+                      }
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: 'Please select a City',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey.shade400,
+                          textColor: Colors.white,
+                          fontSize: 12.0);
+                    }
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter Zip Code',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey.shade400,
+                        textColor: Colors.white,
+                        fontSize: 12.0);
+                  }
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          'Please enter Address 1 of length minimum 25 characters',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey.shade400,
+                      textColor: Colors.white,
+                      fontSize: 12.0);
+                }
+              } else {
+                Fluttertoast.showToast(
+                    msg: 'Please enter full name',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.grey.shade400,
+                    textColor: Colors.white,
+                    fontSize: 12.0);
+              }
+            } else {
+              if (nameDeliveryController.text != '') {
+                if (address1DeliveryController.text.length > 25) {
+                  if (phoneDeliveryNumberController.text.length == 11) {
+                    if (zipCodeDeliveryController.text != '') {
+                      if (selectedDeliveryCity != '') {
+                        if (selectedDeliveryZone != '') {
+                          if (selectedDeliveryArea != '') {
+                            if (selectedDeliveryCity !=
+                                widget.cartDetailsResponse.productCartList[0]
+                                    .City) {
+                              pickUpAvailable = false;
+                            }
+                            print('Proceeding the card payment>>>>>>>>>');
+                            bangladeshPaymentUserData =
+                                BangladeshPaymentUserData(
+                                    selectedPaymentCountry:
+                                        selectedPaymentCountryID,
+                                    name: nameController.text,
+                                    cardNumber: cardNumber.text,
+                                    address1: address1Controller.text,
+                                    address2: address2Controller.text,
+                                    phoneCode: '',
+                                    phoneNumber: AppGlobal.phoneNumber.length ==
+                                            11
+                                        ? AppGlobal.phoneNumber
+                                        : phoneDeliveryNumberController.text,
+                                    country: widget.selectedCountryId == 16
+                                        ? 'Bangladesh'
+                                        : 'USA',
+                                    countryID: selectedPaymentCountryID,
+                                    zipCode: zipCodeController.text,
+                                    city: selectedCity,
+                                    createdAtDate: createdDateController.text,
+                                    selectedDeliveryCountry:
+                                        widget.selectedCountryId,
+                                    banglaBazarDelivery: banglaBazarPickup,
+                                    pickUp: pickUpAvailable,
+                                    address1Delivery:
+                                        address1DeliveryController.text,
+                                    address2Delivery:
+                                        address2DeliveryController.text,
+                                    adminNoteDelivery:
+                                        adminDeliveryNoteController.text,
+                                    phoneNumberDelivery:
+                                        phoneDeliveryNumberController.text,
+                                    nameDelivery: nameDeliveryController.text,
+                                    zipCodeDelivery:
+                                        zipCodeDeliveryController.text,
+                                    phoneCodeDelivery:
+                                        _chooseCountryCodeDelivery,
+                                    nickNameDelivery:
+                                        deliveryAddressNickName.text,
+                                    zoneDeliveryID: selectedDeliveryZoneId,
+                                    cityDeliveryID: selectedTempCityIdDelivery,
+                                    areaDeliveryID: selectedDeliveryAreaId,
+                                    state: selectedState,
+                                    shippingPrice: shippingPrice,
+                                    cityDelivery: selectedDeliveryCity,
+                                    zoneDelivery: selectedDeliveryZone,
+                                    areaDelivery: selectedDeliveryArea,
+                                    savePaymentAddress: savePaymentAddress,
+                                    saveDeliveryAddress: saveDeliveryAddress);
+                            print('Proceeding the card payment>>>>>>>>>12345');
+
+                            if (checkDeliveryDriverResponse != null) {
+                              print(
+                                  'Proceeding the  card payment>>>>>>>>>12346');
+                              if (checkDeliveryDriverResponse!
+                                      .deliveryDriverStatus ==
+                                  false) {
+                                productsAndUserCitiesAreSame = false;
+                              } else if (checkDeliveryDriverResponse!
+                                      .deliveryDriverStatus ==
+                                  true) {
+                                productsAndUserCitiesAreSame = true;
+                              }
+                            }
+
+                            if (widget.selectedCountryId == 16) {
+                              print('Proceeding the payment>>>>>>>>>12347');
+                              if (checkDeliveryConditionsProceed == true) {
+                                print('Proceeding the payment>>>>>>>>>1212');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CheckoutSummaryScreen(
+                                      cartDetailsResponse:
+                                          widget.cartDetailsResponse,
+                                      bangladeshPaymentUserData:
+                                          bangladeshPaymentUserData!,
+                                      productsAndUserCitiesAreSame:
+                                          productsAndUserCitiesAreSame,
+                                      creditCardPayment:
+                                          widget.creditCardPayment,
+                                      pathaoPriceCalculationResponse:
+                                          pathaoPriceCalculationResponse,
+                                    ),
+                                  ),
+                                );
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: checkDeliveryConditionsProceedReason,
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.grey.shade400,
+                                    textColor: Colors.white,
+                                    fontSize: 12.0);
+                              }
+                            }
+                          } else {
                             Fluttertoast.showToast(
-                                msg:
-                                    'Please enter correct delivery phone number',
+                                msg: 'Please enter delivery area',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.grey.shade400,
+                                textColor: Colors.white,
+                                fontSize: 12.0);
+                          }
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: 'Please enter delivery zone',
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: Colors.grey.shade400,
+                              textColor: Colors.white,
+                              fontSize: 12.0);
+                        }
+                      } else {
+                        Fluttertoast.showToast(
+                            msg: 'Please enter delivery City',
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.grey.shade400,
+                            textColor: Colors.white,
+                            fontSize: 12.0);
+                      }
+                    } else {
+                      Fluttertoast.showToast(
+                          msg: 'Please enter delivery zip code',
+                          toastLength: Toast.LENGTH_SHORT,
+                          gravity: ToastGravity.BOTTOM,
+                          timeInSecForIosWeb: 1,
+                          backgroundColor: Colors.grey.shade400,
+                          textColor: Colors.white,
+                          fontSize: 12.0);
+                    }
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: 'Please enter correct delivery phone number',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                        timeInSecForIosWeb: 1,
+                        backgroundColor: Colors.grey.shade400,
+                        textColor: Colors.white,
+                        fontSize: 12.0);
+                  }
+                } else {
+                  Fluttertoast.showToast(
+                      msg:
+                          'Please enter delivery address 1 of length minimum 25 characters',
+                      toastLength: Toast.LENGTH_SHORT,
+                      gravity: ToastGravity.BOTTOM,
+                      timeInSecForIosWeb: 1,
+                      backgroundColor: Colors.grey.shade400,
+                      textColor: Colors.white,
+                      fontSize: 12.0);
+                }
+              } else {
+                Fluttertoast.showToast(
+                    msg: 'Please enter Name of person to deliver',
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.grey.shade400,
+                    textColor: Colors.white,
+                    fontSize: 12.0);
+              }
+            }
+          } else {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => StripePaymentScreen()),
+            );
+          }
+
+          ///Empty array means no product is out of stock
+        } else {
+          for (int i = 0;
+              i < getInventoryCountResponse!.outOfStockProducts.length;
+              i++) {
+            for (int j = 0;
+                j <
+                    getInventoryCountResponse!
+                        .outOfStockProducts[i].productDetail.length;
+                j++) {
+              if (getInventoryCountResponse!
+                      .outOfStockProducts[i].productDetail[j].Inventory ==
+                  0) {
+                Fluttertoast.showToast(
+                    msg:
+                        "${getInventoryCountResponse!.outOfStockProducts[i].productDetail[j].Title} >>> Variant : ${getInventoryCountResponse!.outOfStockProducts[i].productDetail[j].OptionValue} is not available.",
+                    toastLength: Toast.LENGTH_SHORT,
+                    gravity: ToastGravity.BOTTOM,
+                    timeInSecForIosWeb: 1,
+                    backgroundColor: Colors.grey.shade400,
+                    textColor: Colors.white,
+                    fontSize: 12.0);
+              }
+            }
+          }
+        }
+      } else if (state is PathaoPriceCalculationState) {
+        pathaoPriceCalculationResponse = state.pathaoPriceCalculationResponse;
+        shippingPrice = 0;
+        for (int i = 0;
+            i < pathaoPriceCalculationResponse!.saveResponse.length;
+            i++) {
+          shippingPrice = shippingPrice +
+              pathaoPriceCalculationResponse!.saveResponse[i].data.price +
+              pathaoPriceCalculationResponse!
+                  .saveResponse[i].data.additionalCharge;
+        }
+      } else if (state is CheckDriverAvailabilityState) {
+        checkDeliveryDriverResponse = state.checkDeliveryDriverResponse;
+        print(
+            '>>>>>>>>>>>Check driver availability${checkDeliveryDriverResponse!.deliveryDriverStatus}');
+      } else if (state is GetShippingStatusState) {
+        getShippingDetailsResponse = state.getShippingDetailsResponse;
+        if (AppGlobal.defaultPayment == 'Y') {
+          if (AppGlobal.nameOnCard != '') {
+            nameController.text = AppGlobal.nameOnCard;
+          }
+          // if (AppGlobal.address1 != '') {
+          //   address1Controller.text = AppGlobal.address1;
+          // }
+          // if (AppGlobal.address2 != '') {
+          //   address2Controller.text = AppGlobal.address2;
+          // }
+          // if (AppGlobal.zipCode != '') {
+          //   zipCodeController.text = AppGlobal.zipCode;
+          // }
+          // if (AppGlobal.userAddressCity != '') {
+          //   selectedCity = AppGlobal.userAddressCity;
+          // }
+          // if (AppGlobal.userAddressState != '') {
+          //   selectedState = AppGlobal.userAddressState;
+          // }
+          if (AppGlobal.countryId != -1) {
+            // widget.selectedCountryId = AppGlobal.countryId;
+
+            for (int i = 0;
+                i < widget.allowedCountriesResponse.countries.length;
+                i++) {
+              if (widget.allowedCountriesResponse.countries[i].CountryID ==
+                  widget.selectedCountryId) {
+                ///se = allowedCountriesResponse.countries[i].Country;
+                _selectedDialogCountry = CountryPickerUtils.getCountryByIsoCode(
+                    widget.allowedCountriesResponse.countries[i].ISO2);
+                break;
+              }
+            }
+
+            // _cartBloc.add(GetVendorAllowedStates(id: widget.selectedCountryId));
+            // _cartBloc.add(GetVendorAllowedCities(id: widget.selectedCountryId));
+          }
+        }
+      } else if (state is GetInventoryState) {
+        getInventoryCountResponse = state.getInventoryCountResponse;
+        if (getInventoryCountResponse!.outOfStockProducts.isEmpty) {
+          ///Empty array means no product is out of stock
+
+          /// For pathao and bangladaesh
+          if (selectedPaymentCountryID != 226) {
+            if (widget.creditCardPayment == true) {
+              if (nameController.text != '') {
+                if (address1Controller.text.length > 25) {
+                  if (zipCodeController.text != '') {
+                    if (selectedCity != '') {
+                      if (nameDeliveryController.text != '') {
+                        if (address1DeliveryController.text.length > 25) {
+                          if (phoneDeliveryNumberController.text.length == 11) {
+                            if (zipCodeDeliveryController.text != '') {
+                              if (selectedDeliveryCity != '') {
+                                if (selectedDeliveryZone != '') {
+                                  if (selectedDeliveryArea != '') {
+                                    if (selectedDeliveryCity !=
+                                        widget.cartDetailsResponse
+                                            .productCartList[0].City) {
+                                      pickUpAvailable = false;
+                                    }
+                                    bangladeshPaymentUserData = BangladeshPaymentUserData(
+                                        selectedPaymentCountry:
+                                            selectedPaymentCountryID,
+                                        name: nameController.text,
+                                        cardNumber: cardNumber.text,
+                                        address1: address1Controller.text,
+                                        address2: address2Controller.text,
+                                        phoneCode: '',
+                                        phoneNumber:
+                                            AppGlobal.phoneNumber.length == 11
+                                                ? AppGlobal.phoneNumber
+                                                : phoneDeliveryNumberController
+                                                    .text,
+                                        country: selectedPaymentCountryID == 16
+                                            ? 'Bangladesh'
+                                            : 'USA',
+                                        countryID: selectedPaymentCountryID,
+                                        zipCode: zipCodeController.text,
+                                        city: selectedCity,
+                                        createdAtDate:
+                                            createdDateController.text,
+                                        selectedDeliveryCountry:
+                                            widget.selectedCountryId,
+                                        banglaBazarDelivery: banglaBazarPickup,
+                                        pickUp: pickUpAvailable,
+                                        address1Delivery:
+                                            address1DeliveryController.text,
+                                        address2Delivery:
+                                            address2DeliveryController.text,
+                                        adminNoteDelivery:
+                                            adminDeliveryNoteController.text,
+                                        phoneNumberDelivery:
+                                            phoneDeliveryNumberController.text,
+                                        nameDelivery:
+                                            nameDeliveryController.text,
+                                        zipCodeDelivery:
+                                            zipCodeDeliveryController.text,
+                                        phoneCodeDelivery:
+                                            _chooseCountryCodeDelivery,
+                                        nickNameDelivery:
+                                            deliveryAddressNickName.text,
+                                        zoneDeliveryID: selectedDeliveryZoneId,
+                                        cityDeliveryID:
+                                            selectedTempCityIdDelivery,
+                                        areaDeliveryID: selectedDeliveryAreaId,
+                                        state: selectedState,
+                                        shippingPrice: shippingPrice,
+                                        cityDelivery: selectedDeliveryCity,
+                                        zoneDelivery: selectedDeliveryZone,
+                                        areaDelivery: selectedDeliveryArea,
+                                        savePaymentAddress: savePaymentAddress,
+                                        saveDeliveryAddress:
+                                            saveDeliveryAddress);
+                                    if (checkDeliveryDriverResponse != null) {
+                                      if (checkDeliveryDriverResponse!
+                                              .deliveryDriverStatus ==
+                                          false) {
+                                        productsAndUserCitiesAreSame = false;
+                                      } else if (checkDeliveryDriverResponse!
+                                              .deliveryDriverStatus ==
+                                          true) {
+                                        productsAndUserCitiesAreSame = true;
+                                      }
+                                    }
+
+                                    if (selectedPaymentCountryID == 16) {
+                                      if (checkDeliveryConditionsProceed ==
+                                          true) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                CheckoutSummaryScreen(
+                                              cartDetailsResponse:
+                                                  widget.cartDetailsResponse,
+                                              bangladeshPaymentUserData:
+                                                  bangladeshPaymentUserData!,
+                                              productsAndUserCitiesAreSame:
+                                                  productsAndUserCitiesAreSame,
+                                              creditCardPayment:
+                                                  widget.creditCardPayment,
+                                              pathaoPriceCalculationResponse:
+                                                  pathaoPriceCalculationResponse,
+                                            ),
+                                          ),
+                                        );
+                                      } else {
+                                        Fluttertoast.showToast(
+                                            msg:
+                                                checkDeliveryConditionsProceedReason,
+                                            toastLength: Toast.LENGTH_SHORT,
+                                            gravity: ToastGravity.BOTTOM,
+                                            timeInSecForIosWeb: 1,
+                                            backgroundColor:
+                                                Colors.grey.shade400,
+                                            textColor: Colors.white,
+                                            fontSize: 12.0);
+                                      }
+                                    } else if (selectedPaymentCountryID ==
+                                        226) {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              CheckoutPaymentScreen(
+                                            cartDetailsResponse:
+                                                widget.cartDetailsResponse,
+                                            // bangladeshPaymentUserData:
+                                            // bangladeshPaymentUserData!,
+                                            productsAndUserCitiesAreSame:
+                                                productsAndUserCitiesAreSame,
+                                            creditCardPayment:
+                                                widget.creditCardPayment,
+                                            selectedCountryId:
+                                                selectedPaymentCountryID,
+                                            bangladeshPaymentUserData:
+                                                bangladeshPaymentUserData!,
+                                            pathaoPriceCalculationResponse:
+                                                pathaoPriceCalculationResponse,
+
+                                            // pathaoPriceCalculationResponse:
+                                            // pathaoPriceCalculationResponse,
+                                          ),
+                                        ),
+                                      );
+                                    }
+                                  } else {
+                                    Fluttertoast.showToast(
+                                        msg: 'Please enter delivery area',
+                                        toastLength: Toast.LENGTH_SHORT,
+                                        gravity: ToastGravity.BOTTOM,
+                                        timeInSecForIosWeb: 1,
+                                        backgroundColor: Colors.grey.shade400,
+                                        textColor: Colors.white,
+                                        fontSize: 12.0);
+                                  }
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: 'Please enter delivery zone',
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.BOTTOM,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.grey.shade400,
+                                      textColor: Colors.white,
+                                      fontSize: 12.0);
+                                }
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: 'Please enter delivery City',
+                                    toastLength: Toast.LENGTH_SHORT,
+                                    gravity: ToastGravity.BOTTOM,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.grey.shade400,
+                                    textColor: Colors.white,
+                                    fontSize: 12.0);
+                              }
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'Please enter delivery zip code',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey.shade400,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0);
+                            }
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: 'Please enter 11 digit phone number',
                                 toastLength: Toast.LENGTH_SHORT,
                                 gravity: ToastGravity.BOTTOM,
                                 timeInSecForIosWeb: 1,
@@ -813,6 +1300,7 @@ class _BangladeshCheckoutAddressScreenState
             }
           }
         }
+        print('>>>>>>>>>>>>>>>>>>>>>Get Inventory Checked');
       }
     }, builder: (context, state) {
       return ModalProgressHUD(
@@ -3521,8 +4009,10 @@ class _BangladeshCheckoutAddressScreenState
                             ),
                             InkWell(
                               onTap: () {
+                                print('Next Botton Hit');
+
                                 /// Check inventory
-                                _cartBloc.add(GetInventory(
+                                _cartBloc.add(CheckInventory(
                                     cartDetailsResponseTemp:
                                         widget.cartDetailsResponse));
                               },
