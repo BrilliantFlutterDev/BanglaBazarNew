@@ -1517,6 +1517,9 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 height: 10,
                                               )
                                             : const SizedBox(),
+                                        const SizedBox(
+                                          height: 15,
+                                        )
                                       ],
                                     );
                                   }),

@@ -25,7 +25,7 @@ class MyOrdersProvider extends BaseProvider {
       params.putIfAbsent('limit', () => 10);
       params.putIfAbsent('offset', () => offset);
       params.putIfAbsent('search', () => search);
-      params.putIfAbsent('sort', () => 'ASC');
+      params.putIfAbsent('sort', () => 'DESC');
 
       dynamic response =
           await WebServices.apiPostAuthenticationBearerToken(url, params);

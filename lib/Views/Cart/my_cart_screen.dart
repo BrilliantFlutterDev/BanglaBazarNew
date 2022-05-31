@@ -640,16 +640,38 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                               MaterialTapTargetSize
                                                                   .padded,
                                                         )),
-                                                    Text(cartDetailsResponse!
-                                                        .productCartList[index]
-                                                        .CompanyName!),
-                                                    const Text('  ---'),
-                                                    const Icon(
-                                                      Icons.arrow_forward_ios,
-                                                      size: 15,
-                                                    ),
+                                                    cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .ShippingByVendor ==
+                                                            "Y"
+                                                        ? Text(
+                                                            'Shipping By ${cartDetailsResponse!.productCartList[index].CompanyName!}')
+                                                        : const SizedBox(),
+                                                    cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .ShippingByAdmin ==
+                                                            "Y"
+                                                        ? const Text(
+                                                            'Shipping By BanglaBazar')
+                                                        : const SizedBox(),
+                                                    cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .ShippingByVendor ==
+                                                            "Y"
+                                                        ? const Text(' /')
+                                                        : const SizedBox(),
+                                                    cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .ShippingByAdmin ==
+                                                            "Y"
+                                                        ? const Text(' /')
+                                                        : const SizedBox(),
                                                     Text(
-                                                      ' Pickup city : ${cartDetailsResponse!.productCartList[index].City}',
+                                                      ' Pickup city : ${cartDetailsResponse!.productCartList[index].StoreCity}',
                                                       style: const TextStyle(
                                                           color:
                                                               kColorOrangeText),

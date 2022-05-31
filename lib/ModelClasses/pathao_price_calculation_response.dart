@@ -59,7 +59,7 @@ class Data {
     required this.codEnabled,
     required this.additionalCharge,
   });
-  late final int price;
+  late final double price;
   late final int discount;
   late final int promoDiscount;
   late final int planId;
@@ -67,7 +67,7 @@ class Data {
   late final int additionalCharge;
 
   Data.fromJson(Map<String, dynamic> json) {
-    price = json['price'];
+    price = double.parse(json['price'].toString());
     discount = json['discount'];
     promoDiscount = json['promo_discount'];
     planId = json['plan_id'];

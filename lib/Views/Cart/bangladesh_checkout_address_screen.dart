@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:bangla_bazar/ModelClasses/BangladeshPaymentUserData.dart';
@@ -264,8 +265,10 @@ class _BangladeshCheckoutAddressScreenState
         pathaoCitiesResponse = state.pathaoCitiesResponse;
       } else if (state is PathaoZonesState) {
         pathaoZonesResponse = state.pathaoZonesResponse;
+        print('>>>>>>>>>>>>>>Get Pathao Zones');
       } else if (state is PathaoAreasState) {
         pathaoAreaResponse = state.pathaoAreaResponse;
+        print('>>>>>>>>>>>>>>>>>>> Get Pathao Area');
       } else if (state is CheckInventoryState) {
         print('>>>>>>>>>>>>>>Inventory Checked');
         getInventoryCountResponse = state.getInventoryCountResponse;
@@ -768,6 +771,7 @@ class _BangladeshCheckoutAddressScreenState
         }
       } else if (state is PathaoPriceCalculationState) {
         pathaoPriceCalculationResponse = state.pathaoPriceCalculationResponse;
+        print('>>>>>>>>>>>>>>>>>>> Get Pathao Price Calculation');
         shippingPrice = 0;
         for (int i = 0;
             i < pathaoPriceCalculationResponse!.saveResponse.length;
@@ -780,7 +784,7 @@ class _BangladeshCheckoutAddressScreenState
       } else if (state is CheckDriverAvailabilityState) {
         checkDeliveryDriverResponse = state.checkDeliveryDriverResponse;
         print(
-            '>>>>>>>>>>>Check driver availability${checkDeliveryDriverResponse!.deliveryDriverStatus}');
+            '>>>>>>>>>>>Checked driver availability${checkDeliveryDriverResponse!.deliveryDriverStatus}');
       } else if (state is GetShippingStatusState) {
         getShippingDetailsResponse = state.getShippingDetailsResponse;
         if (AppGlobal.defaultPayment == 'Y') {
@@ -2510,7 +2514,10 @@ class _BangladeshCheckoutAddressScreenState
                                                                 selectedDeliveryZoneId
                                                                     .toString(),
                                                             ProductIDs:
-                                                                productIDs);
+                                                                productIDs,
+                                                            DBCityID:
+                                                                selectedTempCityIdDelivery
+                                                                    .toString());
                                                     _cartBloc.add(
                                                         PathaoPriceCalculation(
                                                             pathaoPriceCalculationModel:
@@ -3077,6 +3084,8 @@ class _BangladeshCheckoutAddressScreenState
                                                   CheckDeliveryDriverModel(
                                                       CityName:
                                                           selectedDeliveryCity);
+                                              print(
+                                                  '>>>>>>>>>>>>>>Checking Driver Availability');
                                               _cartBloc.add(CheckDriverAvailability(
                                                   checkDeliveryDriverModel:
                                                       checkDeliveryDriverModel!));
@@ -3089,6 +3098,8 @@ class _BangladeshCheckoutAddressScreenState
                                                         .token,
                                                 cityId: selectedDeliveryCityId
                                                     .toString());
+                                            print(
+                                                '>>>>>>>>>>>>>>Getting Pathao Zones');
                                             _cartBloc.add(GetPathaoZones(
                                                 pathaoZoneModel:
                                                     pathaoZoneModel!));
@@ -3261,6 +3272,8 @@ class _BangladeshCheckoutAddressScreenState
                                                         .token,
                                                 zoneId: selectedDeliveryZoneId
                                                     .toString());
+                                            print(
+                                                '>>>>>>>>>>>>>>>>>>> Getting Pathao Areas');
                                             _cartBloc.add(GetPathaoAreas(
                                                 pathaoAreaModel:
                                                     pathaoAreaModel!));
@@ -3289,7 +3302,15 @@ class _BangladeshCheckoutAddressScreenState
                                                     recipientZone:
                                                         selectedDeliveryZoneId
                                                             .toString(),
-                                                    ProductIDs: productIDs);
+                                                    ProductIDs: productIDs,
+                                                    DBCityID:
+                                                        selectedTempCityIdDelivery
+                                                            .toString());
+                                            log(pathaoPriceCalculationModel!
+                                                .toJson()
+                                                .toString());
+                                            print(
+                                                '>>>>>>>>>>>>>>>>>>> Getting Pathao Price Calculation');
                                             _cartBloc.add(PathaoPriceCalculation(
                                                 pathaoPriceCalculationModel:
                                                     pathaoPriceCalculationModel!));
@@ -4177,29 +4198,29 @@ class _BangladeshCheckoutAddressScreenState
         ),
       );
   void _countryCodePickerDialog({required bool deliveryPhone}) => showDialog(
-      context: context,
-      builder: (context) => Theme(
-            data: Theme.of(context).copyWith(primaryColor: Colors.pink),
-            child: CountryPickerDialog(
-              titlePadding: const EdgeInsets.all(8.0),
-              searchCursorColor: Colors.pinkAccent,
-              searchInputDecoration:
-                  const InputDecoration(hintText: 'Search...'),
-              isSearchable: true,
-              title: const Text('Select your phone code'),
-              onValuePicked: (country) {
-                _chooseCountryCodeDelivery = '+' + country.phoneCode;
+        context: context,
+        builder: (context) => Theme(
+          data: Theme.of(context).copyWith(primaryColor: Colors.pink),
+          child: CountryPickerDialog(
+            titlePadding: const EdgeInsets.all(8.0),
+            searchCursorColor: Colors.pinkAccent,
+            searchInputDecoration: const InputDecoration(hintText: 'Search...'),
+            isSearchable: true,
+            title: const Text('Select your phone code'),
+            onValuePicked: (country) {
+              _chooseCountryCodeDelivery = '+' + country.phoneCode;
 
-                setState(() {});
-              },
+              setState(() {});
+            },
 
-              itemFilter: (c) =>
-                  widget.allowedCountriesISO2List.contains(c.isoCode),
-              itemBuilder: _buildDialogItem,
-              // priorityList: [
-              //   CountryPickerUtils.getCountryByIsoCode('TR'),
-              //   CountryPickerUtils.getCountryByIsoCode('US'),
-              // ],
-            ),
-          ));
+            itemFilter: (c) =>
+                widget.allowedCountriesISO2List.contains(c.isoCode),
+            itemBuilder: _buildDialogItem,
+            // priorityList: [
+            //   CountryPickerUtils.getCountryByIsoCode('TR'),
+            //   CountryPickerUtils.getCountryByIsoCode('US'),
+            // ],
+          ),
+        ),
+      );
 }

@@ -210,7 +210,7 @@ class _BangladeshCheckoutPaymentScreenState
                         .productCombinations[0]
                         .ProductVariantCombinationID
                         .toString())
-              ], ShippingByVendor: 'Y', ShippingByAdmin: 'N')
+              ], ShippingByVendor: widget.cartDetailsResponse.productCartList[0].ShippingByVendor!, ShippingByAdmin: widget.cartDetailsResponse.productCartList[0].ShippingByAdmin!)
         ],
       );
       for (int j = 1;
@@ -260,8 +260,8 @@ class _BangladeshCheckoutPaymentScreenState
                     .perProductTax!+double.parse(widget.pathaoPriceCalculationResponse!
                     .saveResponse[i].data.price.toString())+double.parse(widget.pathaoPriceCalculationResponse!
                     .saveResponse[i].data.additionalCharge.toString())).toString(),
-                ShippingByVendor: 'Y',
-                ShippingByAdmin: 'N',
+                ShippingByVendor: widget.cartDetailsResponse.productCartList[i].ShippingByVendor!,
+                ShippingByAdmin: widget.cartDetailsResponse.productCartList[i].ShippingByAdmin!,
 
                 productVariantCombinationDetail: [
 
@@ -365,7 +365,8 @@ class _BangladeshCheckoutPaymentScreenState
                   .perProductTax!+double.parse(widget.pathaoPriceCalculationResponse!
                   .saveResponse[0].data.price.toString())+double.parse(widget.pathaoPriceCalculationResponse!
                   .saveResponse[0].data.additionalCharge.toString())).toString(),
-
+              ShippingByAdmin: widget.cartDetailsResponse.productCartList[0].ShippingByAdmin!,
+              ShippingByVendor: widget.cartDetailsResponse.productCartList[0].ShippingByVendor!,
               productVariantCombinationDetail: [
                 cod_model.ProductVariantCombinationDetail(
                     ProductVariantCombinationID: widget
@@ -392,9 +393,11 @@ class _BangladeshCheckoutPaymentScreenState
                 .ProductVariantCombinationID
                 .toString()));
       }
+      ///
       for (int i = 1;
       i < widget.cartDetailsResponse.productCartList.length;
       i++) {
+
         codInitModel!.productDetail.add(
             cod_model.ProductDetail(
                 ProductID: widget
@@ -424,18 +427,19 @@ class _BangladeshCheckoutPaymentScreenState
                     .perProductTax!+double.parse(widget.pathaoPriceCalculationResponse!
                     .saveResponse[i].data.price.toString())+double.parse(widget.pathaoPriceCalculationResponse!
                     .saveResponse[i].data.additionalCharge.toString())).toString(),
+                ShippingByVendor: widget.cartDetailsResponse.productCartList[i].ShippingByVendor!,
+                ShippingByAdmin: widget.cartDetailsResponse.productCartList[i].ShippingByAdmin!,
 
                 productVariantCombinationDetail: [
 
                 ])
-
         );
         for (int j = 0;
         j <
             widget.cartDetailsResponse.productCartList[i]
                 .productCombinations.length;
         j++) {
-          codInitModel!.productDetail[0].productVariantCombinationDetail
+          codInitModel!.productDetail[i].productVariantCombinationDetail
               .add(cod_model.ProductVariantCombinationDetail(
               ProductVariantCombinationID: widget
                   .cartDetailsResponse
@@ -445,6 +449,7 @@ class _BangladeshCheckoutPaymentScreenState
                   .toString()));
         }
       }
+
       _cartBloc.add(CashOnDeliveryInitEvent(cashOnDeliveryInit: codInitModel!));
     }
   }

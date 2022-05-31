@@ -176,6 +176,8 @@ class ProductDetail {
     required this.itemsEstimatedTax,
     required this.itemsTotal,
     required this.productVariantCombinationDetail,
+    required this.ShippingByVendor,
+    required this.ShippingByAdmin,
   });
   late final String ProductID;
   late final String VendorStoreID;
@@ -188,9 +190,15 @@ class ProductDetail {
   late final List<ProductVariantCombinationDetail>
       productVariantCombinationDetail;
 
+  ///
+  late final String ShippingByVendor;
+  late final String ShippingByAdmin;
+
   ProductDetail.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'];
     VendorStoreID = json['VendorStoreID'];
+    ShippingByVendor = json['ShippingByVendor'];
+    ShippingByAdmin = json['ShippingByAdmin'];
     itemsPrice = json['itemsPrice'];
     Quantity = json['Quantity'];
     itemsShippingHandling = json['itemsShippingHandling'];
@@ -207,6 +215,8 @@ class ProductDetail {
     final _data = <String, dynamic>{};
     _data['ProductID'] = ProductID;
     _data['VendorStoreID'] = VendorStoreID;
+    _data['ShippingByVendor'] = ShippingByVendor;
+    _data['ShippingByAdmin'] = ShippingByAdmin;
     _data['itemsPrice'] = itemsPrice;
     _data['Quantity'] = Quantity;
     _data['itemsShippingHandling'] = itemsShippingHandling;

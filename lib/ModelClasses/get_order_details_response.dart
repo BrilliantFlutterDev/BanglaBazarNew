@@ -88,9 +88,9 @@ class OrderDetails {
     ProcessStatus = json['ProcessStatus'];
     OrderTotal = json['OrderTotal'];
     ShippingHandling = json['ShippingHandling'];
-    TrackingNumber = json['TrackingNumber'];
+    TrackingNumber = json['TrackingNumber'] ?? '';
     DeliveryStatus = json['DeliveryStatus'];
-    ConsignmentId = json['ConsignmentId'];
+    ConsignmentId = json['ConsignmentId'] ?? '';
     productDetail = List.from(json['ProductDetail'])
         .map((e) => ProductDetail.fromJson(e))
         .toList();
@@ -224,7 +224,7 @@ class ProductDetail {
     OrderTotal = json['OrderTotal'];
     ShippingHandling = json['ShippingHandling'];
     DeliveryStatus = json['DeliveryStatus'];
-    TrackingNumber = json['TrackingNumber'];
+    TrackingNumber = json['TrackingNumber'] ?? '';
 
     productCombinations = List.from(json['ProductCombinations'])
         .map((e) => ProductCombinations.fromJson(e))
