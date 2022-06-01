@@ -4,8 +4,6 @@ import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/code_verfication.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
-import 'package:bangla_bazar/Views/AuthenticationScreens/loginscreen.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -21,7 +19,7 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _LoginDemoState extends State<SignupScreen> {
-  FlutterSecureStorage storage = FlutterSecureStorage();
+  FlutterSecureStorage storage = const FlutterSecureStorage();
 
   bool _isObscure = true;
   bool _isObscureConfirmPassword = true;
@@ -45,7 +43,6 @@ class _LoginDemoState extends State<SignupScreen> {
   Future<void> getDeviceIP() async {
     var wifiIP = await WifiInfo().getWifiIP();
     AppGlobal.ipAddress = wifiIP!;
-    print('>>>>>>>Device IP Address: ${AppGlobal.ipAddress}');
   }
 
   bool validate() {
@@ -122,10 +119,11 @@ class _LoginDemoState extends State<SignupScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => CodeVerificationScreen(
-                      moduleName: 'registerUser',
-                      userEmail: emailController.text.trim(),
-                    )),
+              builder: (context) => CodeVerificationScreen(
+                moduleName: 'registerUser',
+                userEmail: emailController.text.trim(),
+              ),
+            ),
           );
         }
       },

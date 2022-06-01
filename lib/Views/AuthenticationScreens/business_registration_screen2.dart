@@ -11,6 +11,7 @@ import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/business_registration_screen3.dart';
+import 'package:bangla_bazar/Views/AuthenticationScreens/code_verfication.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
 import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
 
@@ -52,7 +53,7 @@ class _BusinessRegistrationScreen2State
   TextEditingController paymentRoutingController = TextEditingController();
   TextEditingController businessEmailController = TextEditingController();
   TextEditingController businessUrlController = TextEditingController();
-  TextEditingController gatewayIdController = TextEditingController();
+
   TextEditingController adminNoteController = TextEditingController();
 
   TextEditingController phoneNumberController = TextEditingController();
@@ -112,6 +113,8 @@ class _BusinessRegistrationScreen2State
   ]);
 
   bool businessAlreadyExist = false;
+  bool verifyEmail = false;
+  String tempEmailVerified = '';
 
   @override
   void initState() {
@@ -1400,6 +1403,78 @@ class _BusinessRegistrationScreen2State
                             ),
                           ),
                         ),
+                        verifyEmail == false ||
+                                tempEmailVerified !=
+                                    businessEmailController.text
+                            ? Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      if (validateEmail()) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CodeVerificationScreen(
+                                                    moduleName:
+                                                        'businessEmailVerification',
+                                                    userEmail:
+                                                        businessEmailController
+                                                            .text
+                                                            .trim(),
+                                                  )),
+                                        );
+                                        var result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                CodeVerificationScreen(
+                                              moduleName:
+                                                  'businessEmailVerification',
+                                              userEmail: businessEmailController
+                                                  .text
+                                                  .trim(),
+                                            ),
+                                          ),
+                                        );
+                                        if (result == true) {
+                                          verifyEmail = true;
+                                          tempEmailVerified =
+                                              businessEmailController.text;
+                                          setState(() {});
+                                        }
+                                      }
+                                    },
+                                    child: Column(
+                                      children: const [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    'Note:Email not verified. To update profile you have to verify the email first. ',
+                                                style: TextStyle(
+                                                    color: kColorFieldsBorders),
+                                              ),
+                                              TextSpan(
+                                                text: 'Verify email?',
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
                         const SizedBox(
                           height: 25,
                         ),
@@ -1613,45 +1688,7 @@ class _BusinessRegistrationScreen2State
                         const SizedBox(
                           height: 25,
                         ),
-                        const Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Gateway ID',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: screenSize.height * 0.06,
-                          child: TextField(
-                            controller: gatewayIdController,
-                            textCapitalization: TextCapitalization.words,
-                            style: const TextStyle(color: kColorDarkGreyText),
-                            decoration: InputDecoration(
-                              // floatingLabelStyle:
-                              // const TextStyle(color: kColorPrimary),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                                borderSide: const BorderSide(
-                                  color: kColorFieldsBorders,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  borderSide: const BorderSide(
-                                    color: kColorPrimary,
-                                  )),
-                              hintText: 'Enter Gateway ID',
-                              hintStyle:
-                                  const TextStyle(color: kColorFieldsBorders),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
+
                         const Align(
                           alignment: Alignment.topLeft,
                           child: Text(
@@ -2238,42 +2275,64 @@ class _BusinessRegistrationScreen2State
                                                                 if (businessUrlController
                                                                         .text !=
                                                                     '') {
-                                                                  if (gatewayIdController
+                                                                  if (createdDateController
                                                                           .text !=
                                                                       '') {
-                                                                    if (createdDateController
+                                                                    if (adminNoteController
                                                                             .text !=
                                                                         '') {
-                                                                      if (adminNoteController
-                                                                              .text !=
-                                                                          '') {
-                                                                        if (textIDImage !=
+                                                                      if (textIDImage !=
+                                                                          null) {
+                                                                        if (govIDImage !=
                                                                             null) {
-                                                                          if (govIDImage !=
+                                                                          if (companyLogoImage !=
                                                                               null) {
-                                                                            if (companyLogoImage !=
-                                                                                null) {
-                                                                              addBusinessPage1Data = AddBusinessPage1Data(name: companyNameController.text, address1: address1Controller.text, address2: address2NameController.text, phoneCode: _chooseCountryCode, phoneNumber: phoneNumberController.text, country: _selectedDialogCountry.name, zipCode: zipCodeController.text, state: selectedState, city: selectedCity, textID: textIdController.text, textIDImage: textIDImage, govID: govIdController.text, govIDImage: govIDImage, companyLogoImage: companyLogoImage, paymentAc: paymentAcController.text, paymentRout: paymentRoutingController.text, businessEmail: businessEmailController.text, businessPhoneCode: _chooseBusinessCountryCode, businessPhoneNumber: businessPhoneNumberController.text, businessURL: businessUrlController.text, gatewayID: gatewayIdController.text, createdAtDate: createdDateController.text, allowDelivery: allowedDelivery, allowStorePickup: allowedStorePickUp, productApproval: allowedProductApproval, adminNote: adminNoteController.text, countryID: selectedCountryId, cityID: selectedCityId);
+                                                                            addBusinessPage1Data = AddBusinessPage1Data(
+                                                                                name: companyNameController.text,
+                                                                                address1: address1Controller.text,
+                                                                                address2: address2NameController.text,
+                                                                                phoneCode: _chooseCountryCode,
+                                                                                phoneNumber: phoneNumberController.text,
+                                                                                country: _selectedDialogCountry.name,
+                                                                                zipCode: zipCodeController.text,
+                                                                                state: selectedState,
+                                                                                city: selectedCity,
+                                                                                textID: textIdController.text,
+                                                                                textIDImage: textIDImage,
+                                                                                govID: govIdController.text,
+                                                                                govIDImage: govIDImage,
+                                                                                companyLogoImage: companyLogoImage,
+                                                                                paymentAc: paymentAcController.text,
+                                                                                paymentRout: paymentRoutingController.text,
+                                                                                businessEmail: businessEmailController.text,
+                                                                                businessPhoneCode: _chooseBusinessCountryCode,
+                                                                                businessPhoneNumber: businessPhoneNumberController.text,
+                                                                                businessURL: businessUrlController.text,
+                                                                                gatewayID: selectedCountryId == 16 ? '4' : '5',
+                                                                                createdAtDate: createdDateController.text,
+                                                                                allowDelivery: allowedDelivery,
+                                                                                allowStorePickup: allowedStorePickUp,
+                                                                                productApproval: allowedProductApproval,
+                                                                                adminNote: adminNoteController.text,
+                                                                                countryID: selectedCountryId,
+                                                                                cityID: selectedCityId);
 
-                                                                              Navigator.push(
-                                                                                context,
-                                                                                MaterialPageRoute(
-                                                                                    builder: (context) => BusinessRegistrationScreen3(
-                                                                                          processNumber: '1st_business',
-                                                                                          addBusinessPage1Data: addBusinessPage1Data!,
-                                                                                          allowedCountriesResponse: allowedCountriesResponse,
-                                                                                          allowedVendorStatesResponse: allowedVendorStatesResponse,
-                                                                                          allowedVendorCityResponse: allowedVendorCityResponse,
-                                                                                          allowedCountriesISO2List: allowedCountriesISO2List,
-                                                                                          businessAlreadyExist: businessAlreadyExist,
-                                                                                        )),
-                                                                              );
-                                                                            } else {
-                                                                              Fluttertoast.showToast(msg: 'Please company logo image', toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.BOTTOM, timeInSecForIosWeb: 1, backgroundColor: Colors.grey.shade400, textColor: Colors.white, fontSize: 12.0);
-                                                                            }
+                                                                            Navigator.push(
+                                                                              context,
+                                                                              MaterialPageRoute(
+                                                                                  builder: (context) => BusinessRegistrationScreen3(
+                                                                                        processNumber: '1st_business',
+                                                                                        addBusinessPage1Data: addBusinessPage1Data!,
+                                                                                        allowedCountriesResponse: allowedCountriesResponse,
+                                                                                        allowedVendorStatesResponse: allowedVendorStatesResponse,
+                                                                                        allowedVendorCityResponse: allowedVendorCityResponse,
+                                                                                        allowedCountriesISO2List: allowedCountriesISO2List,
+                                                                                        businessAlreadyExist: businessAlreadyExist,
+                                                                                      )),
+                                                                            );
                                                                           } else {
                                                                             Fluttertoast.showToast(
-                                                                                msg: 'Please add Government ID Picture',
+                                                                                msg: 'Please company logo image',
                                                                                 toastLength: Toast.LENGTH_SHORT,
                                                                                 gravity: ToastGravity.BOTTOM,
                                                                                 timeInSecForIosWeb: 1,
@@ -2283,7 +2342,7 @@ class _BusinessRegistrationScreen2State
                                                                           }
                                                                         } else {
                                                                           Fluttertoast.showToast(
-                                                                              msg: 'Please add Text ID Picture',
+                                                                              msg: 'Please add Government ID Picture',
                                                                               toastLength: Toast.LENGTH_SHORT,
                                                                               gravity: ToastGravity.BOTTOM,
                                                                               timeInSecForIosWeb: 1,
@@ -2294,7 +2353,7 @@ class _BusinessRegistrationScreen2State
                                                                       } else {
                                                                         Fluttertoast.showToast(
                                                                             msg:
-                                                                                'Please enter an Admin Note',
+                                                                                'Please add Text ID Picture',
                                                                             toastLength: Toast
                                                                                 .LENGTH_SHORT,
                                                                             gravity: ToastGravity
@@ -2309,7 +2368,7 @@ class _BusinessRegistrationScreen2State
                                                                     } else {
                                                                       Fluttertoast.showToast(
                                                                           msg:
-                                                                              'Please enter a Created Date',
+                                                                              'Please enter an Admin Note',
                                                                           toastLength: Toast
                                                                               .LENGTH_SHORT,
                                                                           gravity: ToastGravity
@@ -2327,7 +2386,7 @@ class _BusinessRegistrationScreen2State
                                                                   } else {
                                                                     Fluttertoast.showToast(
                                                                         msg:
-                                                                            'Please enter a Gateway ID',
+                                                                            'Please enter a Created Date',
                                                                         toastLength:
                                                                             Toast
                                                                                 .LENGTH_SHORT,
@@ -3054,7 +3113,7 @@ class _BusinessRegistrationScreen2State
     } else if ((!businessEmailController.text.contains('@') ||
         !businessEmailController.text.contains('.com'))) {
       Fluttertoast.showToast(
-          msg: 'Email format is not valid',
+          msg: 'Please enter a valid email.',
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.BOTTOM,
           timeInSecForIosWeb: 1,

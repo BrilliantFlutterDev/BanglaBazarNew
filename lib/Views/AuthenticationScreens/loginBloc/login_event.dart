@@ -109,6 +109,11 @@ class CheckEmailAvailability extends LoginEvent {
   CheckEmailAvailability({required this.email});
 }
 
+class SendEmailOTP extends LoginEvent {
+  final String email;
+  SendEmailOTP({required this.email});
+}
+
 class GetDeliveryDriversDetails extends LoginEvent {
   GetDeliveryDriversDetails();
 }

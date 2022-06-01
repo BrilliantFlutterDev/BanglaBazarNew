@@ -28,6 +28,16 @@ class VendorAllowedCountries extends LoginState {
   VendorAllowedCountries({required this.allowedCountriesResponse});
 }
 
+class SendEmailOTPState extends LoginState {
+  final SendOTPResponse sendOTPResponse;
+  SendEmailOTPState({required this.sendOTPResponse});
+}
+
+class VerifyEmailState extends LoginState {
+  final SendOTPResponse sendOTPResponse;
+  VerifyEmailState({required this.sendOTPResponse});
+}
+
 class AddDriverState extends LoginState {
   final AddDriverResponse addDriverResponse;
   AddDriverState({required this.addDriverResponse});

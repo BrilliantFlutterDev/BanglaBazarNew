@@ -365,6 +365,25 @@ class LoginProvider extends BaseProvider {
     }
   }
 
+  static Future sendEmailOTP({
+    required String email,
+  }) async {
+    try {
+      String url = '${AppGlobal.baseURL}user/resend';
+      Map params = HashMap<String, dynamic>();
+
+      params.putIfAbsent('email', () => email.toString());
+
+      // params.putIfAbsent('device_token', () => AppGlobal.deviceToken);
+
+      dynamic response = await WebServices.apiPost(url, params);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   static Future getDeliveryDriversDetails() async {
     try {
       String url =
@@ -372,7 +391,7 @@ class LoginProvider extends BaseProvider {
 
       // params.putIfAbsent('device_token', () => AppGlobal.deviceToken);
 
-      dynamic response = await WebServices.apiGet(url);
+      dynamic response = await WebServices.apiGetAuthenticationBearerToken(url);
       return response;
     } catch (e) {
       print(e.toString());

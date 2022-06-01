@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:bangla_bazar/ModelClasses/AddNewBusinessPage2Model.dart';
 import 'package:bangla_bazar/ModelClasses/AddNewBussinessPage1Model.dart';
 import 'package:bangla_bazar/ModelClasses/allowed_countries_list_response.dart';
@@ -14,17 +13,13 @@ import 'package:bangla_bazar/ModelClasses/pathao_zone_model.dart';
 import 'package:bangla_bazar/ModelClasses/pathao_zones_response.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
-import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/business_registration_screen4.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/code_verfication.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
 import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
-import 'package:bangla_bazar/Widgets/photo_avatar.dart';
-import 'package:country_picker/country_picker.dart';
 import 'package:country_pickers/country_pickers.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -116,6 +111,9 @@ class _BusinessRegistrationScreen3State
 
   late String selectedArea = '';
   late int selectedAreaId = 0;
+
+  bool verifyEmail = false;
+  String tempEmailVerified = '';
 
   @override
   void initState() {
@@ -444,6 +442,78 @@ class _BusinessRegistrationScreen3State
                               ),
                             ),
                           ),
+                          verifyEmail == false ||
+                                  tempEmailVerified != storeEmailController.text
+                              ? Column(
+                                  children: [
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () async {
+                                        if (validateEmail()) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CodeVerificationScreen(
+                                                      moduleName:
+                                                          'businessEmailVerification',
+                                                      userEmail:
+                                                          storeEmailController
+                                                              .text
+                                                              .trim(),
+                                                    )),
+                                          );
+                                          var result = await Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  CodeVerificationScreen(
+                                                moduleName:
+                                                    'businessEmailVerification',
+                                                userEmail: storeEmailController
+                                                    .text
+                                                    .trim(),
+                                              ),
+                                            ),
+                                          );
+                                          if (result == true) {
+                                            verifyEmail = true;
+                                            tempEmailVerified =
+                                                storeEmailController.text;
+                                            setState(() {});
+                                          }
+                                        }
+                                      },
+                                      child: Column(
+                                        children: const [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(
+                                                  text:
+                                                      'Note:Email not verified. To update profile you have to verify the email first. ',
+                                                  style: TextStyle(
+                                                      color:
+                                                          kColorFieldsBorders),
+                                                ),
+                                                TextSpan(
+                                                  text: 'Verify email?',
+                                                  style: TextStyle(
+                                                      color: Colors.blue,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : const SizedBox(),
                           const SizedBox(
                             height: 25,
                           ),

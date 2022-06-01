@@ -48,6 +48,10 @@ class _CodeVerificationState extends State<CodeVerificationScreen> {
     }
     if (widget.moduleName == 'phoneChangeEditProfile') {
       _verifyPhone();
+    } else if (widget.moduleName == 'registerUser') {
+      _loginBloc.add(SendEmailOTP(email: widget.userEmail));
+    } else if (widget.moduleName == 'businessEmailVerification') {
+      _loginBloc.add(SendEmailOTP(email: widget.userEmail));
     }
   }
 
@@ -157,7 +161,6 @@ class _CodeVerificationState extends State<CodeVerificationScreen> {
 
           Navigator.pop(context);
         } else if (state is SignUpVerifyOTP) {
-          print('|||||||||');
           if (widget.moduleName == 'registerUser') {
             Fluttertoast.showToast(
                 msg: 'SignUp Successful',
@@ -187,6 +190,36 @@ class _CodeVerificationState extends State<CodeVerificationScreen> {
                 ),
               ),
             );
+          }
+        } else if (state is SendEmailOTPState) {
+          Fluttertoast.showToast(
+              msg: state.sendOTPResponse.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey.shade400,
+              textColor: Colors.white,
+              fontSize: 12.0);
+        } else if (state is VerifyEmailState) {
+          Fluttertoast.showToast(
+              msg: state.sendOTPResponse.message,
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.BOTTOM,
+              timeInSecForIosWeb: 1,
+              backgroundColor: Colors.grey.shade400,
+              textColor: Colors.white,
+              fontSize: 12.0);
+          if (state.sendOTPResponse.status == true) {
+            if (widget.moduleName == 'registerUser') {
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const LoginScreen(),
+                  ),
+                  (route) => false);
+            } else if (widget.moduleName == 'businessEmailVerification') {
+              Navigator.pop(context, true);
+            }
           }
         }
       },
@@ -328,6 +361,13 @@ class _CodeVerificationState extends State<CodeVerificationScreen> {
                       InkWell(
                         onTap: () async {
                           if (widget.moduleName == 'registerUser') {
+                            if (validate()) {
+                              _loginBloc.add(VerifyOTPSignUpUser(
+                                  email: widget.userEmail,
+                                  otp: textEditingController.text));
+                            }
+                          } else if (widget.moduleName ==
+                              'businessEmailVerification') {
                             if (validate()) {
                               _loginBloc.add(VerifyOTPSignUpUser(
                                   email: widget.userEmail,

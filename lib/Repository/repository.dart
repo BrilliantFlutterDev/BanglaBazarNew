@@ -111,6 +111,10 @@ class Repository {
     required String email,
   }) async =>
       LoginProvider.checkEmailAvailability(email: email);
+  Future sendEmailOTP({
+    required String email,
+  }) async =>
+      LoginProvider.sendEmailOTP(email: email);
   Future getDeliveryDriversDetails() async =>
       LoginProvider.getDeliveryDriversDetails();
   Future getPaymentHistory() async => LoginProvider.getPaymentHistory();

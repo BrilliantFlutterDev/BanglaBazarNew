@@ -12,6 +12,7 @@ import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/business_registration_screen3.dart';
+import 'package:bangla_bazar/Views/AuthenticationScreens/code_verfication.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginscreen.dart';
 import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
@@ -50,9 +51,6 @@ class _DeliveryRegistrationScreen1State
   TextEditingController paymentAcController = TextEditingController();
   TextEditingController paymentRoutingController = TextEditingController();
   TextEditingController businessEmailController = TextEditingController();
-
-  TextEditingController gatewayIdController = TextEditingController();
-
   TextEditingController phoneNumberController = TextEditingController();
 
   late String selectedState = '';
@@ -100,6 +98,8 @@ class _DeliveryRegistrationScreen1State
   ]);
 
   AddDriverModel? addDriverModel;
+  bool verifyEmail = false;
+  String tempEmailVerified = '';
 
   @override
   void initState() {
@@ -179,7 +179,6 @@ class _DeliveryRegistrationScreen1State
         zipCodeController.text = AppGlobal.zipCodeDriver;
         paymentAcController.text = AppGlobal.paymentAccountDriver;
         paymentRoutingController.text = AppGlobal.paymentRoutingDriver;
-        gatewayIdController.text = AppGlobal.gatewayIDDriver.toString();
       } else if (state is AddDriverState) {
         Fluttertoast.showToast(
             msg: state.addDriverResponse.message,
@@ -298,6 +297,79 @@ class _DeliveryRegistrationScreen1State
                             ),
                           ),
                         ),
+
+                        verifyEmail == false ||
+                                tempEmailVerified !=
+                                    businessEmailController.text
+                            ? Column(
+                                children: [
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  InkWell(
+                                    onTap: () async {
+                                      if (validateEmail()) {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  CodeVerificationScreen(
+                                                    moduleName:
+                                                        'businessEmailVerification',
+                                                    userEmail:
+                                                        businessEmailController
+                                                            .text
+                                                            .trim(),
+                                                  )),
+                                        );
+                                        var result = await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                CodeVerificationScreen(
+                                              moduleName:
+                                                  'businessEmailVerification',
+                                              userEmail: businessEmailController
+                                                  .text
+                                                  .trim(),
+                                            ),
+                                          ),
+                                        );
+                                        if (result == true) {
+                                          verifyEmail = true;
+                                          tempEmailVerified =
+                                              businessEmailController.text;
+                                          setState(() {});
+                                        }
+                                      }
+                                    },
+                                    child: Column(
+                                      children: const [
+                                        Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    'Note:Email not verified. To update profile you have to verify the email first. ',
+                                                style: TextStyle(
+                                                    color: kColorFieldsBorders),
+                                              ),
+                                              TextSpan(
+                                                text: 'Verify email?',
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : const SizedBox(),
                         const SizedBox(
                           height: 25,
                         ),
@@ -1073,45 +1145,6 @@ class _DeliveryRegistrationScreen1State
                         const SizedBox(
                           height: 25,
                         ),
-                        const Align(
-                          alignment: Alignment.topLeft,
-                          child: Text(
-                            'Gateway ID',
-                            style: TextStyle(fontSize: 14, color: Colors.black),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Container(
-                          height: screenSize.height * 0.06,
-                          child: TextField(
-                            controller: gatewayIdController,
-                            textCapitalization: TextCapitalization.words,
-                            style: const TextStyle(color: kColorDarkGreyText),
-                            decoration: InputDecoration(
-                              // floatingLabelStyle:
-                              // const TextStyle(color: kColorPrimary),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(6.0),
-                                borderSide: const BorderSide(
-                                  color: kColorFieldsBorders,
-                                ),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(6.0),
-                                  borderSide: const BorderSide(
-                                    color: kColorPrimary,
-                                  )),
-                              hintText: 'Enter Gateway ID',
-                              hintStyle:
-                                  const TextStyle(color: kColorFieldsBorders),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 25,
-                        ),
 
                         SizedBox(
                           height: screenSize.height * 0.01,
@@ -1187,129 +1220,109 @@ class _DeliveryRegistrationScreen1State
                                                               .text !=
                                                           '') {
                                                         if (validateEmail()) {
-                                                          if (gatewayIdController
-                                                                  .text !=
-                                                              '') {
-                                                            if (AppGlobal
-                                                                    .deliveryDriverID !=
-                                                                -1) {
-                                                              addDriverModel = AddDriverModel(
-                                                                  address1:
-                                                                      address1Controller
-                                                                          .text,
-                                                                  address2:
-                                                                      address2NameController
-                                                                          .text,
-                                                                  phoneCode:
-                                                                      _chooseCountryCode,
-                                                                  phoneNumber:
-                                                                      phoneNumberController
-                                                                          .text,
-                                                                  zipCode:
-                                                                      zipCodeController
-                                                                          .text,
-                                                                  state:
-                                                                      selectedState,
-                                                                  city:
-                                                                      selectedCity,
-                                                                  govID: govIdController
-                                                                      .text,
-                                                                  countryID:
-                                                                      selectedCountryId,
-                                                                  cityID:
-                                                                      selectedCityId,
-                                                                  govIDImage:
-                                                                      govIDImage,
-                                                                  paymentAc:
-                                                                      paymentAcController
-                                                                          .text,
-                                                                  paymentRout:
-                                                                      paymentRoutingController
-                                                                          .text,
-                                                                  businessEmail:
-                                                                      businessEmailController
-                                                                          .text,
-                                                                  gatewayID:
-                                                                      gatewayIdController
-                                                                          .text,
-                                                                  registerAc:
-                                                                      false);
-                                                              _loginBloc.add(
-                                                                  RegisterDriver(
-                                                                      addDriverModel:
-                                                                          addDriverModel!));
-                                                            } else if (govIDImage !=
-                                                                null) {
-                                                              addDriverModel = AddDriverModel(
-                                                                  address1:
-                                                                      address1Controller
-                                                                          .text,
-                                                                  address2:
-                                                                      address2NameController
-                                                                          .text,
-                                                                  phoneCode:
-                                                                      _chooseCountryCode,
-                                                                  phoneNumber:
-                                                                      phoneNumberController
-                                                                          .text,
-                                                                  zipCode:
-                                                                      zipCodeController
-                                                                          .text,
-                                                                  state:
-                                                                      selectedState,
-                                                                  city:
-                                                                      selectedCity,
-                                                                  govID: govIdController
-                                                                      .text,
-                                                                  countryID:
-                                                                      selectedCountryId,
-                                                                  cityID:
-                                                                      selectedCityId,
-                                                                  govIDImage:
-                                                                      govIDImage,
-                                                                  paymentAc:
-                                                                      paymentAcController
-                                                                          .text,
-                                                                  paymentRout:
-                                                                      paymentRoutingController
-                                                                          .text,
-                                                                  businessEmail:
-                                                                      businessEmailController
-                                                                          .text,
-                                                                  gatewayID:
-                                                                      gatewayIdController
-                                                                          .text,
-                                                                  registerAc:
-                                                                      true);
-                                                              _loginBloc.add(
-                                                                  RegisterDriver(
-                                                                      addDriverModel:
-                                                                          addDriverModel!));
-                                                            } else {
-                                                              Fluttertoast.showToast(
-                                                                  msg:
-                                                                      'Please add Government ID Picture',
-                                                                  toastLength: Toast
-                                                                      .LENGTH_SHORT,
-                                                                  gravity:
-                                                                      ToastGravity
-                                                                          .BOTTOM,
-                                                                  timeInSecForIosWeb:
-                                                                      1,
-                                                                  backgroundColor:
-                                                                      Colors
-                                                                          .grey
-                                                                          .shade400,
-                                                                  textColor:
-                                                                      Colors
-                                                                          .white,
-                                                                  fontSize:
-                                                                      12.0);
-                                                            }
+                                                          if (AppGlobal
+                                                                  .deliveryDriverID !=
+                                                              -1) {
+                                                            addDriverModel = AddDriverModel(
+                                                                address1:
+                                                                    address1Controller
+                                                                        .text,
+                                                                address2:
+                                                                    address2NameController
+                                                                        .text,
+                                                                phoneCode:
+                                                                    _chooseCountryCode,
+                                                                phoneNumber:
+                                                                    phoneNumberController
+                                                                        .text,
+                                                                zipCode:
+                                                                    zipCodeController
+                                                                        .text,
+                                                                state:
+                                                                    selectedState,
+                                                                city:
+                                                                    selectedCity,
+                                                                govID: govIdController
+                                                                    .text,
+                                                                countryID:
+                                                                    selectedCountryId,
+                                                                cityID:
+                                                                    selectedCityId,
+                                                                govIDImage:
+                                                                    govIDImage,
+                                                                paymentAc:
+                                                                    paymentAcController
+                                                                        .text,
+                                                                paymentRout:
+                                                                    paymentRoutingController
+                                                                        .text,
+                                                                businessEmail:
+                                                                    businessEmailController
+                                                                        .text,
+                                                                gatewayID:
+                                                                    selectedCountryId ==
+                                                                            16
+                                                                        ? '4'
+                                                                        : '5',
+                                                                registerAc:
+                                                                    false);
+                                                            _loginBloc.add(
+                                                                RegisterDriver(
+                                                                    addDriverModel:
+                                                                        addDriverModel!));
+                                                          } else if (govIDImage !=
+                                                              null) {
+                                                            addDriverModel = AddDriverModel(
+                                                                address1:
+                                                                    address1Controller
+                                                                        .text,
+                                                                address2:
+                                                                    address2NameController
+                                                                        .text,
+                                                                phoneCode:
+                                                                    _chooseCountryCode,
+                                                                phoneNumber:
+                                                                    phoneNumberController
+                                                                        .text,
+                                                                zipCode:
+                                                                    zipCodeController
+                                                                        .text,
+                                                                state:
+                                                                    selectedState,
+                                                                city:
+                                                                    selectedCity,
+                                                                govID: govIdController
+                                                                    .text,
+                                                                countryID:
+                                                                    selectedCountryId,
+                                                                cityID:
+                                                                    selectedCityId,
+                                                                govIDImage:
+                                                                    govIDImage,
+                                                                paymentAc:
+                                                                    paymentAcController
+                                                                        .text,
+                                                                paymentRout:
+                                                                    paymentRoutingController
+                                                                        .text,
+                                                                businessEmail:
+                                                                    businessEmailController
+                                                                        .text,
+                                                                gatewayID:
+                                                                    selectedCountryId ==
+                                                                            16
+                                                                        ? '4'
+                                                                        : '5',
+                                                                registerAc:
+                                                                    true);
+                                                            _loginBloc.add(
+                                                                RegisterDriver(
+                                                                    addDriverModel:
+                                                                        addDriverModel!));
                                                           } else {
                                                             Fluttertoast.showToast(
                                                                 msg:
-                                                                    'Please enter a Gateway ID',
+                                                                    'Please add Government ID Picture',
                                                                 toastLength: Toast
                                                                     .LENGTH_SHORT,
                                                                 gravity:
