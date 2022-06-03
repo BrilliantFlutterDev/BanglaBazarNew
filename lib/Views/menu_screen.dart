@@ -459,84 +459,84 @@ class _MenuScreenState extends State<MenuScreen> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HelpCenterScreen()),
-                                    );
-                                  },
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                          width: 35,
-                                          height: 35,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            color: kColorDarkGreyText
-                                                .withOpacity(0.2),
-                                            // border: Border.all(
-                                            //     color: kColorDarkGreyText, width: 3),
-                                            // image: DecorationImage(
-                                            //   image: Image.asset("assets/icons/eyeicon.png",),
-                                            //   fit: BoxFit.cover,
-                                            // ),
-                                          ),
-                                          child: const Icon(
-                                            MyFlutterApp.help_center,
-                                            color: kColorPrimary,
-                                            size: 18,
-                                          )),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      const Text(
-                                        'Help Center',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 16),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  height: 20,
-                                ),
-                                Row(
-                                  children: [
-                                    Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kColorDarkGreyText
-                                              .withOpacity(0.2),
-                                          // border: Border.all(
-                                          //     color: kColorDarkGreyText, width: 3),
-                                          // image: DecorationImage(
-                                          //   image: Image.asset("assets/icons/eyeicon.png",),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: const Icon(
-                                          MyFlutterApp.settings,
-                                          color: kColorPrimary,
-                                          size: 18,
-                                        )),
-                                    const SizedBox(
-                                      width: 10,
-                                    ),
-                                    const Text(
-                                      'Settings',
-                                      style: TextStyle(
-                                          color: Colors.black, fontSize: 16),
-                                    ),
-                                  ],
-                                ),
+                                // const SizedBox(
+                                //   height: 20,
+                                // ),
+                                // InkWell(
+                                //   onTap: () {
+                                //     Navigator.push(
+                                //       context,
+                                //       MaterialPageRoute(
+                                //           builder: (context) =>
+                                //               const HelpCenterScreen()),
+                                //     );
+                                //   },
+                                //   child: Row(
+                                //     children: [
+                                //       Container(
+                                //           width: 35,
+                                //           height: 35,
+                                //           decoration: BoxDecoration(
+                                //             shape: BoxShape.circle,
+                                //             color: kColorDarkGreyText
+                                //                 .withOpacity(0.2),
+                                //             // border: Border.all(
+                                //             //     color: kColorDarkGreyText, width: 3),
+                                //             // image: DecorationImage(
+                                //             //   image: Image.asset("assets/icons/eyeicon.png",),
+                                //             //   fit: BoxFit.cover,
+                                //             // ),
+                                //           ),
+                                //           child: const Icon(
+                                //             MyFlutterApp.help_center,
+                                //             color: kColorPrimary,
+                                //             size: 18,
+                                //           )),
+                                //       const SizedBox(
+                                //         width: 10,
+                                //       ),
+                                //       const Text(
+                                //         'Help Center',
+                                //         style: TextStyle(
+                                //             color: Colors.black, fontSize: 16),
+                                //       ),
+                                //     ],
+                                //   ),
+                                // ),
+                                // const SizedBox(
+                                //   height: 20,
+                                // ),
+                                // Row(
+                                //   children: [
+                                //     Container(
+                                //         width: 35,
+                                //         height: 35,
+                                //         decoration: BoxDecoration(
+                                //           shape: BoxShape.circle,
+                                //           color: kColorDarkGreyText
+                                //               .withOpacity(0.2),
+                                //           // border: Border.all(
+                                //           //     color: kColorDarkGreyText, width: 3),
+                                //           // image: DecorationImage(
+                                //           //   image: Image.asset("assets/icons/eyeicon.png",),
+                                //           //   fit: BoxFit.cover,
+                                //           // ),
+                                //         ),
+                                //         child: const Icon(
+                                //           MyFlutterApp.settings,
+                                //           color: kColorPrimary,
+                                //           size: 18,
+                                //         )),
+                                //     const SizedBox(
+                                //       width: 10,
+                                //     ),
+                                //     const Text(
+                                //       'Settings',
+                                //       style: TextStyle(
+                                //           color: Colors.black, fontSize: 16),
+                                //     ),
+                                //   ],
+                                // ),
                                 const SizedBox(
                                   height: 20,
                                 ),

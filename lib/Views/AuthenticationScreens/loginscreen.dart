@@ -42,8 +42,8 @@ class _LoginDemoState extends State<LoginScreen> {
     // usernameController.text = '039a@gmail.com';
     // passwordController.text = '1234567890';
 
-    // usernameController.text = 'cafarac102@balaket.com';
-    // passwordController.text = '11111111';
+    usernameController.text = 'cafarac102@balaket.com';
+    passwordController.text = '11111111';
 
     // usernameController.text = 'uzair@gmail.com';
     // passwordController.text = '11111111';

@@ -424,6 +424,8 @@ class WebServices {
     print('url: $url');
     try {
       dio.options.headers["Accept"] = 'application/json';
+      dio.options.headers["Content-Type"] = 'application/json';
+      dio.options.headers["Authorization"] = 'Bearer ${AppGlobal.token}';
       dio.options.headers["region"] = AppGlobal.region;
       //formData = FormData.fromMap(params);
 
@@ -469,7 +471,8 @@ class WebServices {
     print('>>>>>>>params: ${jsonEncode(params)}');
     try {
       dio.options.headers["Accept"] = 'application/json';
-
+      dio.options.headers["Content-Type"] = 'application/json';
+      dio.options.headers["Authorization"] = 'Bearer ${AppGlobal.token}';
       // dio.options.connectTimeout = 50000;
 
       formData = FormData.fromMap(params);

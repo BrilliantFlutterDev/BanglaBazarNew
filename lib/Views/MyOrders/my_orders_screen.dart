@@ -330,37 +330,80 @@ class _MyOrdersState extends State<MyOrders> {
                                                                     TextAlign
                                                                         .center,
                                                               ),
+                                                              const SizedBox(
+                                                                height: 5,
+                                                              ),
+                                                              Text(
+                                                                'Order Total : ${orderDetails![i].OrderTotal}',
+                                                                style: const TextStyle(
+                                                                    color: Colors
+                                                                        .black,
+                                                                    fontSize:
+                                                                        14),
+                                                              ),
                                                             ],
                                                           ),
-                                                          Container(
-                                                            height: screenSize
-                                                                    .height *
-                                                                0.03,
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          20),
-                                                              // border: Border.all(
-                                                              //     color: kColorWidgetBackgroundColor),
-                                                              color:
-                                                                  kColorOrangeText,
-                                                            ),
-                                                            child: Center(
-                                                              child: Text(
-                                                                '      ${orderDetails![i].PaymentStatus}      ',
-                                                                //six spaces on each side
+                                                          Row(
+                                                            children: [
+                                                              Container(
+                                                                height: screenSize
+                                                                        .height *
+                                                                    0.03,
+                                                                decoration:
+                                                                    BoxDecoration(
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              20),
+                                                                  // border: Border.all(
+                                                                  //     color: kColorWidgetBackgroundColor),
+                                                                  color:
+                                                                      kColorOrangeText,
+                                                                ),
+                                                                child: Center(
+                                                                  child: Text(
+                                                                    '      ${orderDetails![i].PaymentStatus}      ',
+                                                                    //six spaces on each side
 
-                                                                maxLines: 1,
-                                                                style: const TextStyle(
-                                                                    color:
-                                                                        kColorWhite,
-                                                                    fontSize:
-                                                                        10),
+                                                                    maxLines: 1,
+                                                                    style: const TextStyle(
+                                                                        color:
+                                                                            kColorWhite,
+                                                                        fontSize:
+                                                                            10),
+                                                                  ),
+                                                                ),
                                                               ),
-                                                            ),
-                                                          )
+                                                              const SizedBox(
+                                                                width: 10,
+                                                              ),
+                                                              InkWell(
+                                                                  onTap: () {
+                                                                    if (orderDetails![
+                                                                            i]
+                                                                        .openOrderDetailsDropDown) {
+                                                                      orderDetails![i]
+                                                                              .openOrderDetailsDropDown =
+                                                                          false;
+                                                                      setState(
+                                                                          () {});
+                                                                    } else {
+                                                                      orderDetails![i]
+                                                                              .openOrderDetailsDropDown =
+                                                                          true;
+                                                                      setState(
+                                                                          () {});
+                                                                    }
+                                                                  },
+                                                                  child: Icon(orderDetails![
+                                                                              i]
+                                                                          .openOrderDetailsDropDown
+                                                                      ? Icons
+                                                                          .keyboard_arrow_up_sharp
+                                                                      : Icons
+                                                                          .keyboard_arrow_down_sharp))
+                                                            ],
+                                                          ),
                                                         ],
                                                       ),
                                                     ),
@@ -371,28 +414,32 @@ class _MyOrdersState extends State<MyOrders> {
                                                 const SizedBox(
                                                   height: 15,
                                                 ),
-                                                MyOrdersWidget(
-                                                  screenSize: screenSize,
-                                                  onPressOrderDetails: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              OrderDetails(
-                                                                previousPage:
-                                                                    'UserMyOrders',
-                                                                orderNumber:
-                                                                    orderDetails![
-                                                                            i]
-                                                                        .productDetail[
-                                                                            j]
-                                                                        .OrderNumber,
-                                                              )),
-                                                    );
-                                                  },
-                                                  productDetail:
-                                                      orderDetails![i]
-                                                          .productDetail[j],
+                                                Visibility(
+                                                  child: MyOrdersWidget(
+                                                    screenSize: screenSize,
+                                                    onPressOrderDetails: () {
+                                                      Navigator.push(
+                                                        context,
+                                                        MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                OrderDetails(
+                                                                  previousPage:
+                                                                      'UserMyOrders',
+                                                                  orderNumber:
+                                                                      orderDetails![
+                                                                              i]
+                                                                          .productDetail[
+                                                                              j]
+                                                                          .OrderNumber,
+                                                                )),
+                                                      );
+                                                    },
+                                                    productDetail:
+                                                        orderDetails![i]
+                                                            .productDetail[j],
+                                                  ),
+                                                  visible: orderDetails![i]
+                                                      .openOrderDetailsDropDown,
                                                 ),
                                               ],
                                             );

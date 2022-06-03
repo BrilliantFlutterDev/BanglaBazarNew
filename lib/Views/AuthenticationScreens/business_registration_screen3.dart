@@ -2374,7 +2374,7 @@ class _BusinessRegistrationScreen3State
                                     borderRadius: BorderRadius.circular(6),
                                     color: kColorPrimary,
                                   ),
-                                  child: Center(
+                                  child: const Center(
                                     child: Text(
                                       'Next',
                                       maxLines: 1,

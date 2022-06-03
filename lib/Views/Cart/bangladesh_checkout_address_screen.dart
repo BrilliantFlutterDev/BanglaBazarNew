@@ -279,186 +279,110 @@ class _BangladeshCheckoutAddressScreenState
           /// For pathao and bangladaesh
           if (selectedPaymentCountryID != 226) {
             if (widget.creditCardPayment == true) {
-              if (nameController.text != '') {
-                if (address1Controller.text.length > 25) {
-                  if (zipCodeController.text != '') {
-                    if (selectedCity != '') {
-                      if (nameDeliveryController.text != '') {
-                        if (address1DeliveryController.text.length > 25) {
-                          if (phoneDeliveryNumberController.text.length == 11) {
-                            print('Proceeding the payment>>>>>>>>>146');
-                            if (zipCodeDeliveryController.text != '') {
-                              print('Proceeding the payment>>>>>>>>>13');
-                              if (selectedDeliveryCity != '') {
-                                if (selectedDeliveryZone != '') {
-                                  if (selectedDeliveryArea != '') {
-                                    print('Proceeding the payment>>>>>>>>>12');
-                                    if (selectedDeliveryCity !=
-                                        widget.cartDetailsResponse
-                                            .productCartList[0].City) {
-                                      pickUpAvailable = false;
-                                    }
-                                    print('Proceeding the payment>>>>>>>>>');
-                                    bangladeshPaymentUserData = BangladeshPaymentUserData(
-                                        selectedPaymentCountry:
-                                            selectedPaymentCountryID,
-                                        name: nameController.text,
-                                        cardNumber: cardNumber.text,
-                                        address1: address1Controller.text,
-                                        address2: address2Controller.text,
-                                        phoneCode: '',
-                                        phoneNumber:
-                                            AppGlobal.phoneNumber.length == 11
-                                                ? AppGlobal.phoneNumber
-                                                : phoneDeliveryNumberController
-                                                    .text,
-                                        country: selectedPaymentCountryID == 16
-                                            ? 'Bangladesh'
-                                            : 'USA',
-                                        countryID: selectedPaymentCountryID,
-                                        zipCode: zipCodeController.text,
-                                        city: selectedCity,
-                                        createdAtDate:
-                                            createdDateController.text,
-                                        selectedDeliveryCountry:
-                                            widget.selectedCountryId,
-                                        banglaBazarDelivery: banglaBazarPickup,
-                                        pickUp: pickUpAvailable,
-                                        address1Delivery:
-                                            address1DeliveryController.text,
-                                        address2Delivery:
-                                            address2DeliveryController.text,
-                                        adminNoteDelivery:
-                                            adminDeliveryNoteController.text,
-                                        phoneNumberDelivery:
-                                            phoneDeliveryNumberController.text,
-                                        nameDelivery:
-                                            nameDeliveryController.text,
-                                        zipCodeDelivery:
-                                            zipCodeDeliveryController.text,
-                                        phoneCodeDelivery:
-                                            _chooseCountryCodeDelivery,
-                                        nickNameDelivery:
-                                            deliveryAddressNickName.text,
-                                        zoneDeliveryID: selectedDeliveryZoneId,
-                                        cityDeliveryID:
-                                            selectedTempCityIdDelivery,
-                                        areaDeliveryID: selectedDeliveryAreaId,
-                                        state: selectedState,
-                                        shippingPrice: shippingPrice,
-                                        cityDelivery: selectedDeliveryCity,
-                                        zoneDelivery: selectedDeliveryZone,
-                                        areaDelivery: selectedDeliveryArea,
-                                        savePaymentAddress: savePaymentAddress,
-                                        saveDeliveryAddress:
-                                            saveDeliveryAddress);
-                                    print(
-                                        'Proceeding the payment>>>>>>>>>12345');
+              if (nameDeliveryController.text != '') {
+                if (address1DeliveryController.text.length > 25) {
+                  if (phoneDeliveryNumberController.text.length == 11) {
+                    print('Proceeding the payment>>>>>>>>>146');
+                    if (zipCodeDeliveryController.text != '') {
+                      print('Proceeding the payment>>>>>>>>>13');
+                      if (selectedDeliveryCity != '') {
+                        if (selectedDeliveryZone != '') {
+                          if (selectedDeliveryArea != '') {
+                            print('Proceeding the payment>>>>>>>>>12');
+                            if (selectedDeliveryCity !=
+                                widget.cartDetailsResponse.productCartList[0]
+                                    .City) {
+                              pickUpAvailable = false;
+                            }
+                            print('Proceeding the payment>>>>>>>>>');
+                            bangladeshPaymentUserData =
+                                BangladeshPaymentUserData(
+                                    selectedPaymentCountry:
+                                        selectedPaymentCountryID,
+                                    name: nameController.text,
+                                    cardNumber: cardNumber.text,
+                                    address1: address1Controller.text,
+                                    address2: address2Controller.text,
+                                    phoneCode: '',
+                                    phoneNumber: AppGlobal.phoneNumber.length ==
+                                            11
+                                        ? AppGlobal.phoneNumber
+                                        : phoneDeliveryNumberController.text,
+                                    country: selectedPaymentCountryID == 16
+                                        ? 'Bangladesh'
+                                        : 'USA',
+                                    countryID: selectedPaymentCountryID,
+                                    zipCode: zipCodeController.text,
+                                    city: selectedCity,
+                                    createdAtDate: createdDateController.text,
+                                    selectedDeliveryCountry:
+                                        widget.selectedCountryId,
+                                    banglaBazarDelivery: banglaBazarPickup,
+                                    pickUp: pickUpAvailable,
+                                    address1Delivery:
+                                        address1DeliveryController.text,
+                                    address2Delivery:
+                                        address2DeliveryController.text,
+                                    adminNoteDelivery:
+                                        adminDeliveryNoteController.text,
+                                    phoneNumberDelivery:
+                                        phoneDeliveryNumberController.text,
+                                    nameDelivery: nameDeliveryController.text,
+                                    zipCodeDelivery:
+                                        zipCodeDeliveryController.text,
+                                    phoneCodeDelivery:
+                                        _chooseCountryCodeDelivery,
+                                    nickNameDelivery:
+                                        deliveryAddressNickName.text,
+                                    zoneDeliveryID: selectedDeliveryZoneId,
+                                    cityDeliveryID: selectedTempCityIdDelivery,
+                                    areaDeliveryID: selectedDeliveryAreaId,
+                                    state: selectedState,
+                                    shippingPrice: shippingPrice,
+                                    cityDelivery: selectedDeliveryCity,
+                                    zoneDelivery: selectedDeliveryZone,
+                                    areaDelivery: selectedDeliveryArea,
+                                    savePaymentAddress: savePaymentAddress,
+                                    saveDeliveryAddress: saveDeliveryAddress);
+                            print('Proceeding the payment>>>>>>>>>12345');
 
-                                    if (checkDeliveryDriverResponse != null) {
-                                      print(
-                                          'Proceeding the payment>>>>>>>>>12346');
-                                      if (checkDeliveryDriverResponse!
-                                              .deliveryDriverStatus ==
-                                          false) {
-                                        productsAndUserCitiesAreSame = false;
-                                      } else if (checkDeliveryDriverResponse!
-                                              .deliveryDriverStatus ==
-                                          true) {
-                                        productsAndUserCitiesAreSame = true;
-                                      }
-                                    }
+                            if (checkDeliveryDriverResponse != null) {
+                              print('Proceeding the payment>>>>>>>>>12346');
+                              if (checkDeliveryDriverResponse!
+                                      .deliveryDriverStatus ==
+                                  false) {
+                                productsAndUserCitiesAreSame = false;
+                              } else if (checkDeliveryDriverResponse!
+                                      .deliveryDriverStatus ==
+                                  true) {
+                                productsAndUserCitiesAreSame = true;
+                              }
+                            }
 
-                                    if (selectedPaymentCountryID == 16) {
-                                      print(
-                                          'Proceeding the payment>>>>>>>>>12347');
-                                      if (checkDeliveryConditionsProceed ==
-                                          true) {
-                                        print(
-                                            'Proceeding the payment>>>>>>>>>1212');
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                CheckoutSummaryScreen(
-                                              cartDetailsResponse:
-                                                  widget.cartDetailsResponse,
-                                              bangladeshPaymentUserData:
-                                                  bangladeshPaymentUserData!,
-                                              productsAndUserCitiesAreSame:
-                                                  productsAndUserCitiesAreSame,
-                                              creditCardPayment:
-                                                  widget.creditCardPayment,
-                                              pathaoPriceCalculationResponse:
-                                                  pathaoPriceCalculationResponse,
-                                            ),
-                                          ),
-                                        );
-                                      } else {
-                                        Fluttertoast.showToast(
-                                            msg:
-                                                checkDeliveryConditionsProceedReason,
-                                            toastLength: Toast.LENGTH_SHORT,
-                                            gravity: ToastGravity.BOTTOM,
-                                            timeInSecForIosWeb: 1,
-                                            backgroundColor:
-                                                Colors.grey.shade400,
-                                            textColor: Colors.white,
-                                            fontSize: 12.0);
-                                      }
-                                    } else if (selectedPaymentCountryID ==
-                                        226) {
-                                      print(
-                                          'Proceeding the payment>>>>>>>>>222222');
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              CheckoutPaymentScreen(
-                                            cartDetailsResponse:
-                                                widget.cartDetailsResponse,
-                                            // bangladeshPaymentUserData:
-                                            // bangladeshPaymentUserData!,
-                                            productsAndUserCitiesAreSame:
-                                                productsAndUserCitiesAreSame,
-                                            creditCardPayment:
-                                                widget.creditCardPayment,
-                                            selectedCountryId:
-                                                selectedPaymentCountryID,
-                                            bangladeshPaymentUserData:
-                                                bangladeshPaymentUserData!,
-                                            pathaoPriceCalculationResponse:
-                                                pathaoPriceCalculationResponse,
-
-                                            // pathaoPriceCalculationResponse:
-                                            // pathaoPriceCalculationResponse,
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  } else {
-                                    Fluttertoast.showToast(
-                                        msg: 'Please enter delivery area',
-                                        toastLength: Toast.LENGTH_SHORT,
-                                        gravity: ToastGravity.BOTTOM,
-                                        timeInSecForIosWeb: 1,
-                                        backgroundColor: Colors.grey.shade400,
-                                        textColor: Colors.white,
-                                        fontSize: 12.0);
-                                  }
-                                } else {
-                                  Fluttertoast.showToast(
-                                      msg: 'Please enter delivery zone',
-                                      toastLength: Toast.LENGTH_SHORT,
-                                      gravity: ToastGravity.BOTTOM,
-                                      timeInSecForIosWeb: 1,
-                                      backgroundColor: Colors.grey.shade400,
-                                      textColor: Colors.white,
-                                      fontSize: 12.0);
-                                }
+                            if (selectedPaymentCountryID == 16) {
+                              print('Proceeding the payment>>>>>>>>>12347');
+                              if (checkDeliveryConditionsProceed == true) {
+                                print('Proceeding the payment>>>>>>>>>1212');
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => CheckoutSummaryScreen(
+                                      cartDetailsResponse:
+                                          widget.cartDetailsResponse,
+                                      bangladeshPaymentUserData:
+                                          bangladeshPaymentUserData!,
+                                      productsAndUserCitiesAreSame:
+                                          productsAndUserCitiesAreSame,
+                                      creditCardPayment:
+                                          widget.creditCardPayment,
+                                      pathaoPriceCalculationResponse:
+                                          pathaoPriceCalculationResponse,
+                                    ),
+                                  ),
+                                );
                               } else {
                                 Fluttertoast.showToast(
-                                    msg: 'Please enter delivery City',
+                                    msg: checkDeliveryConditionsProceedReason,
                                     toastLength: Toast.LENGTH_SHORT,
                                     gravity: ToastGravity.BOTTOM,
                                     timeInSecForIosWeb: 1,
@@ -466,35 +390,44 @@ class _BangladeshCheckoutAddressScreenState
                                     textColor: Colors.white,
                                     fontSize: 12.0);
                               }
-                            } else {
-                              Fluttertoast.showToast(
-                                  msg: 'Please enter delivery zip code',
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  gravity: ToastGravity.BOTTOM,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.grey.shade400,
-                                  textColor: Colors.white,
-                                  fontSize: 12.0);
+                            } else if (selectedPaymentCountryID == 226) {
+                              print('Proceeding the payment>>>>>>>>>222222');
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CheckoutPaymentScreen(
+                                    cartDetailsResponse:
+                                        widget.cartDetailsResponse,
+                                    // bangladeshPaymentUserData:
+                                    // bangladeshPaymentUserData!,
+                                    productsAndUserCitiesAreSame:
+                                        productsAndUserCitiesAreSame,
+                                    creditCardPayment: widget.creditCardPayment,
+                                    selectedCountryId: selectedPaymentCountryID,
+                                    bangladeshPaymentUserData:
+                                        bangladeshPaymentUserData!,
+                                    pathaoPriceCalculationResponse:
+                                        pathaoPriceCalculationResponse,
+
+                                    // pathaoPriceCalculationResponse:
+                                    // pathaoPriceCalculationResponse,
+                                  ),
+                                ),
+                              );
                             }
                           } else {
-                            print(
-                                '<<<<<<<<<<Phone Number Length: ${phoneDeliveryNumberController.text.length}');
-                            // Fluttertoast.showToast(
-                            //     msg:
-                            //         'Please enter correct delivery phone number',
-                            //     toastLength: Toast.LENGTH_SHORT,
-                            //     gravity: ToastGravity.BOTTOM,
-                            //     timeInSecForIosWeb: 1,
-                            //     backgroundColor: Colors.grey.shade400,
-                            //     textColor: Colors.white,
-                            //     fontSize: 12.0);
-                            print(
-                                '<<<<<<<<<<Phone Number Length2: ${phoneDeliveryNumberController.text.length}');
+                            Fluttertoast.showToast(
+                                msg: 'Please enter delivery area',
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                backgroundColor: Colors.grey.shade400,
+                                textColor: Colors.white,
+                                fontSize: 12.0);
                           }
                         } else {
                           Fluttertoast.showToast(
-                              msg:
-                                  'Please enter delivery address 1 of length minimum 25 characters',
+                              msg: 'Please enter delivery zone',
                               toastLength: Toast.LENGTH_SHORT,
                               gravity: ToastGravity.BOTTOM,
                               timeInSecForIosWeb: 1,
@@ -504,7 +437,7 @@ class _BangladeshCheckoutAddressScreenState
                         }
                       } else {
                         Fluttertoast.showToast(
-                            msg: 'Please enter Name of person to deliver',
+                            msg: 'Please enter delivery City',
                             toastLength: Toast.LENGTH_SHORT,
                             gravity: ToastGravity.BOTTOM,
                             timeInSecForIosWeb: 1,
@@ -514,7 +447,7 @@ class _BangladeshCheckoutAddressScreenState
                       }
                     } else {
                       Fluttertoast.showToast(
-                          msg: 'Please select a City',
+                          msg: 'Please enter delivery zip code',
                           toastLength: Toast.LENGTH_SHORT,
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 1,
@@ -523,19 +456,24 @@ class _BangladeshCheckoutAddressScreenState
                           fontSize: 12.0);
                     }
                   } else {
-                    Fluttertoast.showToast(
-                        msg: 'Please enter Zip Code',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                        timeInSecForIosWeb: 1,
-                        backgroundColor: Colors.grey.shade400,
-                        textColor: Colors.white,
-                        fontSize: 12.0);
+                    print(
+                        '<<<<<<<<<<Phone Number Length: ${phoneDeliveryNumberController.text.length}');
+                    // Fluttertoast.showToast(
+                    //     msg:
+                    //         'Please enter correct delivery phone number',
+                    //     toastLength: Toast.LENGTH_SHORT,
+                    //     gravity: ToastGravity.BOTTOM,
+                    //     timeInSecForIosWeb: 1,
+                    //     backgroundColor: Colors.grey.shade400,
+                    //     textColor: Colors.white,
+                    //     fontSize: 12.0);
+                    print(
+                        '<<<<<<<<<<Phone Number Length2: ${phoneDeliveryNumberController.text.length}');
                   }
                 } else {
                   Fluttertoast.showToast(
                       msg:
-                          'Please enter Address 1 of length minimum 25 characters',
+                          'Please enter delivery address 1 of length minimum 25 characters',
                       toastLength: Toast.LENGTH_SHORT,
                       gravity: ToastGravity.BOTTOM,
                       timeInSecForIosWeb: 1,
@@ -545,7 +483,7 @@ class _BangladeshCheckoutAddressScreenState
                 }
               } else {
                 Fluttertoast.showToast(
-                    msg: 'Please enter full name',
+                    msg: 'Please enter Name of person to deliver',
                     toastLength: Toast.LENGTH_SHORT,
                     gravity: ToastGravity.BOTTOM,
                     timeInSecForIosWeb: 1,
@@ -739,7 +677,8 @@ class _BangladeshCheckoutAddressScreenState
           } else {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StripePaymentScreen()),
+              MaterialPageRoute(
+                  builder: (context) => const StripePaymentScreen()),
             );
           }
 
@@ -1749,399 +1688,450 @@ class _BangladeshCheckoutAddressScreenState
                               const SizedBox(
                                 height: 25,
                               ),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Full Name',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                height: screenSize.height * 0.06,
-                                child: TextField(
-                                  controller: nameController,
-                                  textCapitalization: TextCapitalization.words,
-                                  style: const TextStyle(
-                                      color: kColorDarkGreyText),
-                                  decoration: InputDecoration(
-                                    // floatingLabelStyle:
-                                    // const TextStyle(color: kColorPrimary),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      borderSide: const BorderSide(
-                                        color: kColorFieldsBorders,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        borderSide: const BorderSide(
-                                          color: kColorPrimary,
-                                        )),
-                                    hintText: 'Enter Full Name',
-                                    hintStyle: const TextStyle(
-                                        color: kColorFieldsBorders),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              widget.creditCardPayment == true
-                                  ? const Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        'Card Number',
-                                        style: TextStyle(
-                                            fontSize: 14, color: Colors.black),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                              widget.creditCardPayment == true
-                                  ? const SizedBox(
-                                      height: 5,
-                                    )
-                                  : const SizedBox(),
-                              widget.creditCardPayment == true
-                                  ? Container(
-                                      height: screenSize.height * 0.06,
-                                      child: TextField(
-                                        controller: cardNumber,
-                                        textCapitalization:
-                                            TextCapitalization.words,
-                                        style: const TextStyle(
-                                            color: kColorDarkGreyText),
-                                        decoration: InputDecoration(
-                                          // floatingLabelStyle:
-                                          // const TextStyle(color: kColorPrimary),
-                                          enabledBorder: OutlineInputBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(6.0),
-                                            borderSide: const BorderSide(
-                                              color: kColorFieldsBorders,
+
+                              ///Invisible while USA
+                              selectedPaymentCountryID == 226
+                                  ? Column(
+                                      children: [
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Full Name',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: screenSize.height * 0.06,
+                                          child: TextField(
+                                            controller: nameController,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            style: const TextStyle(
+                                                color: kColorDarkGreyText),
+                                            decoration: InputDecoration(
+                                              // floatingLabelStyle:
+                                              // const TextStyle(color: kColorPrimary),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                borderSide: const BorderSide(
+                                                  color: kColorFieldsBorders,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6.0),
+                                                  borderSide: const BorderSide(
+                                                    color: kColorPrimary,
+                                                  )),
+                                              hintText: 'Enter Full Name',
+                                              hintStyle: const TextStyle(
+                                                  color: kColorFieldsBorders),
                                             ),
                                           ),
-                                          focusedBorder: OutlineInputBorder(
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        widget.creditCardPayment == true
+                                            ? const Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text(
+                                                  'Card Number',
+                                                  style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Colors.black),
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                        widget.creditCardPayment == true
+                                            ? const SizedBox(
+                                                height: 5,
+                                              )
+                                            : const SizedBox(),
+                                        widget.creditCardPayment == true
+                                            ? Container(
+                                                height:
+                                                    screenSize.height * 0.06,
+                                                child: TextField(
+                                                  controller: cardNumber,
+                                                  textCapitalization:
+                                                      TextCapitalization.words,
+                                                  style: const TextStyle(
+                                                      color:
+                                                          kColorDarkGreyText),
+                                                  decoration: InputDecoration(
+                                                    // floatingLabelStyle:
+                                                    // const TextStyle(color: kColorPrimary),
+                                                    enabledBorder:
+                                                        OutlineInputBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              6.0),
+                                                      borderSide:
+                                                          const BorderSide(
+                                                        color:
+                                                            kColorFieldsBorders,
+                                                      ),
+                                                    ),
+                                                    focusedBorder:
+                                                        OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        6.0),
+                                                            borderSide:
+                                                                const BorderSide(
+                                                              color:
+                                                                  kColorPrimary,
+                                                            )),
+                                                    hintText:
+                                                        'Enter Card Number',
+                                                    hintStyle: const TextStyle(
+                                                        color:
+                                                            kColorFieldsBorders),
+                                                  ),
+                                                ),
+                                              )
+                                            : const SizedBox(),
+                                        widget.creditCardPayment == true
+                                            ? const SizedBox(
+                                                height: 25,
+                                              )
+                                            : const SizedBox(),
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Address 1',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        TextField(
+                                          controller: address1Controller,
+                                          textCapitalization:
+                                              TextCapitalization.words,
+                                          style: const TextStyle(
+                                              color: kColorDarkGreyText),
+                                          decoration: InputDecoration(
+                                            // floatingLabelStyle:
+                                            // const TextStyle(color: kColorPrimary),
+                                            enabledBorder: OutlineInputBorder(
                                               borderRadius:
                                                   BorderRadius.circular(6.0),
                                               borderSide: const BorderSide(
-                                                color: kColorPrimary,
-                                              )),
-                                          hintText: 'Enter Card Number',
-                                          hintStyle: const TextStyle(
-                                              color: kColorFieldsBorders),
+                                                color: kColorFieldsBorders,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                borderSide: const BorderSide(
+                                                  color: kColorPrimary,
+                                                )),
+                                            hintText: 'Enter Address 1',
+                                            hintStyle: const TextStyle(
+                                                color: kColorFieldsBorders),
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  : const SizedBox(),
-                              widget.creditCardPayment == true
-                                  ? const SizedBox(
-                                      height: 25,
-                                    )
-                                  : const SizedBox(),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Address 1',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextField(
-                                controller: address1Controller,
-                                textCapitalization: TextCapitalization.words,
-                                style:
-                                    const TextStyle(color: kColorDarkGreyText),
-                                decoration: InputDecoration(
-                                  // floatingLabelStyle:
-                                  // const TextStyle(color: kColorPrimary),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    borderSide: const BorderSide(
-                                      color: kColorFieldsBorders,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      borderSide: const BorderSide(
-                                        color: kColorPrimary,
-                                      )),
-                                  hintText: 'Enter Address 1',
-                                  hintStyle: const TextStyle(
-                                      color: kColorFieldsBorders),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const SizedBox(),
-                                    Text(
-                                      '${address1Controller.text.length}',
-                                      style: const TextStyle(
-                                          color: kColorDarkGreyText),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Note : Address 1 should contains at least 25 characters.',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: kColorOrangeText,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Address 2 ${widget.selectedCountryId != 226 ? '(Optional)' : ''}',
-                                  style: const TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              TextField(
-                                controller: address2Controller,
-                                textCapitalization: TextCapitalization.words,
-                                style:
-                                    const TextStyle(color: kColorDarkGreyText),
-                                decoration: InputDecoration(
-                                  // floatingLabelStyle:
-                                  // const TextStyle(color: kColorPrimary),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(6.0),
-                                    borderSide: const BorderSide(
-                                      color: kColorFieldsBorders,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      borderSide: const BorderSide(
-                                        color: kColorPrimary,
-                                      )),
-                                  hintText: 'Enter Address 2',
-                                  hintStyle: const TextStyle(
-                                      color: kColorFieldsBorders),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 5),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const SizedBox(),
-                                    Text(
-                                      '${address2Controller.text.length}',
-                                      style: const TextStyle(
-                                          color: kColorDarkGreyText),
-                                    )
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Note : Address 2 should contains at least 25 characters.',
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: kColorOrangeText,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'Zip Code',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                height: screenSize.height * 0.06,
-                                child: TextField(
-                                  controller: zipCodeController,
-                                  textCapitalization: TextCapitalization.words,
-                                  keyboardType: TextInputType.number,
-                                  inputFormatters: <TextInputFormatter>[
-                                    FilteringTextInputFormatter.digitsOnly
-                                  ],
-                                  style: const TextStyle(
-                                      color: kColorDarkGreyText),
-                                  decoration: InputDecoration(
-                                    // floatingLabelStyle:
-                                    // const TextStyle(color: kColorPrimary),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      borderSide: const BorderSide(
-                                        color: kColorFieldsBorders,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        borderSide: const BorderSide(
-                                          color: kColorPrimary,
-                                        )),
-                                    hintText: 'Enter Zip Code',
-                                    hintStyle: const TextStyle(
-                                        color: kColorFieldsBorders),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'City',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                height: screenSize.height * 0.06,
-                                child: TextField(
-                                  textCapitalization: TextCapitalization.words,
-                                  controller: cityController,
-                                  onChanged: (value) {
-                                    selectedCity = value;
-                                    //print(selectedState);
-                                  },
-                                  style: const TextStyle(
-                                      color: kColorDarkGreyText),
-                                  decoration: InputDecoration(
-                                    // floatingLabelStyle:
-                                    // const TextStyle(color: kColorPrimary),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      borderSide: const BorderSide(
-                                        color: kColorFieldsBorders,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        borderSide: const BorderSide(
-                                          color: kColorPrimary,
-                                        )),
-                                    hintText: 'Enter City',
-                                    hintStyle: const TextStyle(
-                                        color: kColorFieldsBorders),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              const Align(
-                                alignment: Alignment.topLeft,
-                                child: Text(
-                                  'State',
-                                  style: TextStyle(
-                                      fontSize: 14, color: Colors.black),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 5,
-                              ),
-                              Container(
-                                height: screenSize.height * 0.06,
-                                child: TextField(
-                                  textCapitalization: TextCapitalization.words,
-                                  controller: stateController,
-                                  onChanged: (value) {
-                                    selectedState = value;
-                                    //print(selectedState);
-                                  },
-                                  style: const TextStyle(
-                                      color: kColorDarkGreyText),
-                                  decoration: InputDecoration(
-                                    // floatingLabelStyle:
-                                    // const TextStyle(color: kColorPrimary),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(6.0),
-                                      borderSide: const BorderSide(
-                                        color: kColorFieldsBorders,
-                                      ),
-                                    ),
-                                    focusedBorder: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(6.0),
-                                        borderSide: const BorderSide(
-                                          color: kColorPrimary,
-                                        )),
-                                    hintText: 'Enter State',
-                                    hintStyle: const TextStyle(
-                                        color: kColorFieldsBorders),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(
-                                height: 25,
-                              ),
-                              Row(
-                                children: [
-                                  Theme(
-                                      data: ThemeData(
-                                          unselectedWidgetColor: Colors.grey),
-                                      child: Checkbox(
-                                        value: savePaymentAddress,
-                                        onChanged: (state) {
-                                          if (savePaymentAddress) {
-                                            savePaymentAddress = false;
-                                          } else {
-                                            savePaymentAddress = true;
-                                          }
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const SizedBox(),
+                                              Text(
+                                                '${address1Controller.text.length}',
+                                                style: const TextStyle(
+                                                    color: kColorDarkGreyText),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Note : Address 1 should contains at least 25 characters.',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: kColorOrangeText,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Address 2 ${widget.selectedCountryId != 226 ? '(Optional)' : ''}',
+                                            style: const TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        TextField(
+                                          controller: address2Controller,
+                                          textCapitalization:
+                                              TextCapitalization.words,
+                                          style: const TextStyle(
+                                              color: kColorDarkGreyText),
+                                          decoration: InputDecoration(
+                                            // floatingLabelStyle:
+                                            // const TextStyle(color: kColorPrimary),
+                                            enabledBorder: OutlineInputBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(6.0),
+                                              borderSide: const BorderSide(
+                                                color: kColorFieldsBorders,
+                                              ),
+                                            ),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                borderSide: const BorderSide(
+                                                  color: kColorPrimary,
+                                                )),
+                                            hintText: 'Enter Address 2',
+                                            hintStyle: const TextStyle(
+                                                color: kColorFieldsBorders),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10, vertical: 5),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              const SizedBox(),
+                                              Text(
+                                                '${address2Controller.text.length}',
+                                                style: const TextStyle(
+                                                    color: kColorDarkGreyText),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Note : Address 2 should contains at least 25 characters.',
+                                            style: TextStyle(
+                                              fontSize: 14,
+                                              color: kColorOrangeText,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'Zip Code',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: screenSize.height * 0.06,
+                                          child: TextField(
+                                            controller: zipCodeController,
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            keyboardType: TextInputType.number,
+                                            inputFormatters: <
+                                                TextInputFormatter>[
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            style: const TextStyle(
+                                                color: kColorDarkGreyText),
+                                            decoration: InputDecoration(
+                                              // floatingLabelStyle:
+                                              // const TextStyle(color: kColorPrimary),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                borderSide: const BorderSide(
+                                                  color: kColorFieldsBorders,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6.0),
+                                                  borderSide: const BorderSide(
+                                                    color: kColorPrimary,
+                                                  )),
+                                              hintText: 'Enter Zip Code',
+                                              hintStyle: const TextStyle(
+                                                  color: kColorFieldsBorders),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'City',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: screenSize.height * 0.06,
+                                          child: TextField(
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            controller: cityController,
+                                            onChanged: (value) {
+                                              selectedCity = value;
+                                              //print(selectedState);
+                                            },
+                                            style: const TextStyle(
+                                                color: kColorDarkGreyText),
+                                            decoration: InputDecoration(
+                                              // floatingLabelStyle:
+                                              // const TextStyle(color: kColorPrimary),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                borderSide: const BorderSide(
+                                                  color: kColorFieldsBorders,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6.0),
+                                                  borderSide: const BorderSide(
+                                                    color: kColorPrimary,
+                                                  )),
+                                              hintText: 'Enter City',
+                                              hintStyle: const TextStyle(
+                                                  color: kColorFieldsBorders),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        const Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text(
+                                            'State',
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                color: Colors.black),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Container(
+                                          height: screenSize.height * 0.06,
+                                          child: TextField(
+                                            textCapitalization:
+                                                TextCapitalization.words,
+                                            controller: stateController,
+                                            onChanged: (value) {
+                                              selectedState = value;
+                                              //print(selectedState);
+                                            },
+                                            style: const TextStyle(
+                                                color: kColorDarkGreyText),
+                                            decoration: InputDecoration(
+                                              // floatingLabelStyle:
+                                              // const TextStyle(color: kColorPrimary),
+                                              enabledBorder: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(6.0),
+                                                borderSide: const BorderSide(
+                                                  color: kColorFieldsBorders,
+                                                ),
+                                              ),
+                                              focusedBorder: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          6.0),
+                                                  borderSide: const BorderSide(
+                                                    color: kColorPrimary,
+                                                  )),
+                                              hintText: 'Enter State',
+                                              hintStyle: const TextStyle(
+                                                  color: kColorFieldsBorders),
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 25,
+                                        ),
+                                        Row(
+                                          children: [
+                                            Theme(
+                                                data: ThemeData(
+                                                    unselectedWidgetColor:
+                                                        Colors.grey),
+                                                child: Checkbox(
+                                                  value: savePaymentAddress,
+                                                  onChanged: (state) {
+                                                    if (savePaymentAddress) {
+                                                      savePaymentAddress =
+                                                          false;
+                                                    } else {
+                                                      savePaymentAddress = true;
+                                                    }
 
-                                          setState(() {});
-                                        },
-                                        activeColor: kColorPrimary,
-                                        checkColor: Colors.white,
-                                        materialTapTargetSize:
-                                            MaterialTapTargetSize.padded,
-                                      )),
-                                  const Text('Save payment address')
-                                ],
-                              ),
-                              const SizedBox(
-                                height: 50,
-                              ),
+                                                    setState(() {});
+                                                  },
+                                                  activeColor: kColorPrimary,
+                                                  checkColor: Colors.white,
+                                                  materialTapTargetSize:
+                                                      MaterialTapTargetSize
+                                                          .padded,
+                                                )),
+                                            const Text('Save payment address')
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 50,
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox()
                             ],
                           ),
                         ),
@@ -2215,7 +2205,8 @@ class _BangladeshCheckoutAddressScreenState
                           ),
                         ),
 
-                        widget.selectedCountryId == selectedPaymentCountryID
+                        widget.selectedCountryId == selectedPaymentCountryID &&
+                                selectedPaymentCountryID == 226
                             ? Visibility(
                                 visible: showSameAsAbove,
                                 child: Row(
@@ -4030,8 +4021,6 @@ class _BangladeshCheckoutAddressScreenState
                             ),
                             InkWell(
                               onTap: () {
-                                print('Next Botton Hit');
-
                                 /// Check inventory
                                 _cartBloc.add(CheckInventory(
                                     cartDetailsResponseTemp:
@@ -4101,31 +4090,7 @@ class _BangladeshCheckoutAddressScreenState
     });
   }
 
-  late File _image;
   final picker = ImagePicker();
-  late String _imagePath;
-
-  Future getImage(final pickedFileSelected) async {
-    final pickedFile = await pickedFileSelected;
-    // _userEditRequestModel.profilePic = pickedFile;
-
-    if (pickedFile != null) {
-      _image = File(pickedFile.path);
-      File rotatedImage =
-          await FlutterExifRotation.rotateImage(path: _image.path);
-
-      _image = rotatedImage;
-
-      // _loginBloc.add(UploadProfilePic(
-      //   userid: AppGlobal.userID.toString(),
-      //   selectedImage: _image,
-      // ));
-
-      print('Image Path: $_image');
-    } else {
-      print('No image selected.');
-    }
-  }
 
   _pickDate() async {
     DateTime? date = await showDatePicker(
@@ -4180,6 +4145,11 @@ class _BangladeshCheckoutAddressScreenState
                   }
                   selectedPaymentCountryID =
                       widget.allowedCountriesResponse.countries[i].CountryID;
+                  if (selectedPaymentCountryID == 16) {
+                    nameController.text = AppGlobal.userName;
+                  } else {
+                    nameController.text = '';
+                  }
                   countryPaymentSelected = true;
 
                   break;

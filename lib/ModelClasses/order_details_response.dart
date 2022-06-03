@@ -43,6 +43,8 @@ class OrderDetails {
   late final String ProcessStatus;
   late final String OrderTotal;
 
+  bool openOrderDetailsDropDown = false;
+
   OrderDetails.fromJson(Map<String, dynamic> json) {
     OrderNumber = json['OrderNumber'];
     OrderDate = json['OrderDate'];

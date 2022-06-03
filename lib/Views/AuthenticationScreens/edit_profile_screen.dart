@@ -855,15 +855,14 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   // phoneNumberController.text =
                                   //     _chooseCountryCode +
                                   //         phoneNumberController.text;
-
-                                  if (AppGlobal.phoneVerified == 'Y' &&
-                                      AppGlobal.emailVerified == 'Y' &&
-                                      AppGlobal.phoneChangeVerify == true) {
-                                    if (validateEmail()) {
-                                      _loginBloc.add(CheckEmailAvailability(
-                                        email: AppGlobal.emailAddress,
-                                      ));
-                                    }
+                                  //
+                                  // if (AppGlobal.phoneVerified == 'Y' &&
+                                  //     AppGlobal.emailVerified == 'Y' &&
+                                  //     AppGlobal.phoneChangeVerify == true) {
+                                  if (validateEmail()) {
+                                    _loginBloc.add(CheckEmailAvailability(
+                                      email: AppGlobal.emailAddress,
+                                    ));
                                   }
                                 },
                                 child: Container(

@@ -153,7 +153,7 @@ class _BusinessRegistrationScreen2State
             backgroundColor: Colors.grey.shade400,
             textColor: Colors.white,
             fontSize: 12.0);
-        if (state.error == 'Business already exists') {
+        if (state.error == 'Business Already exists') {
           businessAlreadyExist = true;
           Navigator.push(
             context,
