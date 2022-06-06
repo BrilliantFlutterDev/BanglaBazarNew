@@ -536,222 +536,280 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                         scrollDirection: Axis.vertical,
                                         itemBuilder:
                                             (BuildContext context, int index) {
-                                          return Padding(
-                                            padding: const EdgeInsets.only(
-                                                right: 10),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Theme(
-                                                        data: ThemeData(
-                                                            unselectedWidgetColor:
-                                                                Colors.grey),
-                                                        child: Checkbox(
-                                                          value: cartDetailsResponse!
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Row(
+                                                children: [
+                                                  Theme(
+                                                      data: ThemeData(
+                                                          unselectedWidgetColor:
+                                                              Colors.grey),
+                                                      child: Checkbox(
+                                                        value: cartDetailsResponse!
+                                                            .productCartList[
+                                                                index]
+                                                            .selectedForCheckout,
+                                                        onChanged: (state) {
+                                                          cartDetailsResponse!
+                                                                  .productCartList[
+                                                                      index]
+                                                                  .selectedForCheckout =
+                                                              state!;
+                                                          if (cartDetailsResponse!
                                                               .productCartList[
                                                                   index]
-                                                              .selectedForCheckout,
-                                                          onChanged: (state) {
-                                                            cartDetailsResponse!
-                                                                .productCartList[
-                                                                    index]
-                                                                .selectedForCheckout = state!;
-                                                            if (cartDetailsResponse!
-                                                                .productCartList[
-                                                                    index]
-                                                                .selectedForCheckout) {
-                                                              cartDetailsResponseTemp!
-                                                                  .productCartList
-                                                                  .add(cartDetailsResponse!
-                                                                          .productCartList[
-                                                                      index]);
-                                                              cartDetailsResponseTemp!
-                                                                  .cartTotalPrice = cartDetailsResponseTemp!
-                                                                      .cartTotalPrice +
-                                                                  cartDetailsResponse!
-                                                                      .productCartList[
-                                                                          index]
-                                                                      .calculateTotalProductPrice!;
-                                                              String
-                                                                  cartTotalPrice =
-                                                                  cartDetailsResponseTemp!
-                                                                      .cartTotalPrice
-                                                                      .toStringAsFixed(
-                                                                          2);
-                                                              cartDetailsResponseTemp!
-                                                                      .cartTotalPrice =
-                                                                  double.parse(
-                                                                      cartTotalPrice);
-                                                              cartDetailsResponseTemp!
-                                                                  .totalTax = cartDetailsResponseTemp!
-                                                                      .totalTax +
-                                                                  cartDetailsResponse!
-                                                                      .productCartList[
-                                                                          index]
-                                                                      .perProductTax!;
-                                                            } else {
-                                                              cartDetailsResponseTemp!
-                                                                  .cartTotalPrice = cartDetailsResponseTemp!
-                                                                      .cartTotalPrice -
-                                                                  cartDetailsResponse!
-                                                                      .productCartList[
-                                                                          index]
-                                                                      .calculateTotalProductPrice!;
-                                                              cartDetailsResponseTemp!
-                                                                  .productCartList
-                                                                  .remove(cartDetailsResponse!
-                                                                          .productCartList[
-                                                                      index]);
-
-                                                              cartDetailsResponseTemp!
-                                                                  .totalTax = cartDetailsResponseTemp!
-                                                                      .totalTax -
-                                                                  cartDetailsResponse!
-                                                                      .productCartList[
-                                                                          index]
-                                                                      .perProductTax!;
-                                                            }
-
+                                                              .selectedForCheckout) {
+                                                            cartDetailsResponseTemp!
+                                                                .productCartList
+                                                                .add(cartDetailsResponse!
+                                                                        .productCartList[
+                                                                    index]);
+                                                            cartDetailsResponseTemp!
+                                                                .cartTotalPrice = cartDetailsResponseTemp!
+                                                                    .cartTotalPrice +
+                                                                cartDetailsResponse!
+                                                                    .productCartList[
+                                                                        index]
+                                                                    .calculateTotalProductPrice!;
+                                                            String
+                                                                cartTotalPrice =
+                                                                cartDetailsResponseTemp!
+                                                                    .cartTotalPrice
+                                                                    .toStringAsFixed(
+                                                                        2);
                                                             cartDetailsResponseTemp!
                                                                     .cartTotalPrice =
                                                                 double.parse(
-                                                                    cartDetailsResponseTemp!
-                                                                        .cartTotalPrice
-                                                                        .toStringAsFixed(
-                                                                            2));
+                                                                    cartTotalPrice);
+                                                            cartDetailsResponseTemp!
+                                                                .totalTax = cartDetailsResponseTemp!
+                                                                    .totalTax +
+                                                                cartDetailsResponse!
+                                                                    .productCartList[
+                                                                        index]
+                                                                    .perProductTax!;
+                                                          } else {
+                                                            cartDetailsResponseTemp!
+                                                                .cartTotalPrice = cartDetailsResponseTemp!
+                                                                    .cartTotalPrice -
+                                                                cartDetailsResponse!
+                                                                    .productCartList[
+                                                                        index]
+                                                                    .calculateTotalProductPrice!;
+                                                            cartDetailsResponseTemp!
+                                                                .productCartList
+                                                                .remove(cartDetailsResponse!
+                                                                        .productCartList[
+                                                                    index]);
 
                                                             cartDetailsResponseTemp!
-                                                                    .totalTax =
-                                                                double.parse(
-                                                                    cartDetailsResponseTemp!
-                                                                        .totalTax
-                                                                        .toStringAsFixed(
-                                                                            2));
-                                                            setState(() {});
-                                                          },
-                                                          activeColor:
-                                                              kColorPrimary,
-                                                          checkColor:
-                                                              Colors.white,
-                                                          materialTapTargetSize:
-                                                              MaterialTapTargetSize
-                                                                  .padded,
-                                                        )),
-                                                    cartDetailsResponse!
-                                                                .productCartList[
-                                                                    index]
-                                                                .ShippingByVendor ==
-                                                            "Y"
-                                                        ? Text(
-                                                            'Shipping By ${cartDetailsResponse!.productCartList[index].CompanyName!}')
-                                                        : const SizedBox(),
-                                                    cartDetailsResponse!
-                                                                .productCartList[
-                                                                    index]
-                                                                .ShippingByAdmin ==
-                                                            "Y"
-                                                        ? const Text(
-                                                            'Shipping By BanglaBazar')
-                                                        : const SizedBox(),
-                                                    cartDetailsResponse!
-                                                                .productCartList[
-                                                                    index]
-                                                                .ShippingByVendor ==
-                                                            "Y"
-                                                        ? const Text(' /')
-                                                        : const SizedBox(),
-                                                    cartDetailsResponse!
-                                                                .productCartList[
-                                                                    index]
-                                                                .ShippingByAdmin ==
-                                                            "Y"
-                                                        ? const Text(' /')
-                                                        : const SizedBox(),
-                                                    Text(
+                                                                .totalTax = cartDetailsResponseTemp!
+                                                                    .totalTax -
+                                                                cartDetailsResponse!
+                                                                    .productCartList[
+                                                                        index]
+                                                                    .perProductTax!;
+                                                          }
+
+                                                          cartDetailsResponseTemp!
+                                                                  .cartTotalPrice =
+                                                              double.parse(
+                                                                  cartDetailsResponseTemp!
+                                                                      .cartTotalPrice
+                                                                      .toStringAsFixed(
+                                                                          2));
+
+                                                          cartDetailsResponseTemp!
+                                                                  .totalTax =
+                                                              double.parse(
+                                                                  cartDetailsResponseTemp!
+                                                                      .totalTax
+                                                                      .toStringAsFixed(
+                                                                          2));
+                                                          setState(() {});
+                                                        },
+                                                        activeColor:
+                                                            kColorPrimary,
+                                                        checkColor:
+                                                            Colors.white,
+                                                        materialTapTargetSize:
+                                                            MaterialTapTargetSize
+                                                                .padded,
+                                                      )),
+                                                  cartDetailsResponse!
+                                                              .productCartList[
+                                                                  index]
+                                                              .ShippingByVendor ==
+                                                          "Y"
+                                                      ? Text(
+                                                          'Shipping By ${cartDetailsResponse!.productCartList[index].CompanyName!}')
+                                                      : const SizedBox(),
+                                                  cartDetailsResponse!
+                                                              .productCartList[
+                                                                  index]
+                                                              .ShippingByAdmin ==
+                                                          "Y"
+                                                      ? const Text(
+                                                          'Shipping By BanglaBazar')
+                                                      : const SizedBox(),
+                                                  cartDetailsResponse!
+                                                              .productCartList[
+                                                                  index]
+                                                              .ShippingByVendor ==
+                                                          "Y"
+                                                      ? const Text(' /')
+                                                      : const SizedBox(),
+                                                  cartDetailsResponse!
+                                                              .productCartList[
+                                                                  index]
+                                                              .ShippingByAdmin ==
+                                                          "Y"
+                                                      ? const Text(' /')
+                                                      : const SizedBox(),
+                                                  SizedBox(
+                                                    child: Text(
                                                       ' Pickup city : ${cartDetailsResponse!.productCartList[index].StoreCity}',
                                                       style: const TextStyle(
                                                           color:
                                                               kColorOrangeText),
+                                                      maxLines: 2,
                                                     ),
-                                                  ],
-                                                ),
-                                                const SizedBox(
-                                                  height: 5,
-                                                ),
-                                                MyCartProductWidget(
-                                                  screenSize: screenSize,
-                                                  productCartList:
-                                                      cartDetailsResponse!
-                                                              .productCartList[
-                                                          index],
-                                                  onDeletePress: () {
-                                                    if (AppGlobal.userID !=
-                                                        -1) {
-                                                      removeFromCartModel = removeCart
-                                                          .RemoveFromCartModel(
-                                                              productVariantCombinationDetail: [
-                                                            removeCart.ProductVariantCombinationDetail(
-                                                                ProductVariantCombinationID: cartDetailsResponse!
-                                                                    .productCartList[
-                                                                        index]
-                                                                    .productCombinations[
-                                                                        0]
-                                                                    .ProductVariantCombinationID
-                                                                    .toString())
-                                                          ]);
-                                                      for (int k = 1;
-                                                          k <
-                                                              cartDetailsResponse!
+                                                    width:
+                                                        screenSize.width * 0.4,
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              MyCartProductWidget(
+                                                screenSize: screenSize,
+                                                productCartList:
+                                                    cartDetailsResponse!
+                                                        .productCartList[index],
+                                                onDeletePress: () {
+                                                  if (AppGlobal.userID != -1) {
+                                                    removeFromCartModel = removeCart
+                                                        .RemoveFromCartModel(
+                                                            productVariantCombinationDetail: [
+                                                          removeCart.ProductVariantCombinationDetail(
+                                                              ProductVariantCombinationID:
+                                                                  cartDetailsResponse!
+                                                                      .productCartList[
+                                                                          index]
+                                                                      .productCombinations[
+                                                                          0]
+                                                                      .ProductVariantCombinationID
+                                                                      .toString())
+                                                        ]);
+                                                    for (int k = 1;
+                                                        k <
+                                                            cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .productCombinations
+                                                                .length;
+                                                        k++) {
+                                                      removeFromCartModel!
+                                                          .productVariantCombinationDetail!
+                                                          .add(removeCart.ProductVariantCombinationDetail(
+                                                              ProductVariantCombinationID: cartDetailsResponse!
                                                                   .productCartList[
                                                                       index]
-                                                                  .productCombinations
-                                                                  .length;
-                                                          k++) {
-                                                        removeFromCartModel!
-                                                            .productVariantCombinationDetail!
-                                                            .add(removeCart.ProductVariantCombinationDetail(
-                                                                ProductVariantCombinationID: cartDetailsResponse!
-                                                                    .productCartList[
-                                                                        index]
-                                                                    .productCombinations[
-                                                                        k]
-                                                                    .ProductVariantCombinationID
-                                                                    .toString()));
-                                                      }
-                                                      _cartBloc.add(RemoveProductFromCart(
-                                                          id: cartDetailsResponse!
-                                                              .productCartList[
-                                                                  index]
-                                                              .ProductID
-                                                              .toString(),
-                                                          removeFromCartModel:
-                                                              removeFromCartModel!));
-                                                    } else {
-                                                      _cartBloc.add(DeleteCartLocalProduct(
-                                                          uniqueNumber:
-                                                              cartDetailsResponse!
-                                                                  .productCartList[
-                                                                      index]
-                                                                  .uniqueNumber!));
+                                                                  .productCombinations[
+                                                                      k]
+                                                                  .ProductVariantCombinationID
+                                                                  .toString()));
                                                     }
-                                                  },
-                                                  onPlusButtonPress: () {
-                                                    if (AppGlobal.userID !=
-                                                        -1) {
-                                                      int quantityTemp =
-                                                          cartDetailsResponse!
-                                                              .productCartList[
-                                                                  index]
-                                                              .TotalQuantity!;
-                                                      quantityTemp++;
-                                                      cartDetailsResponse!
-                                                              .productCartList[
-                                                                  index]
-                                                              .TotalQuantity =
-                                                          quantityTemp;
+                                                    _cartBloc.add(RemoveProductFromCart(
+                                                        id: cartDetailsResponse!
+                                                            .productCartList[
+                                                                index]
+                                                            .ProductID
+                                                            .toString(),
+                                                        removeFromCartModel:
+                                                            removeFromCartModel!));
+                                                  } else {
+                                                    _cartBloc.add(DeleteCartLocalProduct(
+                                                        uniqueNumber:
+                                                            cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .uniqueNumber!));
+                                                  }
+                                                },
+                                                onPlusButtonPress: () {
+                                                  if (AppGlobal.userID != -1) {
+                                                    int quantityTemp =
+                                                        cartDetailsResponse!
+                                                            .productCartList[
+                                                                index]
+                                                            .TotalQuantity!;
+                                                    quantityTemp++;
+                                                    cartDetailsResponse!
+                                                            .productCartList[index]
+                                                            .TotalQuantity =
+                                                        quantityTemp;
+                                                    updateCartModel = updateCart
+                                                        .UpdateCartModel(
+                                                            productDetail: [
+                                                          updateCart.ProductDetail(
+                                                              ProductID:
+                                                                  cartDetailsResponse!
+                                                                      .productCartList[
+                                                                          index]
+                                                                      .ProductID
+                                                                      .toString(),
+                                                              Quantity: '1',
+                                                              productVariantCombinationDetail: [
+                                                                updateCart.ProductVariantCombinationDetail(
+                                                                    ProductVariantCombinationID: cartDetailsResponse!
+                                                                        .productCartList[
+                                                                            index]
+                                                                        .productCombinations[
+                                                                            0]
+                                                                        .ProductVariantCombinationID
+                                                                        .toString())
+                                                              ])
+                                                        ]);
+
+                                                    for (int k = 1;
+                                                        k <
+                                                            cartDetailsResponse!
+                                                                .productCartList[
+                                                                    index]
+                                                                .productCombinations
+                                                                .length;
+                                                        k++) {
+                                                      updateCartModel!
+                                                          .productDetail[0]
+                                                          .productVariantCombinationDetail!
+                                                          .add(updateCart.ProductVariantCombinationDetail(
+                                                              ProductVariantCombinationID: cartDetailsResponse!
+                                                                  .productCartList[
+                                                                      index]
+                                                                  .productCombinations[
+                                                                      k]
+                                                                  .ProductVariantCombinationID
+                                                                  .toString()));
+                                                    }
+                                                    _cartBloc.add(UpdateCart(
+                                                        productDetail:
+                                                            updateCartModel!));
+                                                  }
+                                                },
+                                                onMinusButtonPress: () {
+                                                  if (AppGlobal.userID != -1) {
+                                                    int quantityTemp =
+                                                        cartDetailsResponse!
+                                                            .productCartList[
+                                                                index]
+                                                            .TotalQuantity!;
+                                                    if (quantityTemp > 1) {
+                                                      quantityTemp--;
+
                                                       updateCartModel = updateCart
                                                           .UpdateCartModel(
                                                               productDetail: [
@@ -761,7 +819,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                                         index]
                                                                     .ProductID
                                                                     .toString(),
-                                                                Quantity: '1',
+                                                                Quantity: '-1',
                                                                 productVariantCombinationDetail: [
                                                                   updateCart.ProductVariantCombinationDetail(
                                                                       ProductVariantCombinationID: cartDetailsResponse!
@@ -798,68 +856,10 @@ class _MyCartScreenState extends State<MyCartScreen> {
                                                           productDetail:
                                                               updateCartModel!));
                                                     }
-                                                  },
-                                                  onMinusButtonPress: () {
-                                                    if (AppGlobal.userID !=
-                                                        -1) {
-                                                      int quantityTemp =
-                                                          cartDetailsResponse!
-                                                              .productCartList[
-                                                                  index]
-                                                              .TotalQuantity!;
-                                                      if (quantityTemp > 1) {
-                                                        quantityTemp--;
-
-                                                        updateCartModel = updateCart
-                                                            .UpdateCartModel(
-                                                                productDetail: [
-                                                              updateCart.ProductDetail(
-                                                                  ProductID: cartDetailsResponse!
-                                                                      .productCartList[
-                                                                          index]
-                                                                      .ProductID
-                                                                      .toString(),
-                                                                  Quantity:
-                                                                      '-1',
-                                                                  productVariantCombinationDetail: [
-                                                                    updateCart.ProductVariantCombinationDetail(
-                                                                        ProductVariantCombinationID: cartDetailsResponse!
-                                                                            .productCartList[index]
-                                                                            .productCombinations[0]
-                                                                            .ProductVariantCombinationID
-                                                                            .toString())
-                                                                  ])
-                                                            ]);
-
-                                                        for (int k = 1;
-                                                            k <
-                                                                cartDetailsResponse!
-                                                                    .productCartList[
-                                                                        index]
-                                                                    .productCombinations
-                                                                    .length;
-                                                            k++) {
-                                                          updateCartModel!
-                                                              .productDetail[0]
-                                                              .productVariantCombinationDetail!
-                                                              .add(updateCart.ProductVariantCombinationDetail(
-                                                                  ProductVariantCombinationID: cartDetailsResponse!
-                                                                      .productCartList[
-                                                                          index]
-                                                                      .productCombinations[
-                                                                          k]
-                                                                      .ProductVariantCombinationID
-                                                                      .toString()));
-                                                        }
-                                                        _cartBloc.add(UpdateCart(
-                                                            productDetail:
-                                                                updateCartModel!));
-                                                      }
-                                                    }
-                                                  },
-                                                ),
-                                              ],
-                                            ),
+                                                  }
+                                                },
+                                              ),
+                                            ],
                                           );
                                         }),
                                   ),

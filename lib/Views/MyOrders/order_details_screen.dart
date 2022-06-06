@@ -408,7 +408,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     super.initState();
 
     _myOrdersBloc = BlocProvider.of<MyOrdersBloc>(context);
-    _myOrdersBloc.add(GetOrderDetails(orderNumber: widget.orderNumber));
+    _myOrdersBloc.add(GetOrderDetails(orderNumber: widget.orderNumber.trim()));
   }
 
   late String? orderPlacedDate;
@@ -1261,7 +1261,8 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                     ),
                                                   ],
                                                 ),
-                                                height: screenSize.height * 0.1,
+                                                height:
+                                                    screenSize.height * 0.11,
                                               ),
                                             ],
                                             crossAxisAlignment:
@@ -1548,7 +1549,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         color: kColorFieldsBorders),
                                   ),
                                   Text(
-                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${getOrderDetailsResponse!.orderDetails.totalOrderPrice}',
+                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${getOrderDetailsResponse!.orderDetails.totalOrderPrice.toStringAsFixed(2)}',
                                     style: const TextStyle(
                                       fontSize: 16,
                                     ),
@@ -1590,7 +1591,29 @@ class _OrderDetailsState extends State<OrderDetails> {
                                         color: kColorFieldsBorders),
                                   ),
                                   Text(
-                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${getOrderDetailsResponse!.orderDetails.ShippingHandling}',
+                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${getOrderDetailsResponse!.orderDetails.totalOrderShippingPrice.toStringAsFixed(2)}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  const Text(
+                                    'TAX/VAT',
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: kColorFieldsBorders),
+                                  ),
+                                  Text(
+                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${getOrderDetailsResponse!.orderDetails.totalOrderTax.toStringAsFixed(2)}',
                                     style: const TextStyle(
                                       fontSize: 16,
                                     ),
@@ -1619,7 +1642,7 @@ class _OrderDetailsState extends State<OrderDetails> {
                                     ),
                                   ),
                                   Text(
-                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${getOrderDetailsResponse!.orderDetails.OrderTotal}',
+                                    '${getOrderDetailsResponse!.orderDetails.productDetail[0].Currency} ${(getOrderDetailsResponse!.orderDetails.totalOrderPrice + getOrderDetailsResponse!.orderDetails.totalOrderTax + getOrderDetailsResponse!.orderDetails.totalOrderShippingPrice).toStringAsFixed(2)}',
                                     style: const TextStyle(
                                         fontSize: 18, color: kColorPrimary),
                                   ),

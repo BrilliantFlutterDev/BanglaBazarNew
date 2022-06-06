@@ -71,6 +71,19 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
                           .orderDetails[i].productDetail[j].totalProductPrice +
                       double.parse(orderDetailsResponse
                           .orderDetails[i].productDetail[j].BasePrice);
+                  orderDetailsResponse.orderDetails[i].totalOrderTax =
+                      orderDetailsResponse.orderDetails[i].totalOrderTax +
+                          double.parse(orderDetailsResponse.orderDetails[i]
+                              .productDetail[j].ItemsEstimatedTax);
+                  orderDetailsResponse.orderDetails[i].totalOrderShippingPrice =
+                      orderDetailsResponse
+                              .orderDetails[i].totalOrderShippingPrice +
+                          double.parse(orderDetailsResponse.orderDetails[i]
+                              .productDetail[j].ItemsShippingHandling);
+                  orderDetailsResponse.orderDetails[i].totalOrderPrice =
+                      orderDetailsResponse.orderDetails[i].totalOrderPrice +
+                          double.parse(orderDetailsResponse
+                              .orderDetails[i].productDetail[j].ItemsPrice);
                   for (int k = 0;
                       k <
                           orderDetailsResponse.orderDetails[i].productDetail[j]
@@ -148,10 +161,19 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
                           .productCombinations[j]
                           .ProductCombinationPrice);
                 }
+                getOrderDetailsResponse.orderDetails.totalOrderTax =
+                    getOrderDetailsResponse.orderDetails.totalOrderTax +
+                        double.parse(getOrderDetailsResponse
+                            .orderDetails.productDetail[i].ItemsEstimatedTax);
+                getOrderDetailsResponse.orderDetails.totalOrderShippingPrice =
+                    getOrderDetailsResponse
+                            .orderDetails.totalOrderShippingPrice +
+                        double.parse(getOrderDetailsResponse.orderDetails
+                            .productDetail[i].ItemsShippingHandling);
                 getOrderDetailsResponse.orderDetails.totalOrderPrice =
                     getOrderDetailsResponse.orderDetails.totalOrderPrice +
-                        getOrderDetailsResponse
-                            .orderDetails.productDetail[i].totalProductPrice;
+                        double.parse(getOrderDetailsResponse
+                            .orderDetails.productDetail[i].ItemsPrice);
               }
               yield GetOrderDetailsState(
                   getOrderDetailsResponse: getOrderDetailsResponse);

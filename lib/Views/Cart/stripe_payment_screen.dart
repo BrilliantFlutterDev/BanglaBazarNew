@@ -1,3 +1,6 @@
+import 'package:bangla_bazar/ModelClasses/BangladeshPaymentUserData.dart';
+import 'package:bangla_bazar/ModelClasses/cart_details_response.dart';
+import 'package:bangla_bazar/ModelClasses/pathao_price_calculation_response.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +9,19 @@ import 'package:http/http.dart' as http;
 import 'package:flutter_stripe/flutter_stripe.dart';
 
 class StripePaymentScreen extends StatefulWidget {
-  const StripePaymentScreen({Key? key}) : super(key: key);
+  CartDetailsResponse cartDetailsResponse;
+
+  bool productsAndUserCitiesAreSame;
+  bool creditCardPayment;
+
+  PathaoPriceCalculationResponse? pathaoPriceCalculationResponse;
+  StripePaymentScreen(
+      {Key? key,
+      required this.cartDetailsResponse,
+      required this.productsAndUserCitiesAreSame,
+      required this.creditCardPayment,
+      required this.pathaoPriceCalculationResponse})
+      : super(key: key);
 
   @override
   _StripePaymentScreenState createState() => _StripePaymentScreenState();
@@ -14,6 +29,16 @@ class StripePaymentScreen extends StatefulWidget {
 
 class _StripePaymentScreenState extends State<StripePaymentScreen> {
   Map<String, dynamic>? paymentIntentData;
+  @override
+  void initState() {
+    super.initState();
+    initializePayment();
+  }
+
+  initializePayment() async {
+    await makePayment();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,11 +56,22 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
             height: 50,
             width: 200,
             color: kColorPrimary,
-            child: Center(
-              child: Text(
-                'Pay',
-                style: TextStyle(color: Colors.white, fontSize: 20),
-              ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.refresh,
+                  color: kColorWhite,
+                  size: 30,
+                ),
+                SizedBox(
+                  width: 5,
+                ),
+                Text(
+                  'Retry Payment',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ],
             ),
           ),
         ),
@@ -45,8 +81,11 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
 
   Future<void> makePayment() async {
     try {
-      paymentIntentData =
-          await createPaymentIntent('50', 'USD'); //json.decode(response.body);
+      paymentIntentData = await createPaymentIntent(
+          (widget.cartDetailsResponse.cartTotalPrice +
+                  widget.cartDetailsResponse.totalTax)
+              .toStringAsFixed(0),
+          'USD'); //json.decode(response.body);
       // print('Response body==>${response.body.toString()}');
       print('payment intent121: ' + paymentIntentData!['id'].toString());
       await Stripe.instance
@@ -59,7 +98,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
                   testEnv: true,
                   style: ThemeMode.dark,
                   merchantCountryCode: 'US',
-                  merchantDisplayName: 'ANNIE'))
+                  merchantDisplayName: 'Bangla Bazar'))
           .then((value) {});
 
       ///now finally display payment sheet
@@ -110,7 +149,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   createPaymentIntent(String amount, String currency) async {
     try {
       Map<String, dynamic> body = {
-        'amount': calculateAmount('50'),
+        'amount': calculateAmount(amount),
         'currency': currency,
         'payment_method_types[]': 'card'
       };

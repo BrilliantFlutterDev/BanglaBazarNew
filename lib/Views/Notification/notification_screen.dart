@@ -1,14 +1,10 @@
 import 'package:bangla_bazar/ModelClasses/in_app_notifications_response.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
-import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/Notification/NotificationsBloc/notification_bloc.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
-
 import 'package:bangla_bazar/Widgets/notification_widget.dart';
-import 'package:bangla_bazar/Widgets/photo_avatar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';

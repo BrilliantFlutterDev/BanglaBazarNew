@@ -68,6 +68,8 @@ class OrderDetails {
   late final String ShippingHandling;
 
   double totalOrderPrice = 0.0;
+  double totalOrderTax = 0.0;
+  double totalOrderShippingPrice = 0.0;
   late final List<ProductDetail> productDetail;
 
   ///
@@ -91,6 +93,7 @@ class OrderDetails {
     TrackingNumber = json['TrackingNumber'] ?? '';
     DeliveryStatus = json['DeliveryStatus'];
     ConsignmentId = json['ConsignmentId'] ?? '';
+
     productDetail = List.from(json['ProductDetail'])
         .map((e) => ProductDetail.fromJson(e))
         .toList();
@@ -113,6 +116,7 @@ class OrderDetails {
     _data['TrackingNumber'] = TrackingNumber;
     _data['DeliveryStatus'] = DeliveryStatus;
     _data['ConsignmentId'] = ConsignmentId;
+
     _data['ProductDetail'] = productDetail.map((e) => e.toJson()).toList();
     return _data;
   }
@@ -152,6 +156,9 @@ class ProductDetail {
     required this.ShippingHandling,
     required this.DeliveryStatus,
     required this.TrackingNumber,
+    required this.ItemsPrice,
+    required this.ItemsEstimatedTax,
+    required this.ItemsShippingHandling,
   });
   late final int ProductID;
   late final String Title;
@@ -192,6 +199,10 @@ class ProductDetail {
   late final String DeliveryStatus;
   late final String TrackingNumber;
 
+  late final String ItemsPrice;
+  late final String ItemsEstimatedTax;
+  late final String ItemsShippingHandling;
+
   ProductDetail.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'] ?? -1;
     Title = json['Title'] ?? '';
@@ -225,6 +236,9 @@ class ProductDetail {
     ShippingHandling = json['ShippingHandling'];
     DeliveryStatus = json['DeliveryStatus'];
     TrackingNumber = json['TrackingNumber'] ?? '';
+    ItemsPrice = json['ItemsPrice'];
+    ItemsEstimatedTax = json['ItemsEstimatedTax'];
+    ItemsShippingHandling = json['ItemsShippingHandling'];
 
     productCombinations = List.from(json['ProductCombinations'])
         .map((e) => ProductCombinations.fromJson(e))
@@ -266,6 +280,9 @@ class ProductDetail {
 
     _data['DeliveryStatus'] = DeliveryStatus;
     _data['TrackingNumber'] = TrackingNumber;
+    _data['ItemsPrice'] = ItemsPrice;
+    _data['ItemsEstimatedTax'] = ItemsEstimatedTax;
+    _data['ItemsShippingHandling'] = ItemsShippingHandling;
     _data['ProductCombinations'] =
         productCombinations.map((e) => e.toJson()).toList();
     return _data;

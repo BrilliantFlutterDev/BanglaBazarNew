@@ -678,7 +678,14 @@ class _BangladeshCheckoutAddressScreenState
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const StripePaymentScreen()),
+                  builder: (context) => StripePaymentScreen(
+                        cartDetailsResponse: widget.cartDetailsResponse,
+                        productsAndUserCitiesAreSame:
+                            productsAndUserCitiesAreSame,
+                        creditCardPayment: widget.creditCardPayment,
+                        pathaoPriceCalculationResponse:
+                            pathaoPriceCalculationResponse,
+                      )),
             );
           }
 
@@ -1212,7 +1219,15 @@ class _BangladeshCheckoutAddressScreenState
           } else {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => StripePaymentScreen()),
+              MaterialPageRoute(
+                  builder: (context) => StripePaymentScreen(
+                        cartDetailsResponse: widget.cartDetailsResponse,
+                        productsAndUserCitiesAreSame:
+                            productsAndUserCitiesAreSame,
+                        creditCardPayment: widget.creditCardPayment,
+                        pathaoPriceCalculationResponse:
+                            pathaoPriceCalculationResponse,
+                      )),
             );
           }
 
@@ -3300,8 +3315,7 @@ class _BangladeshCheckoutAddressScreenState
                                             log(pathaoPriceCalculationModel!
                                                 .toJson()
                                                 .toString());
-                                            print(
-                                                '>>>>>>>>>>>>>>>>>>> Getting Pathao Price Calculation');
+                                            log('>>>>>>>>>>>>>>>>>>> Pathao Price Calculation: ${pathaoPriceCalculationModel!.toJson()}');
                                             _cartBloc.add(PathaoPriceCalculation(
                                                 pathaoPriceCalculationModel:
                                                     pathaoPriceCalculationModel!));

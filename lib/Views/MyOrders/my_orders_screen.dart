@@ -334,7 +334,7 @@ class _MyOrdersState extends State<MyOrders> {
                                                                 height: 5,
                                                               ),
                                                               Text(
-                                                                'Order Total : ${orderDetails![i].OrderTotal}',
+                                                                'Order Total : ${(orderDetails![i].totalOrderPrice + orderDetails![i].totalOrderTax + orderDetails![i].totalOrderShippingPrice).toStringAsFixed(2)}',
                                                                 style: const TextStyle(
                                                                     color: Colors
                                                                         .black,

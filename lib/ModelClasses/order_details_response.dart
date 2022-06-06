@@ -44,6 +44,9 @@ class OrderDetails {
   late final String OrderTotal;
 
   bool openOrderDetailsDropDown = false;
+  double totalOrderPrice = 0.0;
+  double totalOrderTax = 0.0;
+  double totalOrderShippingPrice = 0.0;
 
   OrderDetails.fromJson(Map<String, dynamic> json) {
     OrderNumber = json['OrderNumber'];
@@ -89,6 +92,9 @@ class ProductDetail {
     required this.TransactionID,
     required this.ProcessStatus,
     required this.OrderTotal,
+    required this.ItemsPrice,
+    required this.ItemsEstimatedTax,
+    required this.ItemsShippingHandling,
   });
   late final int ProductID;
   late final String Title;
@@ -112,6 +118,10 @@ class ProductDetail {
   late final String ProcessStatus;
   late final String OrderTotal;
 
+  late final String ItemsPrice;
+  late final String ItemsEstimatedTax;
+  late final String ItemsShippingHandling;
+
   ProductDetail.fromJson(Map<String, dynamic> json) {
     ProductID = json['ProductID'];
     Title = json['Title'];
@@ -134,6 +144,9 @@ class ProductDetail {
     TransactionID = json['TransactionID'];
     ProcessStatus = json['ProcessStatus'];
     OrderTotal = json['OrderTotal'];
+    ItemsPrice = json['ItemsPrice'];
+    ItemsEstimatedTax = json['ItemsEstimatedTax'];
+    ItemsShippingHandling = json['ItemsShippingHandling'];
   }
 
   Map<String, dynamic> toJson() {
@@ -158,6 +171,9 @@ class ProductDetail {
     _data['TransactionID'] = TransactionID;
     _data['ProcessStatus'] = ProcessStatus;
     _data['OrderTotal'] = OrderTotal;
+    _data['ItemsPrice'] = ItemsPrice;
+    _data['ItemsEstimatedTax'] = ItemsEstimatedTax;
+    _data['ItemsShippingHandling'] = ItemsShippingHandling;
     return _data;
   }
 }

@@ -501,6 +501,7 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             PathaoPriceCalculationResponse pathaoPriceCalculationResponse =
                 PathaoPriceCalculationResponse.fromJson(
                     jsonDecode(response.toString()));
+            print('>>>>>>>>>Price calculated');
 
             if (pathaoPriceCalculationResponse.status == true) {
               yield PathaoPriceCalculationState(

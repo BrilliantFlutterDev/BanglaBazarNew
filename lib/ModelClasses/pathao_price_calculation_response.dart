@@ -64,7 +64,7 @@ class Data {
   late final int promoDiscount;
   late final int planId;
   late final int codEnabled;
-  late final int additionalCharge;
+  late final double additionalCharge;
 
   Data.fromJson(Map<String, dynamic> json) {
     price = double.parse(json['price'].toString());
@@ -72,7 +72,7 @@ class Data {
     promoDiscount = json['promo_discount'];
     planId = json['plan_id'];
     codEnabled = json['cod_enabled'];
-    additionalCharge = json['additional_charge'];
+    additionalCharge = double.parse(json['additional_charge'].toString());
   }
 
   Map<String, dynamic> toJson() {
