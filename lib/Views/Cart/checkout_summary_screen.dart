@@ -298,7 +298,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                                 children: [
                                   widget.creditCardPayment != false
                                       ? Image.asset(
-                                          'assets/images/visaCardPic.png',
+                                          'assets/images/ssl_commerz.png',
                                           scale: 3,
                                         )
                                       : const SizedBox(),
@@ -314,23 +314,23 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                                       widget.creditCardPayment != false
                                           ? const Text(
                                               'Pay by Card',
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 14),
                                             )
                                           : const Text(
                                               'Cash on Delivery',
-                                              style: TextStyle(fontSize: 12),
+                                              style: TextStyle(fontSize: 14),
                                             ),
-                                      widget.bangladeshPaymentUserData!
-                                                  .cardNumber !=
-                                              null
-                                          ? Text(
-                                              widget.bangladeshPaymentUserData!
-                                                  .cardNumber!,
-                                              style: const TextStyle(
-                                                  fontSize: 10,
-                                                  color: kColorFieldsBorders),
-                                            )
-                                          : const SizedBox(),
+                                      // widget.bangladeshPaymentUserData!
+                                      //             .cardNumber !=
+                                      //         null
+                                      //     ? Text(
+                                      //         widget.bangladeshPaymentUserData!
+                                      //             .cardNumber!,
+                                      //         style: const TextStyle(
+                                      //             fontSize: 10,
+                                      //             color: kColorFieldsBorders),
+                                      //       )
+                                      //     : const SizedBox(),
                                     ],
                                   )
                                 ],
@@ -544,7 +544,7 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  _onBackPressed();
+                                  Navigator.pop(context);
                                 },
                                 child: Container(
                                   height: screenSize.height * 0.065,

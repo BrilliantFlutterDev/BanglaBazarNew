@@ -65,6 +65,7 @@ class _HomeBodyState extends State<HomeBody> {
       if (AppGlobal.token != '') {
         addToCartModel.sessionID = AppGlobal.token;
       }
+      _productBloc.add(GetCartDetails());
     }
     getDeviceIP();
     _productBloc.add(GetGeoLocation());
@@ -73,8 +74,10 @@ class _HomeBodyState extends State<HomeBody> {
 
   Future<void> getDeviceIP() async {
     var wifiIP = await WifiInfo().getWifiIP();
-    AppGlobal.ipAddress = wifiIP!;
-    print('>>>>>>>Device IP Address: ${AppGlobal.ipAddress}');
+    if (wifiIP != null) {
+      AppGlobal.ipAddress = wifiIP;
+      print('>>>>>>>Device IP Address: ${AppGlobal.ipAddress}');
+    }
   }
 
   RequestUserProductClicksData? localUserClicksResponse;
@@ -169,7 +172,10 @@ class _HomeBodyState extends State<HomeBody> {
           _productBloc
               .add(AddToCart(addToCartModel: addToCartModel, productPrice: 0));
         }
-      } else if (state is AddedToCart) {}
+      } else if (state is AddedToCart) {
+      } else if (state is CartDetailsState) {
+        AppGlobal.cartDetailsResponseGlobal = state.cartDetailsResponse;
+      }
     }, builder: (context, state) {
       return ModalProgressHUD(
         inAsyncCall: state is LoadingState,

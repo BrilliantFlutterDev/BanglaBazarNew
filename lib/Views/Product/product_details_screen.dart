@@ -2,15 +2,13 @@ import 'package:bangla_bazar/ModelClasses/add_to_cart_model.dart' as cart;
 import 'package:bangla_bazar/ModelClasses/allowed_countries_list_response.dart';
 import 'package:bangla_bazar/ModelClasses/home_page_api_reponse.dart';
 import 'package:bangla_bazar/ModelClasses/product_details_response.dart';
-
 import 'package:bangla_bazar/ModelClasses/store_response.dart' as product;
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
-
 import 'package:bangla_bazar/Utils/icons.dart';
+import 'package:bangla_bazar/Utils/info_dialog.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/Chat/personal_chat_screen.dart';
-
 import 'package:bangla_bazar/Views/Product/ProductBloc/product_bloc.dart';
 import 'package:bangla_bazar/Views/Product/store_screen.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
@@ -20,8 +18,6 @@ import 'package:bangla_bazar/Widgets/product_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -459,7 +455,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       ? productDetailsResponse!
                                           .productDetail.Title
                                       : '',
-                                  style: TextStyle(fontSize: 24),
+                                  style: const TextStyle(fontSize: 24),
                                 ),
                                 Text(
                                   stock,
@@ -520,12 +516,12 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         productDetailsResponse != null
                                             ? Text(
                                                 '${productDetailsResponse!.productAverageRatingAndReviews.ProductAverageRating != '' ? productDetailsResponse!.productAverageRatingAndReviews.ProductAverageRating!.substring(0, 3) : 0} ',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     color: kColorWhite,
                                                     fontSize: 14),
                                               )
-                                            : SizedBox(),
-                                        Icon(
+                                            : const SizedBox(),
+                                        const Icon(
                                           Icons.star,
                                           size: 16,
                                           color: kColorWhite,
@@ -556,7 +552,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                             Row(
                               children: [
                                 Text(
-                                  '${currency} ${productPrice}',
+                                  '$currency $productPrice',
                                   style: const TextStyle(
                                       fontSize: 24, color: Colors.black),
                                 ),
@@ -1121,11 +1117,139 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           .productDetail![0].quantity !=
                                       0) {
                                     print(addToCartModel.toJson());
-                                    _productBloc.add(AddToCart(
-                                        addToCartModel: addToCartModel,
-                                        productDetailsResponse:
-                                            productDetailsResponse!,
-                                        productPrice: productPrice));
+
+                                    ///Cart Checks
+                                    if (AppGlobal.cartDetailsResponseGlobal !=
+                                        null) {
+                                      if (AppGlobal.cartDetailsResponseGlobal!
+                                          .productCartList.isNotEmpty) {
+                                        if (AppGlobal
+                                                .cartDetailsResponseGlobal!
+                                                .productCartList[0]
+                                                .StoreCountry ==
+                                            productDetailsResponse!
+                                                .product[0].CountryID) {
+                                          if (AppGlobal
+                                                  .cartDetailsResponseGlobal!
+                                                  .productCartList[0]
+                                                  .ShippingGlobal ==
+                                              productDetailsResponse!
+                                                  .productDetail
+                                                  .ShippingGlobal) {
+                                            if (AppGlobal
+                                                    .cartDetailsResponseGlobal!
+                                                    .productCartList[0]
+                                                    .ShippingAvailable ==
+                                                productDetailsResponse!
+                                                    .productDetail
+                                                    .ShippingAvailable) {
+                                              print('>>>>>>>>>>Condition 1');
+
+                                              ///Proceed
+                                              _productBloc.add(AddToCart(
+                                                  addToCartModel:
+                                                      addToCartModel,
+                                                  productDetailsResponse:
+                                                      productDetailsResponse!,
+                                                  productPrice: productPrice));
+                                            } else if (AppGlobal
+                                                    .cartDetailsResponseGlobal!
+                                                    .productCartList[0]
+                                                    .AllowStorePickup ==
+                                                productDetailsResponse!
+                                                    .productDetail
+                                                    .AllowStorePickup) {
+                                              print('>>>>>>>>>>Condition 2');
+
+                                              ///Proceed
+                                              _productBloc.add(AddToCart(
+                                                  addToCartModel:
+                                                      addToCartModel,
+                                                  productDetailsResponse:
+                                                      productDetailsResponse!,
+                                                  productPrice: productPrice));
+                                            } else {
+                                              DialogUtils.showCustomDialog(
+                                                context,
+                                                title:
+                                                    "Can\'t add this Product to cart",
+                                                message:
+                                                    'Because no shipping or pickup available for this product',
+                                              );
+                                            }
+                                          } else {
+                                            DialogUtils.showCustomDialog(
+                                              context,
+                                              title:
+                                                  "Can\'t add this Product to cart",
+                                              message:
+                                                  'Because the global shipping of this product not available while the products already added in cart are with global shipping available.',
+                                            );
+                                          }
+                                        } else {
+                                          DialogUtils.showCustomDialog(
+                                            context,
+                                            title:
+                                                "Can\'t add this Product to cart",
+                                            message:
+                                                'Because the store country of this Product doesn\'t match with store country of products already in cart.',
+                                          );
+                                        }
+                                      } else {
+                                        if (productDetailsResponse!
+                                                    .productDetail
+                                                    .ShippingGlobal ==
+                                                'Y' ||
+                                            productDetailsResponse!
+                                                    .productDetail
+                                                    .ShippingAvailable ==
+                                                'Y' ||
+                                            productDetailsResponse!
+                                                    .productDetail
+                                                    .AllowStorePickup ==
+                                                'Y') {
+                                          print('>>>>>>>>>>Condition 3');
+                                          _productBloc.add(AddToCart(
+                                              addToCartModel: addToCartModel,
+                                              productDetailsResponse:
+                                                  productDetailsResponse!,
+                                              productPrice: productPrice));
+                                        } else {
+                                          DialogUtils.showCustomDialog(
+                                            context,
+                                            title:
+                                                "Can\'t add this Product to cart",
+                                            message:
+                                                'Because no shipping or pickup available for this product',
+                                          );
+                                        }
+                                      }
+                                    } else {
+                                      if (productDetailsResponse!.productDetail
+                                                  .ShippingGlobal ==
+                                              'Y' ||
+                                          productDetailsResponse!.productDetail
+                                                  .ShippingAvailable ==
+                                              'Y' ||
+                                          productDetailsResponse!.productDetail
+                                                  .AllowStorePickup ==
+                                              'Y') {
+                                        print('>>>>>>>>>>Condition 4');
+                                        _productBloc.add(AddToCart(
+                                            addToCartModel: addToCartModel,
+                                            productDetailsResponse:
+                                                productDetailsResponse!,
+                                            productPrice: productPrice));
+                                      } else {
+                                        DialogUtils.showCustomDialog(
+                                          context,
+                                          title:
+                                              "Can\'t add this Product to cart",
+                                          message:
+                                              'Because no shipping or pickup available for this product',
+                                        );
+                                      }
+                                    }
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: 'Please select a quantity',
@@ -1195,11 +1319,139 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           .productDetail![0].quantity !=
                                       0) {
                                     print(addToCartModel.toJson());
-                                    _productBloc.add(AddToCart(
-                                        addToCartModel: addToCartModel,
-                                        productDetailsResponse:
-                                            productDetailsResponse!,
-                                        productPrice: productPrice));
+
+                                    ///Cart Checks
+                                    if (AppGlobal.cartDetailsResponseGlobal !=
+                                        null) {
+                                      if (AppGlobal.cartDetailsResponseGlobal!
+                                          .productCartList.isNotEmpty) {
+                                        if (AppGlobal
+                                                .cartDetailsResponseGlobal!
+                                                .productCartList[0]
+                                                .StoreCountry ==
+                                            productDetailsResponse!
+                                                .product[0].CountryID) {
+                                          if (AppGlobal
+                                                  .cartDetailsResponseGlobal!
+                                                  .productCartList[0]
+                                                  .ShippingGlobal ==
+                                              productDetailsResponse!
+                                                  .productDetail
+                                                  .ShippingGlobal) {
+                                            if (AppGlobal
+                                                    .cartDetailsResponseGlobal!
+                                                    .productCartList[0]
+                                                    .ShippingAvailable ==
+                                                productDetailsResponse!
+                                                    .productDetail
+                                                    .ShippingAvailable) {
+                                              print('>>>>>>>>>>Condition 1');
+
+                                              ///Proceed
+                                              _productBloc.add(AddToCart(
+                                                  addToCartModel:
+                                                      addToCartModel,
+                                                  productDetailsResponse:
+                                                      productDetailsResponse!,
+                                                  productPrice: productPrice));
+                                            } else if (AppGlobal
+                                                    .cartDetailsResponseGlobal!
+                                                    .productCartList[0]
+                                                    .AllowStorePickup ==
+                                                productDetailsResponse!
+                                                    .productDetail
+                                                    .AllowStorePickup) {
+                                              print('>>>>>>>>>>Condition 2');
+
+                                              ///Proceed
+                                              _productBloc.add(AddToCart(
+                                                  addToCartModel:
+                                                      addToCartModel,
+                                                  productDetailsResponse:
+                                                      productDetailsResponse!,
+                                                  productPrice: productPrice));
+                                            } else {
+                                              DialogUtils.showCustomDialog(
+                                                context,
+                                                title:
+                                                    "Can\'t add this Product to cart",
+                                                message:
+                                                    'Because no shipping or pickup available for this product',
+                                              );
+                                            }
+                                          } else {
+                                            DialogUtils.showCustomDialog(
+                                              context,
+                                              title:
+                                                  "Can\'t add this Product to cart",
+                                              message:
+                                                  'Because the global shipping of this product not available while the products already added in cart are with global shipping available.',
+                                            );
+                                          }
+                                        } else {
+                                          DialogUtils.showCustomDialog(
+                                            context,
+                                            title:
+                                                "Can\'t add this Product to cart",
+                                            message:
+                                                'Because the store country of this Product doesn\'t match with store country of products already in cart.',
+                                          );
+                                        }
+                                      } else {
+                                        if (productDetailsResponse!
+                                                    .productDetail
+                                                    .ShippingGlobal ==
+                                                'Y' ||
+                                            productDetailsResponse!
+                                                    .productDetail
+                                                    .ShippingAvailable ==
+                                                'Y' ||
+                                            productDetailsResponse!
+                                                    .productDetail
+                                                    .AllowStorePickup ==
+                                                'Y') {
+                                          print('>>>>>>>>>>Condition 3');
+                                          _productBloc.add(AddToCart(
+                                              addToCartModel: addToCartModel,
+                                              productDetailsResponse:
+                                                  productDetailsResponse!,
+                                              productPrice: productPrice));
+                                        } else {
+                                          DialogUtils.showCustomDialog(
+                                            context,
+                                            title:
+                                                "Can\'t add this Product to cart",
+                                            message:
+                                                'Because no shipping or pickup available for this product',
+                                          );
+                                        }
+                                      }
+                                    } else {
+                                      if (productDetailsResponse!.productDetail
+                                                  .ShippingGlobal ==
+                                              'Y' ||
+                                          productDetailsResponse!.productDetail
+                                                  .ShippingAvailable ==
+                                              'Y' ||
+                                          productDetailsResponse!.productDetail
+                                                  .AllowStorePickup ==
+                                              'Y') {
+                                        print('>>>>>>>>>>Condition 4');
+                                        _productBloc.add(AddToCart(
+                                            addToCartModel: addToCartModel,
+                                            productDetailsResponse:
+                                                productDetailsResponse!,
+                                            productPrice: productPrice));
+                                      } else {
+                                        DialogUtils.showCustomDialog(
+                                          context,
+                                          title:
+                                              "Can\'t add this Product to cart",
+                                          message:
+                                              'Because no shipping or pickup available for this product',
+                                        );
+                                      }
+                                    }
                                   } else {
                                     Fluttertoast.showToast(
                                         msg: 'Please select a quantity',
@@ -1395,11 +1647,18 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                       shape: BoxShape.circle,
                                       color: kColorOrangeText,
                                     ),
-                                    child: const Icon(
-                                      Icons.done,
-                                      color: kColorWhite,
-                                      size: 10,
-                                    )),
+                                    child: productDetailsResponse != null
+                                        ? Icon(
+                                            productDetailsResponse!
+                                                        .productDetail
+                                                        .AllowStorePickup ==
+                                                    'Y'
+                                                ? Icons.done
+                                                : Icons.cancel_outlined,
+                                            color: kColorWhite,
+                                            size: 12,
+                                          )
+                                        : const SizedBox()),
                                 const SizedBox(
                                   width: 15,
                                 ),

@@ -1,3 +1,5 @@
+import '../ModelClasses/cart_details_response.dart';
+
 class AppGlobal {
   static String rememberMe = 'false';
   static String rememberMeEmail = '';
@@ -88,4 +90,6 @@ class AppGlobal {
   static String businessURLDriver = '';
   static String reviewedByAdminDriver = '';
   static int gatewayIDDriver = 0;
+
+  static CartDetailsResponse? cartDetailsResponseGlobal;
 }

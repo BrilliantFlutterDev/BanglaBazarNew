@@ -10,6 +10,7 @@ import 'package:bangla_bazar/Utils/add_to_cart_local_db.dart' as localDB;
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
+import 'package:bangla_bazar/Utils/info_dialog.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginscreen.dart';
 import 'package:bangla_bazar/Views/Cart/CartBloc/cart_bloc.dart';
@@ -94,6 +95,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
             fontSize: 12.0);
       } else if (state is CartDetailsState) {
         cartDetailsResponse = state.cartDetailsResponse;
+        AppGlobal.cartDetailsResponseGlobal = state.cartDetailsResponse;
         cartDetailsResponseTemp!.productCartList.clear();
         cartDetailsResponseTemp!.cartTotalPrice = 0.0;
       } else if (state is ProductRemoveFromCartState) {
@@ -1153,43 +1155,5 @@ class _MyCartScreenState extends State<MyCartScreen> {
             )),
       );
     });
-  }
-}
-
-class DialogUtils {
-  static DialogUtils _instance = DialogUtils.internal();
-
-  DialogUtils.internal();
-
-  factory DialogUtils() => _instance;
-
-  static void showCustomDialog(
-    BuildContext context, {
-    required String title,
-    required String message,
-  }) {
-    showDialog(
-        context: context,
-        builder: (_) {
-          return AlertDialog(
-            title: Center(
-                child: Text(
-              title,
-              style: TextStyle(color: Colors.red),
-            )),
-            content: Text(message),
-            actions: <Widget>[
-              Center(
-                child: FlatButton(
-                    child: const Text(
-                      'Ok',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    color: kColorPrimary,
-                    onPressed: () => Navigator.pop(context)),
-              )
-            ],
-          );
-        });
   }
 }

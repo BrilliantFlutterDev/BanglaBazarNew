@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:bangla_bazar/Helper/db_helper.dart';
 import 'package:bangla_bazar/ModelClasses/add_a_click_of_product_response.dart';
@@ -9,13 +8,14 @@ import 'package:bangla_bazar/ModelClasses/add_to_cart_model.dart';
 import 'package:bangla_bazar/ModelClasses/add_to_cart_response.dart';
 import 'package:bangla_bazar/ModelClasses/add_to_wish_list_response.dart';
 import 'package:bangla_bazar/ModelClasses/allowed_countries_list_response.dart';
+import 'package:bangla_bazar/ModelClasses/cart_details_response.dart'
+    as cart_details;
 import 'package:bangla_bazar/ModelClasses/categories_subcategories_response.dart';
 import 'package:bangla_bazar/ModelClasses/geo_location_response.dart';
 import 'package:bangla_bazar/ModelClasses/home_page_api_reponse.dart';
 import 'package:bangla_bazar/ModelClasses/product_details_response.dart';
 import 'package:bangla_bazar/ModelClasses/recently_viewed_reponse.dart';
 import 'package:bangla_bazar/ModelClasses/search_response.dart';
-import 'package:bangla_bazar/ModelClasses/sigin_model.dart';
 import 'package:bangla_bazar/ModelClasses/store_response.dart';
 import 'package:bangla_bazar/ModelClasses/sub_categories_response.dart';
 import 'package:bangla_bazar/ModelClasses/top_rated_product_response.dart';
@@ -30,7 +30,6 @@ import 'package:bangla_bazar/Utils/user_click_local_db.dart';
 import 'package:bloc/bloc.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import 'package:meta/meta.dart';
 
@@ -651,6 +650,90 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
           }
         } catch (e) {
           yield ErrorState(error: 'No product found');
+        }
+      }
+    } else if (event is GetCartDetails) {
+      yield LoadingState();
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response = await Repository().getCartDetails();
+          //print('Bloc Response: ${jsonDecode(response.toString())}');
+
+          if (response != null) {
+            cart_details.CartDetailsResponse cartDetailsResponse =
+                cart_details.CartDetailsResponse.fromJson(
+                    jsonDecode(response.toString()));
+            print('||||||||||12');
+            for (int i = 0;
+                i < cartDetailsResponse.productCartList.length;
+                i++) {
+              cartDetailsResponse
+                      .productCartList[i].calculateTotalProductPrice =
+                  double.parse(cartDetailsResponse.productCartList[i].Price!);
+
+              for (int j = 0;
+                  j <
+                      cartDetailsResponse
+                          .productCartList[i].productCombinations.length;
+                  j++) {
+                cartDetailsResponse.productCartList[i]
+                    .calculateTotalProductPrice = cartDetailsResponse
+                        .productCartList[i].calculateTotalProductPrice! +
+                    double.parse(cartDetailsResponse.productCartList[i]
+                        .productCombinations[j].ProductCombinationPrice);
+                String productTotalPrice = cartDetailsResponse
+                    .productCartList[i].calculateTotalProductPrice!
+                    .toStringAsFixed(2);
+                cartDetailsResponse
+                        .productCartList[i].calculateTotalProductPrice =
+                    double.parse(productTotalPrice);
+              }
+              cartDetailsResponse.productCartList[i]
+                  .calculateTotalProductPrice = cartDetailsResponse
+                      .productCartList[i].calculateTotalProductPrice! *
+                  cartDetailsResponse.productCartList[i].TotalQuantity!;
+              cartDetailsResponse.cartTotalPrice =
+                  cartDetailsResponse.cartTotalPrice +
+                      cartDetailsResponse
+                          .productCartList[i].calculateTotalProductPrice!;
+
+              String cartTotalPrice =
+                  cartDetailsResponse.cartTotalPrice.toStringAsFixed(2);
+              cartDetailsResponse.cartTotalPrice = double.parse(cartTotalPrice);
+
+              ///Calculating tax
+
+              cartDetailsResponse.productCartList[i].perProductTax =
+                  (double.parse(
+                              cartDetailsResponse.productCartList[i].TaxRate!) /
+                          100) *
+                      cartDetailsResponse
+                          .productCartList[i].calculateTotalProductPrice!;
+
+              cartDetailsResponse.productCartList[i].perProductTax =
+                  double.parse(cartDetailsResponse
+                      .productCartList[i].perProductTax!
+                      .toStringAsFixed(2));
+
+              cartDetailsResponse.totalTax = cartDetailsResponse.totalTax +
+                  cartDetailsResponse.productCartList[i].perProductTax!;
+
+              print(
+                  'This Product Tax  : ${cartDetailsResponse.productCartList[i].perProductTax!}');
+            }
+
+            print('Total Tax  : ${cartDetailsResponse.totalTax}');
+
+            yield CartDetailsState(cartDetailsResponse: cartDetailsResponse);
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid credentials');
         }
       }
     }

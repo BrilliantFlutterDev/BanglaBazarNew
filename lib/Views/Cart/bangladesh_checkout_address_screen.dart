@@ -675,6 +675,42 @@ class _BangladeshCheckoutAddressScreenState
               }
             }
           } else {
+            bangladeshPaymentUserData = BangladeshPaymentUserData(
+                selectedPaymentCountry: selectedPaymentCountryID,
+                name: nameController.text,
+                cardNumber: cardNumber.text,
+                address1: address1Controller.text,
+                address2: address2Controller.text,
+                phoneCode: '',
+                phoneNumber: AppGlobal.phoneNumber.length == 11
+                    ? AppGlobal.phoneNumber
+                    : phoneDeliveryNumberController.text,
+                country: widget.selectedCountryId == 16 ? 'Bangladesh' : 'USA',
+                countryID: selectedPaymentCountryID,
+                zipCode: zipCodeController.text,
+                city: selectedCity,
+                createdAtDate: createdDateController.text,
+                selectedDeliveryCountry: widget.selectedCountryId,
+                banglaBazarDelivery: banglaBazarPickup,
+                pickUp: pickUpAvailable,
+                address1Delivery: address1DeliveryController.text,
+                address2Delivery: address2DeliveryController.text,
+                adminNoteDelivery: adminDeliveryNoteController.text,
+                phoneNumberDelivery: phoneDeliveryNumberController.text,
+                nameDelivery: nameDeliveryController.text,
+                zipCodeDelivery: zipCodeDeliveryController.text,
+                phoneCodeDelivery: _chooseCountryCodeDelivery,
+                nickNameDelivery: deliveryAddressNickName.text,
+                zoneDeliveryID: selectedDeliveryZoneId,
+                cityDeliveryID: selectedTempCityIdDelivery,
+                areaDeliveryID: selectedDeliveryAreaId,
+                state: selectedState,
+                shippingPrice: shippingPrice,
+                cityDelivery: selectedDeliveryCity,
+                zoneDelivery: selectedDeliveryZone,
+                areaDelivery: selectedDeliveryArea,
+                savePaymentAddress: savePaymentAddress,
+                saveDeliveryAddress: saveDeliveryAddress);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -685,6 +721,7 @@ class _BangladeshCheckoutAddressScreenState
                         creditCardPayment: widget.creditCardPayment,
                         pathaoPriceCalculationResponse:
                             pathaoPriceCalculationResponse,
+                        bangladeshPaymentUserData: bangladeshPaymentUserData,
                       )),
             );
           }
@@ -1217,6 +1254,42 @@ class _BangladeshCheckoutAddressScreenState
               }
             }
           } else {
+            bangladeshPaymentUserData = BangladeshPaymentUserData(
+                selectedPaymentCountry: selectedPaymentCountryID,
+                name: nameController.text,
+                cardNumber: cardNumber.text,
+                address1: address1Controller.text,
+                address2: address2Controller.text,
+                phoneCode: '',
+                phoneNumber: AppGlobal.phoneNumber.length == 11
+                    ? AppGlobal.phoneNumber
+                    : phoneDeliveryNumberController.text,
+                country: widget.selectedCountryId == 16 ? 'Bangladesh' : 'USA',
+                countryID: selectedPaymentCountryID,
+                zipCode: zipCodeController.text,
+                city: selectedCity,
+                createdAtDate: createdDateController.text,
+                selectedDeliveryCountry: widget.selectedCountryId,
+                banglaBazarDelivery: banglaBazarPickup,
+                pickUp: pickUpAvailable,
+                address1Delivery: address1DeliveryController.text,
+                address2Delivery: address2DeliveryController.text,
+                adminNoteDelivery: adminDeliveryNoteController.text,
+                phoneNumberDelivery: phoneDeliveryNumberController.text,
+                nameDelivery: nameDeliveryController.text,
+                zipCodeDelivery: zipCodeDeliveryController.text,
+                phoneCodeDelivery: _chooseCountryCodeDelivery,
+                nickNameDelivery: deliveryAddressNickName.text,
+                zoneDeliveryID: selectedDeliveryZoneId,
+                cityDeliveryID: selectedTempCityIdDelivery,
+                areaDeliveryID: selectedDeliveryAreaId,
+                state: selectedState,
+                shippingPrice: shippingPrice,
+                cityDelivery: selectedDeliveryCity,
+                zoneDelivery: selectedDeliveryZone,
+                areaDelivery: selectedDeliveryArea,
+                savePaymentAddress: savePaymentAddress,
+                saveDeliveryAddress: saveDeliveryAddress);
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -1227,6 +1300,7 @@ class _BangladeshCheckoutAddressScreenState
                         creditCardPayment: widget.creditCardPayment,
                         pathaoPriceCalculationResponse:
                             pathaoPriceCalculationResponse,
+                        bangladeshPaymentUserData: bangladeshPaymentUserData,
                       )),
             );
           }

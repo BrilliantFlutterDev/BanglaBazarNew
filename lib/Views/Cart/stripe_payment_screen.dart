@@ -15,12 +15,14 @@ class StripePaymentScreen extends StatefulWidget {
   bool creditCardPayment;
 
   PathaoPriceCalculationResponse? pathaoPriceCalculationResponse;
+  BangladeshPaymentUserData? bangladeshPaymentUserData;
   StripePaymentScreen(
       {Key? key,
       required this.cartDetailsResponse,
       required this.productsAndUserCitiesAreSame,
       required this.creditCardPayment,
-      required this.pathaoPriceCalculationResponse})
+      required this.pathaoPriceCalculationResponse,
+      required this.bangladeshPaymentUserData})
       : super(key: key);
 
   @override
@@ -33,6 +35,8 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
   void initState() {
     super.initState();
     initializePayment();
+    // print(
+    //     '>>>>>>>Prices: ${(widget.cartDetailsResponse.cartTotalPrice + widget.bangladeshPaymentUserData!.shippingPrice + widget.cartDetailsResponse.totalTax)} <<<<<<<<');
   }
 
   initializePayment() async {
@@ -83,6 +87,7 @@ class _StripePaymentScreenState extends State<StripePaymentScreen> {
     try {
       paymentIntentData = await createPaymentIntent(
           (widget.cartDetailsResponse.cartTotalPrice +
+                  widget.bangladeshPaymentUserData!.shippingPrice +
                   widget.cartDetailsResponse.totalTax)
               .toStringAsFixed(0),
           'USD'); //json.decode(response.body);

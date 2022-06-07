@@ -17,6 +17,11 @@ class CartDetailsLocalDBState extends ProductState {
   CartDetailsLocalDBState({required this.requestUserCartProducts});
 }
 
+class CartDetailsState extends ProductState {
+  final cart_details.CartDetailsResponse cartDetailsResponse;
+  CartDetailsState({required this.cartDetailsResponse});
+}
+
 class CartCombinationDetailsLocalDBState extends ProductState {
   final RequestUserCartProductsCombinations requestUserCartProductsCombinations;
   CartCombinationDetailsLocalDBState(

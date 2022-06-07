@@ -139,3 +139,7 @@ class AddUserReview extends ProductEvent {
     required this.review,
   });
 }
+
+class GetCartDetails extends ProductEvent {
+  GetCartDetails();
+}

@@ -8,7 +8,6 @@ import 'package:bangla_bazar/Widgets/notification_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-
 import '../MyOrders/order_details_screen.dart';
 
 class NotificationsScreen extends StatefulWidget {
