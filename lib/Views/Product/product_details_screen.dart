@@ -140,6 +140,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               backgroundColor: Colors.grey.shade400,
               textColor: Colors.white,
               fontSize: 12.0);
+          _productBloc.add(GetCartDetails());
         } else {
           Navigator.pushAndRemoveUntil(
               context,
@@ -246,6 +247,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         variantPic.clear();
         variantPic.add(productDetailsResponse!.MainImage);
         currency = productDetailsResponse!.productDetail.Currency;
+      } else if (state is CartDetailsState) {
+        AppGlobal.cartDetailsResponseGlobal = state.cartDetailsResponse;
       }
     }, builder: (context, state) {
       return ModalProgressHUD(

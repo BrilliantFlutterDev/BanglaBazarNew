@@ -714,15 +714,15 @@ class _BangladeshCheckoutAddressScreenState
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => StripePaymentScreen(
-                        cartDetailsResponse: widget.cartDetailsResponse,
-                        productsAndUserCitiesAreSame:
-                            productsAndUserCitiesAreSame,
-                        creditCardPayment: widget.creditCardPayment,
-                        pathaoPriceCalculationResponse:
-                            pathaoPriceCalculationResponse,
-                        bangladeshPaymentUserData: bangladeshPaymentUserData,
-                      )),
+                builder: (context) => CheckoutSummaryScreen(
+                  cartDetailsResponse: widget.cartDetailsResponse,
+                  bangladeshPaymentUserData: bangladeshPaymentUserData!,
+                  productsAndUserCitiesAreSame: productsAndUserCitiesAreSame,
+                  creditCardPayment: widget.creditCardPayment,
+                  pathaoPriceCalculationResponse:
+                      pathaoPriceCalculationResponse,
+                ),
+              ),
             );
           }
 
@@ -1293,15 +1293,15 @@ class _BangladeshCheckoutAddressScreenState
             Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => StripePaymentScreen(
-                        cartDetailsResponse: widget.cartDetailsResponse,
-                        productsAndUserCitiesAreSame:
-                            productsAndUserCitiesAreSame,
-                        creditCardPayment: widget.creditCardPayment,
-                        pathaoPriceCalculationResponse:
-                            pathaoPriceCalculationResponse,
-                        bangladeshPaymentUserData: bangladeshPaymentUserData,
-                      )),
+                builder: (context) => CheckoutSummaryScreen(
+                  cartDetailsResponse: widget.cartDetailsResponse,
+                  bangladeshPaymentUserData: bangladeshPaymentUserData!,
+                  productsAndUserCitiesAreSame: productsAndUserCitiesAreSame,
+                  creditCardPayment: widget.creditCardPayment,
+                  pathaoPriceCalculationResponse:
+                      pathaoPriceCalculationResponse,
+                ),
+              ),
             );
           }
 

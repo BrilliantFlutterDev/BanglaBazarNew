@@ -37,6 +37,8 @@ import 'package:bangla_bazar/ModelClasses/sigin_model.dart';
 import 'package:bangla_bazar/ModelClasses/ssl_commerz_init_response.dart';
 import 'package:bangla_bazar/ModelClasses/ssl_get_detail_model.dart';
 import 'package:bangla_bazar/ModelClasses/sslcommerce_init_model.dart';
+import 'package:bangla_bazar/ModelClasses/stripe_payment_validate_model.dart';
+import 'package:bangla_bazar/ModelClasses/stripe_payment_validate_response.dart';
 import 'package:bangla_bazar/ModelClasses/stripe_response.dart';
 import 'package:bangla_bazar/ModelClasses/stripe_trans_init_model.dart';
 import 'package:bangla_bazar/ModelClasses/transection_details_response.dart';
@@ -822,6 +824,34 @@ class CartBloc extends Bloc<CartEvent, CartState> {
             print('<<<<<<<<<<<<<1234567');
             yield TransectionInitStripeState(
                 stripInitResponse: stripInitResponse);
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid');
+        }
+      }
+    } else if (event is TransectionInitStripeValidate) {
+      yield LoadingState();
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response = await Repository().transectionInitStripeValidate(
+              stripePaymentValidateModel: event.stripePaymentValidateModel);
+          print('Bloc Response: ${jsonDecode(response.toString())}');
+
+          print('<<<<<<<<<<<<<1234');
+
+          if (response != null) {
+            StripePaymentValidateResponse stripePaymentValidateResponse =
+                StripePaymentValidateResponse.fromJson(
+                    jsonDecode(response.toString()));
+            print('<<<<<<<<<<<<<1234567');
+            yield TransectionInitStripeValidateState(
+                stripePaymentValidateResponse: stripePaymentValidateResponse);
           } else {
             yield ErrorState(error: 'Timeout');
           }

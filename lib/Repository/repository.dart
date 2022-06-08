@@ -23,6 +23,7 @@ import 'package:bangla_bazar/ModelClasses/pathao_zone_model.dart';
 import 'package:bangla_bazar/ModelClasses/remove_from_cart_model.dart';
 import 'package:bangla_bazar/ModelClasses/ssl_get_detail_model.dart';
 import 'package:bangla_bazar/ModelClasses/sslcommerce_init_model.dart';
+import 'package:bangla_bazar/ModelClasses/stripe_payment_validate_model.dart';
 import 'package:bangla_bazar/ModelClasses/stripe_trans_init_model.dart';
 import 'package:bangla_bazar/ModelClasses/update_cart_model.dart';
 import 'package:bangla_bazar/ModelClasses/user_refund_form_model.dart';
@@ -276,6 +277,11 @@ class Repository {
   }) async =>
       CartProvider.transectionInitStripe(
           stripeTransInitModel: stripeTransInitModel);
+  Future transectionInitStripeValidate({
+    required StripePaymentValidateModel stripePaymentValidateModel,
+  }) async =>
+      CartProvider.transectionInitStripeValidate(
+          stripePaymentValidateModel: stripePaymentValidateModel);
   Future authNetTransectionInit({
     required AuthorizedNetPaymentModel transInitModel,
   }) async =>

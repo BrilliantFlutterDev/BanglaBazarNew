@@ -5,6 +5,10 @@ class AppGlobal {
   static String rememberMeEmail = '';
   static String rememberMePassword = '';
 
+  // ///Office IP 5G
+  // static String baseURL = 'http://192.168.100.25:3001/api/';
+  // static String photosBaseURL = 'http://192.168.100.25:3001/';
+
   ///Office IP
   static String baseURL = 'http://192.168.100.25:3001/api/';
   static String photosBaseURL = 'http://192.168.100.25:3001/';

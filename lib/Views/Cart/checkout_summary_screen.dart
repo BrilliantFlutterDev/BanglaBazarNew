@@ -3,6 +3,7 @@ import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
+import 'package:bangla_bazar/Views/Cart/stripe_payment_screen.dart';
 import 'package:bangla_bazar/Widgets/selected_products_info.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -297,10 +298,17 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                               Row(
                                 children: [
                                   widget.creditCardPayment != false
-                                      ? Image.asset(
-                                          'assets/images/ssl_commerz.png',
-                                          scale: 3,
-                                        )
+                                      ? widget.bangladeshPaymentUserData!
+                                                  .selectedPaymentCountry ==
+                                              16
+                                          ? Image.asset(
+                                              'assets/images/ssl_commerz.png',
+                                              scale: 3,
+                                            )
+                                          : Image.asset(
+                                              'assets/images/Stripe Logo.png',
+                                              scale: 4,
+                                            )
                                       : const SizedBox(),
                                   widget.creditCardPayment != false
                                       ? const SizedBox(
@@ -570,24 +578,49 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                               ),
                               InkWell(
                                 onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BangladeshCheckoutPaymentScreen(
-                                        cartDetailsResponse:
-                                            widget.cartDetailsResponse,
-                                        bangladeshPaymentUserData:
-                                            widget.bangladeshPaymentUserData!,
-                                        productsAndUserCitiesAreSame:
-                                            widget.productsAndUserCitiesAreSame,
-                                        creditCardPayment:
-                                            widget.creditCardPayment,
-                                        pathaoPriceCalculationResponse: widget
-                                            .pathaoPriceCalculationResponse,
+                                  if (widget.bangladeshPaymentUserData!
+                                          .selectedPaymentCountry ==
+                                      16) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BangladeshCheckoutPaymentScreen(
+                                          cartDetailsResponse:
+                                              widget.cartDetailsResponse,
+                                          bangladeshPaymentUserData:
+                                              widget.bangladeshPaymentUserData!,
+                                          productsAndUserCitiesAreSame: widget
+                                              .productsAndUserCitiesAreSame,
+                                          creditCardPayment:
+                                              widget.creditCardPayment,
+                                          pathaoPriceCalculationResponse: widget
+                                              .pathaoPriceCalculationResponse,
+                                        ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  } else if (widget.bangladeshPaymentUserData!
+                                          .selectedPaymentCountry ==
+                                      226) {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              StripePaymentScreen(
+                                                cartDetailsResponse:
+                                                    widget.cartDetailsResponse,
+                                                productsAndUserCitiesAreSame: widget
+                                                    .productsAndUserCitiesAreSame,
+                                                creditCardPayment:
+                                                    widget.creditCardPayment,
+                                                pathaoPriceCalculationResponse:
+                                                    widget
+                                                        .pathaoPriceCalculationResponse,
+                                                bangladeshPaymentUserData: widget
+                                                    .bangladeshPaymentUserData,
+                                              )),
+                                    );
+                                  }
                                 },
                                 child: Container(
                                   height: screenSize.height * 0.065,

@@ -10,6 +10,7 @@ import 'package:bangla_bazar/ModelClasses/delivery_products_check_model.dart';
 import 'package:bangla_bazar/ModelClasses/remove_from_cart_model.dart';
 import 'package:bangla_bazar/ModelClasses/ssl_get_detail_model.dart';
 import 'package:bangla_bazar/ModelClasses/sslcommerce_init_model.dart';
+import 'package:bangla_bazar/ModelClasses/stripe_payment_validate_model.dart';
 import 'package:bangla_bazar/ModelClasses/stripe_trans_init_model.dart';
 import 'package:bangla_bazar/ModelClasses/update_cart_model.dart';
 import 'package:bangla_bazar/Providers/base_provider.dart';
@@ -85,6 +86,30 @@ class CartProvider extends BaseProvider {
 
       dynamic response =
           await WebServices.apiPostToJson(url, stripeTransInitModel);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  static Future transectionInitStripeValidate(
+      {required StripePaymentValidateModel stripePaymentValidateModel}) async {
+    try {
+      String url = '${AppGlobal.baseURL}stripe/validate-m';
+      print(url);
+
+      // Map params = HashMap<String, dynamic>();
+      //
+      // params.putIfAbsent('CategoryID', () => '');
+      // params.putIfAbsent('offset', () => offset);
+      // params.putIfAbsent('limit', () => limit);
+      // params.putIfAbsent('searchType', () => searchType);
+      // params.putIfAbsent('search', () => search);
+      // print(params);
+
+      dynamic response =
+          await WebServices.apiPostToJson(url, stripePaymentValidateModel);
       return response;
     } catch (e) {
       print(e.toString());

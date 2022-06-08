@@ -16,7 +16,7 @@ class StripInitResponse {
     status = json['status'];
     message = json['message'];
     OrderNumber = json['OrderNumber'];
-    OrderTotal = json['OrderTotal'];
+    OrderTotal = double.parse(json['OrderTotal'].toString());
     Currency = json['Currency'];
   }
 

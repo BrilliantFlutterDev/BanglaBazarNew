@@ -269,7 +269,8 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                         .productCombinations[0]
                         .ProductVariantCombinationID
                         .toString())
-              ])
+              ], ShippingByVendor: widget.cartDetailsResponse.productCartList[0].ShippingByVendor!,
+            ShippingByAdmin: widget.cartDetailsResponse.productCartList[0].ShippingByAdmin!,)
         ],
       );
       for (int j = 1;
@@ -319,6 +320,8 @@ class _CheckoutPaymentScreenState extends State<CheckoutPaymentScreen> {
                     .perProductTax!+double.parse(widget.pathaoPriceCalculationResponse!
                     .saveResponse[i].data.price.toString())+double.parse(widget.pathaoPriceCalculationResponse!
                     .saveResponse[i].data.additionalCharge.toString())).toString(),
+                ShippingByVendor: widget.cartDetailsResponse.productCartList[i].ShippingByVendor!,
+                ShippingByAdmin: widget.cartDetailsResponse.productCartList[i].ShippingByAdmin!,
 
                 productVariantCombinationDetail: [
 

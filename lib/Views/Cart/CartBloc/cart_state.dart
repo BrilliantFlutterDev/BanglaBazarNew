@@ -138,6 +138,12 @@ class TransectionInitStripeState extends CartState {
   TransectionInitStripeState({required this.stripInitResponse});
 }
 
+class TransectionInitStripeValidateState extends CartState {
+  final StripePaymentValidateResponse stripePaymentValidateResponse;
+  TransectionInitStripeValidateState(
+      {required this.stripePaymentValidateResponse});
+}
+
 class AuthNetTransectionInitializedState extends CartState {
   final AuthorizedNetPaymentResponse authorizedNetPaymentResponse;
   AuthNetTransectionInitializedState(

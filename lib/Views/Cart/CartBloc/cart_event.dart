@@ -93,6 +93,10 @@ class TransectionInitStripe extends CartEvent {
   final StripeTransInitModel stripeTransInitModel;
   TransectionInitStripe({required this.stripeTransInitModel});
 }
+class TransectionInitStripeValidate extends CartEvent {
+  final StripePaymentValidateModel stripePaymentValidateModel;
+  TransectionInitStripeValidate({required this.stripePaymentValidateModel});
+}
 
 class AuthNetTransectionInit extends CartEvent {
   final AuthorizedNetPaymentModel transInitModel;
