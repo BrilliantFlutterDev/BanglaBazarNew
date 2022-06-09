@@ -348,6 +348,19 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
                           .orderDetails[i].productDetail[j].totalProductPrice +
                       double.parse(orderDetailsResponse
                           .orderDetails[i].productDetail[j].BasePrice);
+                  orderDetailsResponse.orderDetails[i].totalOrderTax =
+                      orderDetailsResponse.orderDetails[i].totalOrderTax +
+                          double.parse(orderDetailsResponse.orderDetails[i]
+                              .productDetail[j].ItemsEstimatedTax);
+                  orderDetailsResponse.orderDetails[i].totalOrderShippingPrice =
+                      orderDetailsResponse
+                              .orderDetails[i].totalOrderShippingPrice +
+                          double.parse(orderDetailsResponse.orderDetails[i]
+                              .productDetail[j].ItemsShippingHandling);
+                  orderDetailsResponse.orderDetails[i].totalOrderPrice =
+                      orderDetailsResponse.orderDetails[i].totalOrderPrice +
+                          double.parse(orderDetailsResponse
+                              .orderDetails[i].productDetail[j].ItemsPrice);
                   for (int k = 0;
                       k <
                           orderDetailsResponse.orderDetails[i].productDetail[j]

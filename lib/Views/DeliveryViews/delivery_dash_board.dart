@@ -2,22 +2,14 @@ import 'package:bangla_bazar/ModelClasses/dashboard_model.dart';
 import 'package:bangla_bazar/ModelClasses/dashboard_response.dart';
 import 'package:bangla_bazar/ModelClasses/get_driver_orders_by_status_response.dart'
     as driverOrders;
-import 'package:bangla_bazar/ModelClasses/order_details_response.dart'
-    as myorders;
 import 'package:bangla_bazar/ModelClasses/order_status_change_model.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
-
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
 import 'package:bangla_bazar/Views/MyOrders/order_details_screen.dart';
-
-import 'package:bangla_bazar/Views/main_home_page.dart';
 import 'package:bangla_bazar/Widgets/driver_my_orders_widget.dart';
-import 'package:bangla_bazar/Widgets/my_orders_widget.dart';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -49,6 +41,8 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
   ];
   int offset = 0;
   int totalPages = 0;
+  bool loadingNextPage = false;
+  final _scrollController = ScrollController();
 
   late String statusFilterValueChooseDashBoard;
   List<String> statusFiltersListDashBoard = [
@@ -61,7 +55,7 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
   ];
 
   //myorders.OrderDetailsResponse? orderDetailsResponse;
-  driverOrders.GetDriverOrdersByStatusResponse? getDriverOrdersByStatusResponse;
+  List<driverOrders.OrderDetails>? orderDetails = [];
   void changeOrderStatusDeliveredBottomSheet(String orderNumber) {
     showModalBottomSheet(
         elevation: 5,
@@ -497,6 +491,19 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
     _myOrdersBloc = BlocProvider.of<MyOrdersBloc>(context);
     statusFilterValueChoose = 'All';
     statusFilterValueChooseDashBoard = 'This Week';
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        if (offset < totalPages - 1) {
+          offset++;
+          loadingNextPage = true;
+          _myOrdersBloc.add(
+              GetDriversOrders(offset: 0, status: statusFilterValueChoose));
+          print('Load Next Page');
+        }
+        print('Load Next Page');
+      }
+    });
     _myOrdersBloc
         .add(GetDriversOrders(offset: 0, status: statusFilterValueChoose));
     dashBoardModel = DashBoardModel(
@@ -531,7 +538,18 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
             textColor: Colors.white,
             fontSize: 12.0);
       } else if (state is GetDriverOrdersState) {
-        getDriverOrdersByStatusResponse = state.getDriverOrdersByStatusResponse;
+        if (loadingNextPage == false) {
+          orderDetails!.clear();
+
+          totalPages =
+              (state.getDriverOrdersByStatusResponse.totalRecords / 10).ceil();
+          orderDetails!
+              .addAll(state.getDriverOrdersByStatusResponse.orderDetails);
+          print('Total Pages: $totalPages');
+        } else {
+          orderDetails!
+              .addAll(state.getDriverOrdersByStatusResponse.orderDetails);
+        }
       } else if (state is DashBoardState) {
         dashBoardResponse = state.dashBoardResponse;
       } else if (state is OrderStatusChangeState) {
@@ -559,6 +577,7 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                 ///This is the body
                 SingleChildScrollView(
                   physics: const AlwaysScrollableScrollPhysics(),
+                  controller: _scrollController,
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20.0),
                     child: Column(
@@ -662,7 +681,7 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                       Container(
                                         width: screenSize.width * 0.30,
                                         height: 35,
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             left: 16, right: 16),
                                         decoration: BoxDecoration(
                                           borderRadius:
@@ -722,12 +741,9 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                       shrinkWrap: true,
                                       physics:
                                           const NeverScrollableScrollPhysics(),
-                                      itemCount:
-                                          getDriverOrdersByStatusResponse !=
-                                                  null
-                                              ? getDriverOrdersByStatusResponse!
-                                                  .orderDetails.length
-                                              : 0,
+                                      itemCount: orderDetails != null
+                                          ? orderDetails!.length
+                                          : 0,
                                       scrollDirection: Axis.vertical,
                                       itemBuilder:
                                           (BuildContext context, int i) {
@@ -735,11 +751,9 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                             shrinkWrap: true,
                                             physics:
                                                 const NeverScrollableScrollPhysics(),
-                                            itemCount:
-                                                getDriverOrdersByStatusResponse!
-                                                    .orderDetails[i]
-                                                    .productDetail
-                                                    .length,
+                                            itemCount: orderDetails![i]
+                                                .productDetail
+                                                .length,
                                             scrollDirection: Axis.vertical,
                                             itemBuilder:
                                                 (BuildContext context, int j) {
@@ -780,7 +794,7 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                                       .start,
                                                               children: [
                                                                 Text(
-                                                                  'Order Number: ${getDriverOrdersByStatusResponse!.orderDetails[i].OrderNumber}',
+                                                                  'Order Number: ${orderDetails![i].OrderNumber}',
                                                                   style: const TextStyle(
                                                                       color:
                                                                           kColorBlueText,
@@ -791,7 +805,7 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                                   height: 5,
                                                                 ),
                                                                 Text(
-                                                                  'Placed Date: ${getDriverOrdersByStatusResponse!.orderDetails[i].OrderDate}',
+                                                                  'Placed Date: ${orderDetails![i].OrderDate}',
                                                                   style: const TextStyle(
                                                                       color:
                                                                           kColorFieldsBorders,
@@ -800,6 +814,17 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                                   textAlign:
                                                                       TextAlign
                                                                           .center,
+                                                                ),
+                                                                const SizedBox(
+                                                                  height: 5,
+                                                                ),
+                                                                Text(
+                                                                  'Order Total : ${(orderDetails![i].totalOrderPrice + orderDetails![i].totalOrderTax + orderDetails![i].totalOrderShippingPrice).toStringAsFixed(2)}',
+                                                                  style: const TextStyle(
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontSize:
+                                                                          14),
                                                                 ),
                                                               ],
                                                             ),
@@ -820,11 +845,11 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                               ),
                                                               child: Center(
                                                                 child: Text(
-                                                                  '      ${getDriverOrdersByStatusResponse!.orderDetails[i].PaymentStatus}      ',
+                                                                  '      ${orderDetails![i].PaymentStatus}      ',
                                                                   //six spaces on each side
 
                                                                   maxLines: 1,
-                                                                  style: TextStyle(
+                                                                  style: const TextStyle(
                                                                       color:
                                                                           kColorWhite,
                                                                       fontSize:
@@ -852,60 +877,54 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                                 OrderDetails(
                                                                   previousPage:
                                                                       'DriverMyOrders',
-                                                                  orderNumber: getDriverOrdersByStatusResponse!
-                                                                      .orderDetails[
-                                                                          i]
-                                                                      .productDetail[
-                                                                          j]
-                                                                      .OrderNumber,
+                                                                  orderNumber:
+                                                                      orderDetails![
+                                                                              i]
+                                                                          .productDetail[
+                                                                              j]
+                                                                          .OrderNumber,
                                                                 )),
                                                       );
                                                     },
                                                     onPressOrderStatusChange:
                                                         () {
-                                                      if (getDriverOrdersByStatusResponse!
-                                                              .orderDetails[i]
+                                                      if (orderDetails![i]
                                                               .productDetail[j]
                                                               .ProcessStatus ==
                                                           'Assigned') {
                                                         changeOrderStatusPickedBottomSheet(
-                                                            getDriverOrdersByStatusResponse!
-                                                                .orderDetails[i]
+                                                            orderDetails![i]
                                                                 .productDetail[
                                                                     j]
                                                                 .OrderNumber);
-                                                      } else if (getDriverOrdersByStatusResponse!
-                                                              .orderDetails[i]
+                                                      } else if (orderDetails![
+                                                                  i]
                                                               .productDetail[j]
                                                               .ProcessStatus ==
                                                           'Picked') {
                                                         changeOrderStatusOnTheWayBottomSheet(
-                                                            getDriverOrdersByStatusResponse!
-                                                                .orderDetails[i]
+                                                            orderDetails![i]
                                                                 .productDetail[
                                                                     j]
                                                                 .OrderNumber);
-                                                      } else if (getDriverOrdersByStatusResponse!
-                                                              .orderDetails[i]
+                                                      } else if (orderDetails![
+                                                                  i]
                                                               .productDetail[j]
                                                               .ProcessStatus ==
                                                           'On the Way') {
                                                         changeOrderStatusDeliveredBottomSheet(
-                                                            getDriverOrdersByStatusResponse!
-                                                                .orderDetails[i]
+                                                            orderDetails![i]
                                                                 .productDetail[
                                                                     j]
                                                                 .OrderNumber);
                                                       }
                                                     },
                                                     buttonOrderStatus:
-                                                        getDriverOrdersByStatusResponse!
-                                                            .orderDetails[i]
+                                                        orderDetails![i]
                                                             .productDetail[j]
                                                             .ProcessStatus,
                                                     productDetail:
-                                                        getDriverOrdersByStatusResponse!
-                                                            .orderDetails[i]
+                                                        orderDetails![i]
                                                             .productDetail[j],
                                                   ),
                                                 ],

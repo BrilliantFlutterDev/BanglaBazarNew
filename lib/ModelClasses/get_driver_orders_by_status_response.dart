@@ -53,6 +53,10 @@ class OrderDetails {
   late final String ProcessStatus;
   late final List<ProductDetail> productDetail;
 
+  double totalOrderPrice = 0.0;
+  double totalOrderTax = 0.0;
+  double totalOrderShippingPrice = 0.0;
+
   OrderDetails.fromJson(Map<String, dynamic> json) {
     OrderNumber = json['OrderNumber'];
     OrderDate = json['OrderDate'];
@@ -113,6 +117,9 @@ class ProductDetail {
     required this.REVIEWCOUNT,
     this.AVGRating,
     required this.productCombinations,
+    required this.ItemsPrice,
+    required this.ItemsEstimatedTax,
+    required this.ItemsShippingHandling,
   });
   late final int ProductID;
   late final String Title;
@@ -137,6 +144,10 @@ class ProductDetail {
   late final int REVIEWCOUNT;
   String? AVGRating;
   double totalProductPrice = 0.0;
+  late final String ItemsPrice;
+  late final String ItemsEstimatedTax;
+  late final String ItemsShippingHandling;
+
   late final List<ProductCombinations> productCombinations;
 
   ProductDetail.fromJson(Map<String, dynamic> json) {
@@ -161,6 +172,9 @@ class ProductDetail {
     DeliveryDriverID = json['DeliveryDriverID'];
     ProcessStatus = json['ProcessStatus'];
     REVIEWCOUNT = json['REVIEW_COUNT'];
+    ItemsPrice = json['ItemsPrice'];
+    ItemsEstimatedTax = json['ItemsEstimatedTax'];
+    ItemsShippingHandling = json['ItemsShippingHandling'];
     AVGRating = json['AVG_Rating'] != null ? json['AVG_Rating'] : '';
     productCombinations = List.from(json['ProductCombinations'])
         .map((e) => ProductCombinations.fromJson(e))
@@ -191,6 +205,9 @@ class ProductDetail {
     _data['ProcessStatus'] = ProcessStatus;
     _data['REVIEW_COUNT'] = REVIEWCOUNT;
     _data['AVG_Rating'] = AVGRating;
+    _data['ItemsPrice'] = ItemsPrice;
+    _data['ItemsEstimatedTax'] = ItemsEstimatedTax;
+    _data['ItemsShippingHandling'] = ItemsShippingHandling;
     _data['ProductCombinations'] =
         productCombinations.map((e) => e.toJson()).toList();
     return _data;
