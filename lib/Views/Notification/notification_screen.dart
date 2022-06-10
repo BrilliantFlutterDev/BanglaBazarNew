@@ -2,6 +2,7 @@ import 'package:bangla_bazar/ModelClasses/in_app_notifications_response.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
+import 'package:bangla_bazar/Views/Chat/personal_chat_screen.dart';
 import 'package:bangla_bazar/Views/Notification/NotificationsBloc/notification_bloc.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
 import 'package:bangla_bazar/Widgets/notification_widget.dart';
@@ -162,6 +163,29 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                                       i]
                                                                   .orderNumber!,
                                                         )),
+                                              );
+                                            } else if (inAppNotificationsResponse!
+                                                    .notifications[i].TypeID ==
+                                                3) {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPersonalScreen(
+                                                    senderName:
+                                                        inAppNotificationsResponse!
+                                                            .notifications[i]
+                                                            .UserName,
+                                                    senderPic:
+                                                        inAppNotificationsResponse!
+                                                            .notifications[i]
+                                                            .ProfilePic,
+                                                    receiverUserId:
+                                                        inAppNotificationsResponse!
+                                                            .notifications[i]
+                                                            .UserID,
+                                                    documnetIndex: 0,
+                                                  ),
+                                                ),
                                               );
                                             }
                                           },

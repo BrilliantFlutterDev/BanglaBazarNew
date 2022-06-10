@@ -1,4 +1,5 @@
 import 'package:bangla_bazar/Utils/app_colors.dart';
+import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Views/Chat/personal_chat_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -68,7 +69,8 @@ class _PersonIdentifierWidgetState extends State<PersonIdentifierWidget> {
                     children: [
                       CircleAvatar(
                         radius: 25,
-                        backgroundImage: NetworkImage(widget.pPhoto),
+                        backgroundImage: NetworkImage(
+                            '${AppGlobal.photosBaseURL}${widget.pPhoto != '' ? widget.pPhoto.replaceAll('\\', '/') : ''}'),
                       ),
                       const SizedBox(
                         width: 10,

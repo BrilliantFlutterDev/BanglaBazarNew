@@ -1,7 +1,9 @@
 import 'dart:io';
 
+import 'package:bangla_bazar/ModelClasses/chat_notify_user_model.dart';
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
+import 'package:bangla_bazar/Utils/web_services.dart';
 import 'package:bangla_bazar/Widgets/receiver_message_widget.dart';
 import 'package:bangla_bazar/Widgets/sender_message_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -141,6 +143,10 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                                                     .serverTimestamp(),
                                                 'room_id': widget.roomId,
                                               }),
+                                              postChatNotify(
+                                                  AppGlobal.userID.toString(),
+                                                  widget.receiverUserId
+                                                      .toString())
 
                                               ///fghfhfh
                                               // CollectionReference collectionReference =
@@ -181,6 +187,8 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                                           FieldValue.serverTimestamp(),
                                       'room_id': widget.roomId,
                                     }),
+                                    postChatNotify(AppGlobal.userID.toString(),
+                                        widget.receiverUserId.toString())
                                   }
                               }
                           })
@@ -205,6 +213,8 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                         'time_stamp': FieldValue.serverTimestamp(),
                         'room_id': widget.roomId,
                       }),
+                      postChatNotify(AppGlobal.userID.toString(),
+                          widget.receiverUserId.toString())
                     }
                 }
             });
@@ -290,26 +300,26 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
         title: Text(
           widget.senderName,
         ),
-        actions: [
-          // IconButton(
-          //     icon: Icon(
-          //       Icons.videocam,
-          //       //color: kColorSecondary,
-          //     ),
-          //     onPressed: () {
-          //       // _role = ClientRole.Broadcaster;
-          //       // onJoin();
-          //     }),
-          // IconButton(
-          //     icon: Icon(
-          //       Icons.call,
-          //       // color: kColorSecondary,
-          //     ),
-          //     onPressed: () {
-          //       // _role = ClientRole.Audience;
-          //       // onJoin();
-          //     }),
-        ],
+        // actions: [
+        // IconButton(
+        //     icon: Icon(
+        //       Icons.videocam,
+        //       //color: kColorSecondary,
+        //     ),
+        //     onPressed: () {
+        //       // _role = ClientRole.Broadcaster;
+        //       // onJoin();
+        //     }),
+        // IconButton(
+        //     icon: Icon(
+        //       Icons.call,
+        //       // color: kColorSecondary,
+        //     ),
+        //     onPressed: () {
+        //       // _role = ClientRole.Audience;
+        //       // onJoin();
+        //     }),
+        //],
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -319,287 +329,74 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
             children: [
               Expanded(
                 flex: 11,
-                child: Container(
-                  width: screenSize.width,
-                  child: Column(
-                    children: [
-                      Expanded(
-                        flex: 4,
-                        child: Container(
-                          //color: Colors.red,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 15, horizontal: 10),
-                            child: StreamBuilder<QuerySnapshot>(
-                              stream: fireStore
-                                  .collection('messages')
-                                  .where('room_id', isEqualTo: widget.roomId)
-                                  .orderBy('time_stamp', descending: false)
-                                  .snapshots(),
-                              builder: (context, snapshots) {
-                                if (!snapshots.hasData) {
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      backgroundColor: kColorPrimary,
-                                    ),
-                                  );
-                                }
-                                final messages = snapshots.data!.docs.reversed;
-                                List<MessageWidgetSelector> messageBubbles = [];
-                                for (var message in messages) {
-                                  final messageText = message["text"];
-                                  final messageSender = message["sender_id"];
-                                  final messageReceiver =
-                                      message["receiver_id"];
-                                  DateTime dateTime =
-                                      message["time_stamp"].toDate();
-
-                                  String msgTime =
-                                      DateFormat('hh:mm a / dd-MM-yy')
-                                          .format(dateTime);
-                                  // String convertedDateTime =
-                                  //     "${dateTime.hour.toString()}-${dateTime.minute.toString()}";
-                                  // DateTime hours =
-                                  //     new DateTime(dateTime.hour);
-                                  // DateTime minutes =
-                                  //     new DateTime(dateTime.minute);
-
-                                  if ((messageReceiver ==
-                                              widget.receiverUserId &&
-                                          messageSender == AppGlobal.userID) ||
-                                      (messageReceiver == AppGlobal.userID &&
-                                          messageSender ==
-                                              widget.receiverUserId)) {
-                                    final messageBubble =
-                                        messageSender == AppGlobal.userID
-                                            ? MessageWidgetSelector(
-                                                myMessageFlag: true,
-                                                msgText: messageText,
-                                                screenSize: screenSize,
-                                                time: msgTime,
-                                                //time: convertedDateTime,
-                                              )
-                                            : MessageWidgetSelector(
-                                                myMessageFlag: false,
-                                                msgText: messageText,
-                                                screenSize: screenSize,
-                                                time: msgTime,
-                                              );
-                                    messageBubbles.add(messageBubble);
-                                  }
-                                }
-                                return Expanded(
-                                  child: ListView(
-                                    reverse: true,
-                                    children: messageBubbles,
-                                  ),
-                                );
-                              },
-                            ),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: fireStore
+                        .collection('messages')
+                        .where('room_id', isEqualTo: widget.roomId)
+                        .orderBy('time_stamp', descending: false)
+                        .snapshots(),
+                    builder: (context, snapshots) {
+                      if (!snapshots.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(
+                            backgroundColor: kColorPrimary,
                           ),
-                        ), //ChatWidgets
-                      ),
-                      attachFileButtonFlag == true
-                          ? Expanded(
-                              flex: 1,
-                              child: Padding(
-                                padding: const EdgeInsets.all(15.0),
-                                child: Container(
-                                  //color: Colors.red,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      Expanded(child: SizedBox()
-                                          // FileAttachWidget(
-                                          //   buttonColor: Colors.deepPurple
-                                          //       .withOpacity(0.4),
-                                          //   buttonIcon: Icons.camera_alt,
-                                          //   iconColor: Colors.deepPurple,
-                                          //   buttonLabel: 'Photo',
-                                          //   onPressed: () {
-                                          //     showModalBottomSheet(
-                                          //         elevation: 5,
-                                          //         context: context,
-                                          //         backgroundColor: Colors.white,
-                                          //         shape: RoundedRectangleBorder(
-                                          //           borderRadius:
-                                          //           BorderRadius.only(
-                                          //               topLeft:
-                                          //               Radius.circular(
-                                          //                   15.0),
-                                          //               topRight:
-                                          //               Radius.circular(
-                                          //                   15.0)),
-                                          //         ),
-                                          //         builder: (context) {
-                                          //           return Container(
-                                          //             height: screenSize.height *
-                                          //                 0.17,
-                                          //             child: Padding(
-                                          //               padding:
-                                          //               const EdgeInsets.only(
-                                          //                   top: 20,
-                                          //                   bottom: 20),
-                                          //               child: Row(
-                                          //                 mainAxisAlignment:
-                                          //                 MainAxisAlignment
-                                          //                     .spaceEvenly,
-                                          //                 crossAxisAlignment:
-                                          //                 CrossAxisAlignment
-                                          //                     .center,
-                                          //                 children: <Widget>[
-                                          //                   bottomSheetImagePickerButton(
-                                          //                     onTap: () {
-                                          //                       getImage(picker.getImage(
-                                          //                           source: ImageSource
-                                          //                               .gallery));
-                                          //                       Navigator.pop(
-                                          //                           context);
-                                          //                     },
-                                          //                     buttonIcon: Icons
-                                          //                         .photo_library_rounded,
-                                          //                     buttonLabel:
-                                          //                     "Photo Library",
-                                          //                   ),
-                                          //                   bottomSheetImagePickerButton(
-                                          //                     onTap: () {
-                                          //                       getImage(picker.getImage(
-                                          //                           source: ImageSource
-                                          //                               .camera));
-                                          //                       Navigator.pop(
-                                          //                           context);
-                                          //                     },
-                                          //                     buttonIcon:
-                                          //                     Icons.camera,
-                                          //                     buttonLabel:
-                                          //                     "Camera",
-                                          //                   ),
-                                          //                 ],
-                                          //               ),
-                                          //             ),
-                                          //           );
-                                          //         });
-                                          //   },
-                                          // ),
-                                          ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(),
-                                        // child: FileAttachWidget(
-                                        //   buttonColor: Colors.purpleAccent
-                                        //       .withOpacity(0.4),
-                                        //   buttonIcon: Icons.videocam,
-                                        //   iconColor: Colors.purpleAccent,
-                                        //   buttonLabel: 'Video',
-                                        //   onPressed: () {
-                                        //     showModalBottomSheet(
-                                        //         elevation: 5,
-                                        //         context: context,
-                                        //         backgroundColor: Colors.white,
-                                        //         shape: RoundedRectangleBorder(
-                                        //           borderRadius:
-                                        //           BorderRadius.only(
-                                        //               topLeft:
-                                        //               Radius.circular(
-                                        //                   15.0),
-                                        //               topRight:
-                                        //               Radius.circular(
-                                        //                   15.0)),
-                                        //         ),
-                                        //         builder: (context) {
-                                        //           return Container(
-                                        //             height: screenSize.height *
-                                        //                 0.17,
-                                        //             child: Padding(
-                                        //               padding:
-                                        //               const EdgeInsets.only(
-                                        //                   top: 20,
-                                        //                   bottom: 20),
-                                        //               child: Row(
-                                        //                 mainAxisAlignment:
-                                        //                 MainAxisAlignment
-                                        //                     .spaceEvenly,
-                                        //                 crossAxisAlignment:
-                                        //                 CrossAxisAlignment
-                                        //                     .center,
-                                        //                 children: <Widget>[
-                                        //                   bottomSheetImagePickerButton(
-                                        //                     onTap: () {
-                                        //                       getVideo(picker.getVideo(
-                                        //                           source: ImageSource
-                                        //                               .gallery));
-                                        //                       Navigator.pop(
-                                        //                           context);
-                                        //                     },
-                                        //                     buttonIcon: Icons
-                                        //                         .photo_library_rounded,
-                                        //                     buttonLabel:
-                                        //                     "Photo Library",
-                                        //                   ),
-                                        //                   bottomSheetImagePickerButton(
-                                        //                     onTap: () {
-                                        //                       getVideo(picker.getVideo(
-                                        //                           source: ImageSource
-                                        //                               .camera));
-                                        //                       Navigator.pop(
-                                        //                           context);
-                                        //                     },
-                                        //                     buttonIcon:
-                                        //                     Icons.camera,
-                                        //                     buttonLabel:
-                                        //                     "Camera",
-                                        //                   ),
-                                        //                 ],
-                                        //               ),
-                                        //             ),
-                                        //           );
-                                        //         });
-                                        //   },
-                                        // ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(),
-                                        // child: FileAttachWidget(
-                                        //   buttonColor: Colors.deepOrange
-                                        //       .withOpacity(0.4),
-                                        //   buttonIcon: Icons.keyboard_voice,
-                                        //   iconColor: Colors.deepOrange,
-                                        //   buttonLabel: 'Voice',
-                                        //   onPressed: null,
-                                        // ),
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      Expanded(
-                                        child: SizedBox(),
-                                        // child: FileAttachWidget(
-                                        //   buttonColor: Colors.pinkAccent
-                                        //       .withOpacity(0.4),
-                                        //   buttonIcon: Icons.location_on,
-                                        //   iconColor: Colors.pinkAccent,
-                                        //   buttonLabel: 'Location',
-                                        //   onPressed: null,
-                                        // ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            )
-                          : SizedBox(
-                              height: 0,
-                              width: 0,
-                            ),
-                    ],
+                        );
+                      }
+                      final messages = snapshots.data!.docs.reversed;
+                      List<MessageWidgetSelector> messageBubbles = [];
+                      for (var message in messages) {
+                        final messageText = message["text"];
+                        final messageSender = message["sender_id"];
+                        final messageReceiver = message["receiver_id"];
+
+                        if (message["time_stamp"] != null) {
+                          DateTime dateTime = message["time_stamp"].toDate();
+
+                          String msgTime =
+                              DateFormat('hh:mm a / dd-MM-yy').format(dateTime);
+
+                          ///
+                          // String convertedDateTime =
+                          //     "${dateTime.hour.toString()}-${dateTime.minute.toString()}";
+                          // DateTime hours =
+                          //     new DateTime(dateTime.hour);
+                          // DateTime minutes =
+                          //     new DateTime(dateTime.minute);
+
+                          if ((messageReceiver == widget.receiverUserId &&
+                                  messageSender == AppGlobal.userID) ||
+                              (messageReceiver == AppGlobal.userID &&
+                                  messageSender == widget.receiverUserId)) {
+                            final messageBubble =
+                                messageSender == AppGlobal.userID
+                                    ? MessageWidgetSelector(
+                                        myMessageFlag: true,
+                                        msgText: messageText,
+                                        screenSize: screenSize,
+                                        time: msgTime,
+                                        //time: convertedDateTime,
+                                      )
+                                    : MessageWidgetSelector(
+                                        myMessageFlag: false,
+                                        msgText: messageText,
+                                        screenSize: screenSize,
+                                        time: msgTime,
+                                      );
+                            messageBubbles.add(messageBubble);
+                          }
+                        }
+                      }
+                      return ListView(
+                        reverse: true,
+                        children: messageBubbles,
+                      );
+                    },
                   ),
-                ),
+                ), //ChatWidgets
               ),
               Expanded(
                 flex: 2,
@@ -616,61 +413,39 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                           height: screenSize.height * 0.10,
                           width: screenSize.width * 0.72,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(10)),
                             color: kColorPrimary.withOpacity(0.3),
                           ),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 8, vertical: 5),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                  child: TextFormField(
-                                    controller: _controller,
-                                    cursorColor: Colors.black,
-                                    keyboardType: TextInputType.text,
-                                    onChanged: (value) {
-                                      // addCommentRequestModel.commentText =
-                                      //     value;
-                                    },
-                                    maxLines: 3,
-                                    style: (TextStyle(
-                                      color: Colors.black,
-                                    )),
-                                    decoration: InputDecoration(
-                                      //focusColor: kColorSecondary,
-                                      contentPadding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      floatingLabelBehavior:
-                                          FloatingLabelBehavior.always,
-                                      hintStyle: TextStyle(color: Colors.grey),
-                                      hintText: 'Type here.....',
-                                      border: InputBorder.none,
-                                      focusedBorder: InputBorder.none,
-                                      enabledBorder: InputBorder.none,
-                                      errorBorder: InputBorder.none,
-                                      disabledBorder: InputBorder.none,
-                                    ),
-                                  ),
-                                  flex: 4,
-                                ),
-                                // Expanded(
-                                //     child: IconButton(
-                                //         icon: Icon(
-                                //           Icons.attach_file,
-                                //           color: kColorPrimary,
-                                //           size: 35,
-                                //         ),
-                                //         onPressed: () {
-                                //           setState(() {
-                                //             if (attachFileButtonFlag == false) {
-                                //               attachFileButtonFlag = true;
-                                //             } else {
-                                //               attachFileButtonFlag = false;
-                                //             }
-                                //           });
-                                //         })),
-                              ],
+                            child: TextFormField(
+                              controller: _controller,
+                              cursorColor: Colors.black,
+                              keyboardType: TextInputType.text,
+                              onChanged: (value) {
+                                // addCommentRequestModel.commentText =
+                                //     value;
+                              },
+                              maxLines: 3,
+                              style: (const TextStyle(
+                                color: Colors.black,
+                              )),
+                              decoration: const InputDecoration(
+                                //focusColor: kColorSecondary,
+                                contentPadding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                hintStyle: TextStyle(color: Colors.grey),
+                                hintText: 'Type here.....',
+                                border: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                errorBorder: InputBorder.none,
+                                disabledBorder: InputBorder.none,
+                              ),
                             ),
                             // child: Row(
                             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -721,8 +496,7 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                           ),
                         ),
                         GestureDetector(
-                          onTap: () async {
-                            DateTime now = DateTime.now();
+                          onTap: () {
                             // DateTime date =
                             //     new DateTime(now.hour, now.minute, now.second);
                             //print(date);
@@ -731,18 +505,15 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
                           child: Container(
                             height: screenSize.height * 0.10,
                             width: screenSize.width * 0.15,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(10)),
                               color: kColorPrimary,
                             ),
-                            child: IconButton(
-                              icon: Icon(
-                                Icons.arrow_forward_ios,
-                                color: kColorWhite,
-                                size: 35,
-                              ),
-                              onPressed: null,
+                            child: const Icon(
+                              Icons.arrow_forward_ios,
+                              color: kColorWhite,
+                              size: 35,
                             ),
                           ),
                         ),
@@ -758,34 +529,49 @@ class _ChatPersonalScreenState extends State<ChatPersonalScreen> {
     );
   }
 
-  Future<void> onJoin() async {
-    // update input validation
-    setState(() {
-      // _channelController.text.isEmpty
-      //     ? _validateError = true
-      //     : _validateError = false;
-    });
-    //if (_channelController.text.isNotEmpty) {
-    //await for camera and mic permissions before pushing video page
-    // await _handleCameraAndMic(Permission.camera);
-    // await _handleCameraAndMic(Permission.microphone);
-    // push video page with given channel name
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) => CallPage(
-    //       channelName: 'p2p',
-    //       role: _role,
-    //     ),
-    //   ),
-    // );
+  // Future<void> onJoin() async {
+  //   // update input validation
+  //   setState(() {
+  //     // _channelController.text.isEmpty
+  //     //     ? _validateError = true
+  //     //     : _validateError = false;
+  //   });
+  //   //if (_channelController.text.isNotEmpty) {
+  //   //await for camera and mic permissions before pushing video page
+  //   // await _handleCameraAndMic(Permission.camera);
+  //   // await _handleCameraAndMic(Permission.microphone);
+  //   // push video page with given channel name
+  //   // await Navigator.push(
+  //   //   context,
+  //   //   MaterialPageRoute(
+  //   //     builder: (context) => CallPage(
+  //   //       channelName: 'p2p',
+  //   //       role: _role,
+  //   //     ),
+  //   //   ),
+  //   // );
+  // }
+
+  Future<void> postChatNotify(String senderID, String receiverID) async {
+    ChatNotifyUserModel chatNotifyUserModel =
+        ChatNotifyUserModel(senderID: senderID, receiverID: receiverID);
+    try {
+      String url = '${AppGlobal.baseURL}admin/notify-user';
+
+      dynamic response =
+          await WebServices.apiPostToJson(url, chatNotifyUserModel);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
   }
 }
 
-Future<void> _handleCameraAndMic(Permission permission) async {
-  final status = await permission.request();
-  print(status);
-}
+// Future<void> _handleCameraAndMic(Permission permission) async {
+//   final status = await permission.request();
+//   print(status);
+// }
 
 class MessageWidgetSelector extends StatelessWidget {
   MessageWidgetSelector({

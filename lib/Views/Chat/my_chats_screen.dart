@@ -63,65 +63,68 @@ class _ChatScreenState extends State<ChatScreen> {
                 final senderName = contact["sender_name"];
                 final receiverUrl = contact["receiver_url"];
                 final senderUrl = contact["sender_url"];
-                final DateTime dateTime = contact["time_stamp"].toDate();
-                //print(dateTime);
-                // 12/31/2000, 10:00 PM
-                //print(contact.reference.id);
-                final String roomId = contact.reference.id;
-                // var dt = DateTime.fromMillisecondsSinceEpoch(dateTime);
-                var msgTime = DateFormat('hh:mm a / dd-MM-yy').format(dateTime);
-                print(msgTime);
-                // final group_id = ["group_id"];
-                // final type = ["type"];
+                if (contact["time_stamp"] != null) {
+                  final DateTime dateTime = contact["time_stamp"].toDate();
+                  //print(dateTime);
+                  // 12/31/2000, 10:00 PM
+                  //print(contact.reference.id);
+                  final String roomId = contact.reference.id;
+                  // var dt = DateTime.fromMillisecondsSinceEpoch(dateTime);
+                  var msgTime =
+                      DateFormat('hh:mm a / dd-MM-yy').format(dateTime);
+                  print(msgTime);
+                  // final group_id = ["group_id"];
+                  // final type = ["type"];
 
-                // msgTime = DateFormat('hh:mm a / dd-MM-yy')
-                //     .format(DateTime.parse(d.toString()))
-                //     .toString();
+                  // msgTime = DateFormat('hh:mm a / dd-MM-yy')
+                  //     .format(DateTime.parse(d.toString()))
+                  //     .toString();
 
-                // String convertedDateTime =
-                //     "${dateTime.hour.toString()}-${dateTime.minute.toString()}";
-                // DateTime hours =
-                //     new DateTime(dateTime.hour);
-                // DateTime minutes =
-                //     new DateTime(dateTime.minute);
-                documnetIndex = documnetIndex + 1;
+                  // String convertedDateTime =
+                  //     "${dateTime.hour.toString()}-${dateTime.minute.toString()}";
+                  // DateTime hours =
+                  //     new DateTime(dateTime.hour);
+                  // DateTime minutes =
+                  //     new DateTime(dateTime.minute);
+                  documnetIndex = documnetIndex + 1;
 
-                if (receiverId == AppGlobal.userID) {
-                  final messagePersonsWidget = PersonIdentifierWidget(
-                    screenSize: screenSize,
-                    pName: senderName,
-                    pPhoto: senderUrl ?? '',
-                    userId: senderId,
-                    roomId: roomId,
-                    documnetIndex: documnetIndex,
-                    followingFollowers: false,
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ChatPersonalScreen(
-                            senderName: receiverName,
-                            receiverUserId: receiverId,
-                            documnetIndex: documnetIndex,
-                            roomId: roomId,
+                  if (receiverId == AppGlobal.userID) {
+                    final messagePersonsWidget = PersonIdentifierWidget(
+                      screenSize: screenSize,
+                      pName: senderName,
+                      pPhoto: senderUrl ?? '',
+                      userId: senderId,
+                      roomId: roomId,
+                      documnetIndex: documnetIndex,
+                      followingFollowers: false,
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => ChatPersonalScreen(
+                              senderName: receiverName,
+                              receiverUserId: receiverId,
+                              documnetIndex: documnetIndex,
+                              roomId: roomId,
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    time: msgTime,
-                  );
-                  messagePersonsWidgets.add(messagePersonsWidget);
-                } else if (senderId == AppGlobal.userID) {
-                  final messagePersonsWidget = PersonIdentifierWidget(
-                    screenSize: screenSize,
-                    pName: receiverName,
-                    pPhoto: receiverUrl,
-                    userId: receiverId,
-                    roomId: roomId,
-                    documnetIndex: documnetIndex,
-                    followingFollowers: false,
-                    time: msgTime,
-                  );
-                  messagePersonsWidgets.add(messagePersonsWidget);
+                        );
+                      },
+                      time: msgTime,
+                    );
+                    messagePersonsWidgets.add(messagePersonsWidget);
+                  } else if (senderId == AppGlobal.userID) {
+                    final messagePersonsWidget = PersonIdentifierWidget(
+                      screenSize: screenSize,
+                      pName: receiverName,
+                      pPhoto: receiverUrl,
+                      userId: receiverId,
+                      roomId: roomId,
+                      documnetIndex: documnetIndex,
+                      followingFollowers: false,
+                      time: msgTime,
+                    );
+                    messagePersonsWidgets.add(messagePersonsWidget);
+                  }
                 }
               }
               return Expanded(

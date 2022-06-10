@@ -336,7 +336,6 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
                         .format(DateTime.parse(
                             orderDetailsResponse.orderDetails[i].OrderDate!))
                         .toString();
-                print('||||||||||222');
 
                 for (int j = 0;
                     j <
