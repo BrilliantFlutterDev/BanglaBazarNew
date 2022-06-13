@@ -346,4 +346,8 @@ class Repository {
   }) async =>
       CartProvider.updatePaymentStatus(id: id, status: status);
   Future getInAppNotifications() async => CartProvider.getInAppNotifications();
+  Future updateInAppNotifications({
+    required String id,
+  }) async =>
+      CartProvider.updateInAppNotifications(id: id);
 }

@@ -266,6 +266,20 @@ class CartProvider extends BaseProvider {
     }
   }
 
+  static Future updateInAppNotifications({
+    required String id,
+  }) async {
+    try {
+      String url = '${AppGlobal.baseURL}admin/update-notifications/$id';
+
+      dynamic response = await WebServices.apiGetAuthenticationBearerToken(url);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   static Future getInAppNotifications() async {
     try {
       String url = '${AppGlobal.baseURL}admin/notifications';

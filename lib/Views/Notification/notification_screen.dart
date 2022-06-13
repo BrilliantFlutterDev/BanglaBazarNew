@@ -60,7 +60,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             fontSize: 12.0);
       } else if (state is InAppNotificationsState) {
         inAppNotificationsResponse = state.inAppNotificationsResponse;
-      }
+      } else if (state is UpdateInAppNotificationsState) {}
     }, builder: (context, state) {
       return ModalProgressHUD(
         inAsyncCall: state is LoadingState,
@@ -142,6 +142,15 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                       itemBuilder: (context, i) {
                                         return InkWell(
                                           onTap: () {
+                                            _notificationBloc.add(
+                                                UpdateInAppNotifications(
+                                                    id: inAppNotificationsResponse!
+                                                        .notifications[i]
+                                                        .NotificationID
+                                                        .toString()));
+                                            inAppNotificationsResponse!
+                                                .notifications[i]
+                                                .NotificationStatus = 'read';
                                             if (inAppNotificationsResponse!
                                                         .notifications[i]
                                                         .orderNumber !=

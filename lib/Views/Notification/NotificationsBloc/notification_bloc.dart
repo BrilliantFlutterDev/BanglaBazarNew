@@ -6,6 +6,7 @@ import 'package:bangla_bazar/ModelClasses/in_app_notification_body_type6.dart';
 import 'package:bangla_bazar/ModelClasses/in_app_notifications.dart';
 import 'package:bangla_bazar/ModelClasses/in_app_notifications_response.dart';
 import 'package:bangla_bazar/ModelClasses/sigin_model.dart';
+import 'package:bangla_bazar/ModelClasses/update_notification_response.dart';
 
 import 'package:bangla_bazar/Repository/repository.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
@@ -84,6 +85,34 @@ class NotificationBloc extends Bloc<NotificationEvent, NotificationState> {
             if (inAppNotificationsResponse.status == true) {
               yield InAppNotificationsState(
                   inAppNotificationsResponse: inAppNotificationsResponse);
+            } else {
+              yield ErrorState(error: 'Notification error');
+            }
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid credentials');
+        }
+      }
+    } else if (event is UpdateInAppNotifications) {
+      yield LoadingState();
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response =
+              await Repository().updateInAppNotifications(id: event.id);
+          //print('Bloc Response: ${jsonDecode(response.toString())}');
+
+          if (response != null) {
+            UpdateNotificationResponse updateNotificationResponse =
+                UpdateNotificationResponse.fromJson(
+                    jsonDecode(response.toString()));
+
+            if (updateNotificationResponse.status == true) {
+              yield UpdateInAppNotificationsState();
             } else {
               yield ErrorState(error: 'Notification error');
             }

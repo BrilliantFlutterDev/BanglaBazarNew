@@ -40,7 +40,7 @@ class Notifications {
   late final String ProfilePic;
   late final int NotificationID;
   late final DateTime LastUpdate;
-  late final String NotificationStatus;
+  late String NotificationStatus;
   String? message;
   String? orderNumber;
   String? formatedTime;

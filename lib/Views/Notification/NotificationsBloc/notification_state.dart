@@ -21,3 +21,7 @@ class InAppNotificationsState extends NotificationState {
   final InAppNotificationsResponse inAppNotificationsResponse;
   InAppNotificationsState({required this.inAppNotificationsResponse});
 }
+
+class UpdateInAppNotificationsState extends NotificationState {
+  UpdateInAppNotificationsState();
+}

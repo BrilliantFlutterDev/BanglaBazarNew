@@ -11,6 +11,7 @@ class GetOrderDetailsResponse {
   OrderShippingDetail? orderShippingDetail;
   DeliveryDriverDetails? deliveryDriverDetails;
   GetStorePickupDetails? getStorePickupDetails;
+  late final UserDetails userDetails;
 
   GetOrderDetailsResponse.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -24,6 +25,7 @@ class GetOrderDetailsResponse {
     getStorePickupDetails = json['getStorePickupDetails'] != null
         ? GetStorePickupDetails.fromJson(json['getStorePickupDetails'])
         : null;
+    userDetails = UserDetails.fromJson(json['userDetails']);
   }
 
   Map<String, dynamic> toJson() {
@@ -33,6 +35,7 @@ class GetOrderDetailsResponse {
     _data['orderShippingDetail'] = orderShippingDetail!.toJson();
     _data['deliveryDriverDetails'] = deliveryDriverDetails!.toJson();
     _data['getStorePickupDetails'] = getStorePickupDetails!.toJson();
+    _data['userDetails'] = userDetails.toJson();
     return _data;
   }
 }
@@ -693,6 +696,35 @@ class GetStorePickupDetails {
     _data['Active'] = Active;
     _data['LastUpdate'] = LastUpdate;
     _data['AdminNote'] = AdminNote;
+    return _data;
+  }
+}
+
+class UserDetails {
+  UserDetails({
+    required this.OrderNumber,
+    required this.UserID,
+    required this.UserName,
+    required this.ProfilePic,
+  });
+  late final String OrderNumber;
+  late final int UserID;
+  late final String UserName;
+  late final String ProfilePic;
+
+  UserDetails.fromJson(Map<String, dynamic> json) {
+    OrderNumber = json['OrderNumber'];
+    UserID = json['UserID'];
+    UserName = json['UserName'];
+    ProfilePic = json['ProfilePic'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['OrderNumber'] = OrderNumber;
+    _data['UserID'] = UserID;
+    _data['UserName'] = UserName;
+    _data['ProfilePic'] = ProfilePic;
     return _data;
   }
 }

@@ -5,6 +5,7 @@ import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
+import 'package:bangla_bazar/Views/Chat/personal_chat_screen.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
@@ -1277,6 +1278,121 @@ class _OrderDetailsState extends State<OrderDetails> {
                               getOrderDetailsResponse!
                                           .orderDetails.AllowStorePickup ==
                                       'N'
+                                  ? const SizedBox(
+                                      height: 30,
+                                    )
+                                  : const SizedBox(),
+                              getOrderDetailsResponse!.deliveryDriverDetails !=
+                                      null
+                                  ? Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        const Text(
+                                          ' ',
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16),
+                                        ),
+                                        InkWell(
+                                          onTap: () {
+                                            if (widget.previousPage ==
+                                                'UserMyOrders') {
+                                              ///Needs customer info
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPersonalScreen(
+                                                    senderName:
+                                                        getOrderDetailsResponse!
+                                                            .userDetails
+                                                            .UserName,
+                                                    senderPic:
+                                                        getOrderDetailsResponse!
+                                                            .userDetails
+                                                            .ProfilePic,
+                                                    receiverUserId:
+                                                        getOrderDetailsResponse!
+                                                            .userDetails.UserID,
+                                                    documnetIndex: 0,
+                                                  ),
+                                                ),
+                                              );
+                                            } else {
+                                              if (getOrderDetailsResponse!
+                                                      .deliveryDriverDetails!
+                                                      .DeliveryDriverID !=
+                                                  AppGlobal.userID) {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        ChatPersonalScreen(
+                                                      senderName:
+                                                          getOrderDetailsResponse!
+                                                              .deliveryDriverDetails!
+                                                              .UserName,
+                                                      senderPic:
+                                                          getOrderDetailsResponse!
+                                                              .deliveryDriverDetails!
+                                                              .ProfilePic,
+                                                      receiverUserId:
+                                                          getOrderDetailsResponse!
+                                                              .deliveryDriverDetails!
+                                                              .DeliveryDriverID,
+                                                      documnetIndex: 0,
+                                                    ),
+                                                  ),
+                                                );
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                    msg:
+                                                        'This order is assigned to you, so you can\'t chat with your self.',
+                                                    toastLength:
+                                                        Toast.LENGTH_LONG,
+                                                    gravity:
+                                                        ToastGravity.BOTTOM,
+                                                    timeInSecForIosWeb: 1,
+                                                    backgroundColor:
+                                                        Colors.grey.shade400,
+                                                    textColor: Colors.white,
+                                                    fontSize: 12.0);
+                                              }
+                                            }
+                                          },
+                                          child: Row(
+                                            children: [
+                                              const Icon(
+                                                MyFlutterApp.chat_ic,
+                                                size: 16,
+                                                color: kColorPrimary,
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              widget.previousPage ==
+                                                      'UserMyOrders'
+                                                  ? const Text(
+                                                      'Chat with driver',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color:
+                                                              kColorDarkGreyText),
+                                                    )
+                                                  : const Text(
+                                                      'Chat with customer',
+                                                      style: TextStyle(
+                                                          fontSize: 14,
+                                                          color:
+                                                              kColorDarkGreyText),
+                                                    ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                  : const SizedBox(),
+                              getOrderDetailsResponse!.deliveryDriverDetails !=
+                                      null
                                   ? const SizedBox(
                                       height: 30,
                                     )
