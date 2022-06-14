@@ -5,6 +5,7 @@ import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.da
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginscreen.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/sign_up_screen.dart';
 import 'package:bangla_bazar/Views/Cart/CartBloc/cart_bloc.dart';
+import 'package:bangla_bazar/Views/Chat/my_chats_screen.dart';
 import 'package:bangla_bazar/Views/DeliveryViews/delivery_registration_screen1.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
 import 'package:bangla_bazar/Views/MyOrders/order_details_screen.dart';
@@ -42,7 +43,7 @@ Future<void> main() async {
 
   ///Local Notifications Setup
   var initializationSettingsAndroid =
-      AndroidInitializationSettings('launcher_icon');
+      const AndroidInitializationSettings('launcher_icon');
   var initializationSettingsIOS = IOSInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -163,6 +164,8 @@ class _MyAppState extends State<MyApp> {
             } else {
               routeMessage = '/notificationScreen';
             }
+          } else if (routeMessage == '3') {
+            routeMessage = '/chatScreen';
           } else {
             routeMessage = '/loginPage';
           }
@@ -194,15 +197,17 @@ class _MyAppState extends State<MyApp> {
           } else {
             routeMessage = '/notificationScreen';
           }
+        } else if (routeMessage == '3') {
+          routeMessage = '/chatScreen';
         } else {
           routeMessage = '/loginPage';
         }
 
         // navigatorKey.currentState.pushNamed(routeMessage);
         if (AppGlobal.userID != -1) {
-          navigatorKey!.currentState!.pushReplacementNamed(routeMessage);
+          navigatorKey!.currentState!.pushNamed(routeMessage);
         } else {
-          navigatorKey!.currentState!.pushReplacementNamed('/loginPage');
+          navigatorKey!.currentState!.pushNamed('/loginPage');
         }
       });
 
@@ -276,9 +281,9 @@ class _MyAppState extends State<MyApp> {
         print(payload);
         print(routeMessage);
         if (AppGlobal.userID != -1) {
-          navigatorKey!.currentState!.pushReplacementNamed(routeMessage);
+          navigatorKey!.currentState!.pushNamed(routeMessage);
         } else {
-          navigatorKey!.currentState!.pushReplacementNamed('/loginPage');
+          navigatorKey!.currentState!.pushNamed('/loginPage');
         }
       }
     });
@@ -338,19 +343,20 @@ class _MyAppState extends State<MyApp> {
               ),
           '/driverRegistrationScreen': (BuildContext context) =>
               const DeliveryRegistrationScreen1(),
+          '/chatScreen': (BuildContext context) => const ChatScreen(),
         },
       ),
     );
   }
 
   void selectNotification(String payload) async {
-    print('Clicked');
+    print('Clicked12');
     print(payload);
     print(routeMessage);
     if (AppGlobal.userID != -1) {
-      navigatorKey!.currentState!.pushReplacementNamed(routeMessage);
+      navigatorKey!.currentState!.pushNamed(routeMessage);
     } else {
-      navigatorKey!.currentState!.pushReplacementNamed('/loginPage');
+      navigatorKey!.currentState!.pushNamed('/loginPage');
     }
   }
 

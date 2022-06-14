@@ -77,6 +77,7 @@ class _BangladeshCheckoutPaymentScreenState
         widget.productsAndUserCitiesAreSame == false) {
       deliveryStatus = 'usps';
     }
+    print('>>>>>>>>>>>>>>>>Delivery Status: $deliveryStatus');
     initializePaymentProcess();
   }
 

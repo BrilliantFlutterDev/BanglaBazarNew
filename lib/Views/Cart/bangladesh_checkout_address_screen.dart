@@ -214,6 +214,7 @@ class _BangladeshCheckoutAddressScreenState
           double.parse(widget.cartDetailsResponse.productCartList[i].Weight!);
       if (widget.cartDetailsResponse.productCartList[i].City !=
           widget.cartDetailsResponse.productCartList[0].City) {
+        print('>>>>>>>>111');
         productsAndUserCitiesAreSame = false;
       }
     }
@@ -352,10 +353,12 @@ class _BangladeshCheckoutAddressScreenState
                                       .deliveryDriverStatus ==
                                   false) {
                                 productsAndUserCitiesAreSame = false;
+                                print('>>>>>>>>112');
                               } else if (checkDeliveryDriverResponse!
                                       .deliveryDriverStatus ==
                                   true) {
                                 productsAndUserCitiesAreSame = true;
+                                print('>>>>>>>>113');
                               }
                             }
 
@@ -563,10 +566,12 @@ class _BangladeshCheckoutAddressScreenState
                                       .deliveryDriverStatus ==
                                   false) {
                                 productsAndUserCitiesAreSame = false;
+                                print('>>>>>>>>114');
                               } else if (checkDeliveryDriverResponse!
                                       .deliveryDriverStatus ==
                                   true) {
                                 productsAndUserCitiesAreSame = true;
+                                print('>>>>>>>>115');
                               }
                             }
 
@@ -890,10 +895,12 @@ class _BangladeshCheckoutAddressScreenState
                                               .deliveryDriverStatus ==
                                           false) {
                                         productsAndUserCitiesAreSame = false;
+                                        print('>>>>>>>>116');
                                       } else if (checkDeliveryDriverResponse!
                                               .deliveryDriverStatus ==
                                           true) {
                                         productsAndUserCitiesAreSame = true;
+                                        print('>>>>>>>>117');
                                       }
                                     }
 
@@ -1142,10 +1149,12 @@ class _BangladeshCheckoutAddressScreenState
                                       .deliveryDriverStatus ==
                                   false) {
                                 productsAndUserCitiesAreSame = false;
+                                print('>>>>>>>>118');
                               } else if (checkDeliveryDriverResponse!
                                       .deliveryDriverStatus ==
                                   true) {
                                 productsAndUserCitiesAreSame = true;
+                                print('>>>>>>>>119');
                               }
                             }
 
@@ -2505,6 +2514,13 @@ class _BangladeshCheckoutAddressScreenState
                                                               index]
                                                           .PathaoCityID;
 
+                                                  print(
+                                                      '>>>>>>>>>>>>>>>>>>>>Product City: ${widget.cartDetailsResponse.productCartList[0].City}');
+                                                  print(
+                                                      '>>>>>>>>>>>>>>>>>>>>Delivey selected City: $selectedDeliveryCity');
+                                                  print(
+                                                      '>>>>>>>>>>>>>>>>>>>>Product and user cities are same: $productsAndUserCitiesAreSame');
+
                                                   ///
                                                   if (selectedDeliveryCityId !=
                                                       0) {
@@ -2515,6 +2531,7 @@ class _BangladeshCheckoutAddressScreenState
                                                             .City) {
                                                       productsAndUserCitiesAreSame =
                                                           false;
+                                                      print('>>>>>>>>110');
                                                     }
                                                     if (productsAndUserCitiesAreSame ==
                                                         true) {
@@ -3149,12 +3166,27 @@ class _BangladeshCheckoutAddressScreenState
                                               valueItem.cityId;
                                           selectedTempCityIdDelivery =
                                               valueItem.DBCityID;
+                                          print(
+                                              '>>>>>>>>>>>>>>>>>>>>Product City: ${widget.cartDetailsResponse.productCartList[0].City}');
+                                          print(
+                                              '>>>>>>>>>>>>>>>>>>>>Delivey selected City: $selectedDeliveryCity');
+                                          print(
+                                              '>>>>>>>>>>>>>>>>>>>>Product and user cities are same: $productsAndUserCitiesAreSame');
+                                          print(
+                                              '>>>>>>>>>>>>>>>>>>>>Condition: --${selectedDeliveryCity.toLowerCase().trim()}=${widget.cartDetailsResponse.productCartList[0].City?.toLowerCase().trim()}--');
                                           if (selectedDeliveryCityId != 0) {
-                                            if (selectedDeliveryCity !=
+                                            if (selectedDeliveryCity
+                                                    .toLowerCase()
+                                                    .trim() !=
                                                 widget.cartDetailsResponse
-                                                    .productCartList[0].City) {
+                                                    .productCartList[0].City
+                                                    ?.toLowerCase()
+                                                    .trim()) {
+                                              print(
+                                                  '>>>>>>>>>>>>>>>Cities are not same');
                                               productsAndUserCitiesAreSame =
                                                   false;
+                                              print('>>>>>>>>101');
                                             }
                                             if (productsAndUserCitiesAreSame ==
                                                 true) {

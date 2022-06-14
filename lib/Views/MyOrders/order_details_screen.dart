@@ -1298,27 +1298,6 @@ class _OrderDetailsState extends State<OrderDetails> {
                                           onTap: () {
                                             if (widget.previousPage ==
                                                 'UserMyOrders') {
-                                              ///Needs customer info
-                                              Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      ChatPersonalScreen(
-                                                    senderName:
-                                                        getOrderDetailsResponse!
-                                                            .userDetails
-                                                            .UserName,
-                                                    senderPic:
-                                                        getOrderDetailsResponse!
-                                                            .userDetails
-                                                            .ProfilePic,
-                                                    receiverUserId:
-                                                        getOrderDetailsResponse!
-                                                            .userDetails.UserID,
-                                                    documnetIndex: 0,
-                                                  ),
-                                                ),
-                                              );
-                                            } else {
                                               if (getOrderDetailsResponse!
                                                       .deliveryDriverDetails!
                                                       .DeliveryDriverID !=
@@ -1357,6 +1336,26 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                     textColor: Colors.white,
                                                     fontSize: 12.0);
                                               }
+                                            } else {
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      ChatPersonalScreen(
+                                                    senderName:
+                                                        getOrderDetailsResponse!
+                                                            .userDetails
+                                                            .UserName,
+                                                    senderPic:
+                                                        getOrderDetailsResponse!
+                                                            .userDetails
+                                                            .ProfilePic,
+                                                    receiverUserId:
+                                                        getOrderDetailsResponse!
+                                                            .userDetails.UserID,
+                                                    documnetIndex: 0,
+                                                  ),
+                                                ),
+                                              );
                                             }
                                           },
                                           child: Row(
