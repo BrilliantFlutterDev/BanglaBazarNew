@@ -18,7 +18,7 @@ class HomePage extends StatefulWidget {
   late RouteArgument routeArgument;
 
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  Widget currentPage = HomeBody();
+  Widget currentPage = const HomeBody();
 
   // final String name;
   // final String userName;

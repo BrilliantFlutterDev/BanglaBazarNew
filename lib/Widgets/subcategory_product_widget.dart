@@ -68,7 +68,7 @@ class _SubCategoryProductWidgetState extends State<SubCategoryProductWidget> {
           ),
         ),
         Container(
-          height: widget.screenSize.height * 0.09,
+          height: widget.screenSize.height * 0.1,
           width: widget.screenSize.width * 0.22,
           decoration: const BoxDecoration(
               //color: kColorWidgetBackgroundColor,

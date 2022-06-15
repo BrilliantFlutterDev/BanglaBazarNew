@@ -155,7 +155,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             backgroundColor: Colors.grey.shade400,
             textColor: Colors.white,
             fontSize: 12.0);
-        setState(() {});
+        _loginBloc.add(RefreshEvent());
       } else if (state is SignUpSuccess) {
         Fluttertoast.showToast(
             msg: 'User information updated successfully',
@@ -166,8 +166,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             textColor: Colors.white,
             fontSize: 12.0);
         Navigator.pop(context);
+      } else if (state is RefreshState) {
       } else if (state is EmailCheckedSuccess) {
-        print(dateOfBirthController.text);
         if (AppGlobal.emailVerified == 'Y') {
           if (validateEmail()) {
             _loginBloc.add(UpdateUser(
@@ -501,9 +501,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     child: Text(valueItem),
                                     value: valueItem,
                                     onTap: () {
-                                      setState(() {
-                                        genderValueChoose = valueItem;
-                                      });
+                                      genderValueChoose = valueItem;
+
+                                      _loginBloc.add(RefreshEvent());
                                     },
                                   );
                                 }).toList(),
@@ -585,7 +585,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       } else {
                                         AppGlobal.phoneChangeVerify = true;
                                       }
-                                      setState(() {});
+                                      _loginBloc.add(RefreshEvent());
                                     },
                                     style: const TextStyle(
                                         color: kColorDarkGreyText),
@@ -735,9 +735,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     child: Text(valueItem),
                                     value: valueItem,
                                     onTap: () {
-                                      setState(() {
-                                        statusValueChoose = valueItem;
-                                      });
+                                      statusValueChoose = valueItem;
+
+                                      _loginBloc.add(RefreshEvent());
                                     },
                                   );
                                 }).toList(),
@@ -781,7 +781,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                   } else {
                                     AppGlobal.emailChangeVerified = true;
                                   }
-                                  setState(() {});
+                                  _loginBloc.add(RefreshEvent());
                                 },
                                 style:
                                     const TextStyle(color: kColorDarkGreyText),
@@ -947,9 +947,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   Future<void> _askPermission() async {
     PermissionStatus permissionStatus = await _getPermission();
-    if (permissionStatus == PermissionStatus.granted) {
-      print('Permission granted');
-    }
+    if (permissionStatus == PermissionStatus.granted) {}
   }
 
   Future<PermissionStatus> _getPermission() async {
@@ -986,11 +984,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         userid: AppGlobal.userID.toString(),
         selectedImage: _image,
       ));
-
-      print('Image Path: $_image');
-    } else {
-      print('No image selected.');
-    }
+    } else {}
   }
 
   void cameraBottomNavigationSheet() {
@@ -1115,11 +1109,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
     if (date != null) {
       pickedDate = date;
-
-      print('picked Date' + pickedDate.toString());
       dateOfBirthController.text =
           DateFormat('yyyy-MM-dd').format(pickedDate).toString();
-      setState(() {});
+      _loginBloc.add(RefreshEvent());
     }
   }
 
@@ -1138,7 +1130,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 if (deliveryPhone == false) {
                   _chooseCountryCode = '+' + country.phoneCode;
                 }
-                setState(() {});
+                _loginBloc.add(RefreshEvent());
               },
 
               itemFilter: (c) => allowedCountriesISO2List.contains(c.isoCode),
@@ -1149,6 +1141,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               // ],
             ),
           ));
+
   Widget _buildDialogItem(country) => Row(
         children: <Widget>[
           CountryPickerUtils.getDefaultFlagImage(country),

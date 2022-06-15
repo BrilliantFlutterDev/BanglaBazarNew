@@ -16,7 +16,6 @@ import 'package:bangla_bazar/Views/Product/trending_for_you_screen.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
 import 'package:bangla_bazar/Widgets/product_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -27,9 +26,6 @@ import 'package:bangla_bazar/ModelClasses/product_details_response.dart'
     as productDetails;
 
 class HomeBody extends StatefulWidget {
-  //static const String id = 'chatscreen';
-  //GlobalKey<ScaffoldState> parentScaffoldKey;
-
   const HomeBody({
     Key? key,
   }) : super(key: key);
@@ -48,8 +44,6 @@ class _HomeBodyState extends State<HomeBody> {
 
   late cart.AddToCartModel addToCartModel = cart.AddToCartModel();
   productDetails.ProductDetailsResponse? productDetailsResponse;
-
-  int _current = 0;
 
   List<String> statusList = ['Bangladesh', 'United States'];
   late String statusValueChoose;
@@ -76,7 +70,6 @@ class _HomeBodyState extends State<HomeBody> {
     var wifiIP = await WifiInfo().getWifiIP();
     if (wifiIP != null) {
       AppGlobal.ipAddress = wifiIP;
-      print('>>>>>>>Device IP Address: ${AppGlobal.ipAddress}');
     }
   }
 
@@ -509,20 +502,20 @@ class _HomeBodyState extends State<HomeBody> {
                               'Most Popular Products',
                               style: TextStyle(fontSize: 18),
                             ),
-                            homePageApiResponse != null
-                                ? homePageApiResponse!
-                                        .mostPopularProducts.isNotEmpty
-                                    ? InkWell(
-                                        onTap: () {},
-                                        child: const Text(
-                                          'See all',
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: kColorDarkGreyText),
-                                        ),
-                                      )
-                                    : const SizedBox()
-                                : const SizedBox(),
+                            // homePageApiResponse != null
+                            //     ? homePageApiResponse!
+                            //             .mostPopularProducts.isNotEmpty
+                            //         ? InkWell(
+                            //             onTap: () {},
+                            //             child: const Text(
+                            //               'See all',
+                            //               style: TextStyle(
+                            //                   fontSize: 12,
+                            //                   color: kColorDarkGreyText),
+                            //             ),
+                            //           )
+                            //         : const SizedBox()
+                            //     : const SizedBox(),
                           ],
                         ),
                         const SizedBox(
@@ -782,6 +775,8 @@ class _HomeBodyState extends State<HomeBody> {
                                       );
                                     },
                                     child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
                                       children: [
                                         Container(
                                           width: 85,
@@ -833,6 +828,7 @@ class _HomeBodyState extends State<HomeBody> {
                                                       index]
                                                   .categoryDetails
                                                   .Category,
+                                          textAlign: TextAlign.center,
                                           style: const TextStyle(
                                               color: Colors.black,
                                               fontSize: 14),

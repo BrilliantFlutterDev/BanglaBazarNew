@@ -347,13 +347,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                 children: [
                                   InkWell(
                                     onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => EditProfileScreen(
-                                      //         previousPage: '',
-                                      //       )),
-                                      // );
+                                      Navigator.pushAndRemoveUntil(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (BuildContext context) =>
+                                                  HomePage(
+                                                    currentTab: 2,
+                                                  )),
+                                          (Route<dynamic> route) => false);
                                     },
                                     child: Container(
                                         width: 35,
@@ -374,38 +375,38 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                           size: 18,
                                         )),
                                   ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => EditProfileScreen(
-                                      //         previousPage: '',
-                                      //       )),
-                                      // );
-                                    },
-                                    child: Container(
-                                        width: 35,
-                                        height: 35,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kColorWidgetBackgroundColor,
-                                          // border: Border.all(
-                                          //     color: kColorDarkGreyText, width: 3),
-                                          // image: DecorationImage(
-                                          //   image: Image.asset("assets/icons/eyeicon.png",),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: const Icon(
-                                          Icons.search,
-                                          color: kColorDarkGreyText,
-                                          size: 18,
-                                        )),
-                                  )
+                                  // const SizedBox(
+                                  //   width: 10,
+                                  // ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     // Navigator.push(
+                                  //     //   context,
+                                  //     //   MaterialPageRoute(
+                                  //     //       builder: (context) => EditProfileScreen(
+                                  //     //         previousPage: '',
+                                  //     //       )),
+                                  //     // );
+                                  //   },
+                                  //   child: Container(
+                                  //       width: 35,
+                                  //       height: 35,
+                                  //       decoration: const BoxDecoration(
+                                  //         shape: BoxShape.circle,
+                                  //         color: kColorWidgetBackgroundColor,
+                                  //         // border: Border.all(
+                                  //         //     color: kColorDarkGreyText, width: 3),
+                                  //         // image: DecorationImage(
+                                  //         //   image: Image.asset("assets/icons/eyeicon.png",),
+                                  //         //   fit: BoxFit.cover,
+                                  //         // ),
+                                  //       ),
+                                  //       child: const Icon(
+                                  //         Icons.search,
+                                  //         color: kColorDarkGreyText,
+                                  //         size: 18,
+                                  //       )),
+                                  // )
                                 ],
                               ),
                             ],

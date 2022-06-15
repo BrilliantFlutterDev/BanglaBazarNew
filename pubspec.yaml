@@ -73,6 +73,9 @@ dependencies:
   flutter_stripe: ^2.5.0
   http: ^0.13.4
 
+  #Needs to be configure on ios side
+  share_plus: ^4.0.8
+
 
 dev_dependencies:
   flutter_test:

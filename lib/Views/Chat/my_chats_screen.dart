@@ -55,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
               }
               final messagePersons = snapshots.data!.docs;
               List<PersonIdentifierWidget> messagePersonsWidgets = [];
-              int documnetIndex = 0;
+              int documentIndex = 0;
               for (var contact in messagePersons) {
                 final receiverId = contact["receiver_id"];
                 final senderId = contact["sender_id"];
@@ -86,7 +86,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   //     new DateTime(dateTime.hour);
                   // DateTime minutes =
                   //     new DateTime(dateTime.minute);
-                  documnetIndex = documnetIndex + 1;
+                  documentIndex = documentIndex + 1;
 
                   if (receiverId == AppGlobal.userID) {
                     final messagePersonsWidget = PersonIdentifierWidget(
@@ -95,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       pPhoto: senderUrl ?? '',
                       userId: senderId,
                       roomId: roomId,
-                      documnetIndex: documnetIndex,
+                      documnetIndex: documentIndex,
                       followingFollowers: false,
                       onPressed: () {
                         Navigator.of(context).push(
@@ -103,7 +103,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             builder: (context) => ChatPersonalScreen(
                               senderName: receiverName,
                               receiverUserId: receiverId,
-                              documnetIndex: documnetIndex,
+                              documnetIndex: documentIndex,
                               roomId: roomId,
                             ),
                           ),
@@ -119,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       pPhoto: receiverUrl,
                       userId: receiverId,
                       roomId: roomId,
-                      documnetIndex: documnetIndex,
+                      documnetIndex: documentIndex,
                       followingFollowers: false,
                       time: msgTime,
                     );

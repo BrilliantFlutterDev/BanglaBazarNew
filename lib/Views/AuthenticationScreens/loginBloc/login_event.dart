@@ -2,6 +2,10 @@ part of 'login_bloc.dart';
 
 abstract class LoginEvent {}
 
+class RefreshEvent extends LoginEvent {
+  RefreshEvent();
+}
+
 class LoginUser extends LoginEvent {
   final String username;
   final String password;

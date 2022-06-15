@@ -162,7 +162,7 @@ class _CategoriesState extends State<Categories> {
                                             ),
                                             errorWidget:
                                                 (context, url, error) =>
-                                                    Icon(Icons.error),
+                                                    const Icon(Icons.error),
                                           ),
                                         ),
                                       ),
@@ -177,7 +177,8 @@ class _CategoriesState extends State<Categories> {
                                               .categoriesAndSubCategories[index]
                                               .categoryDetails
                                               .Category,
-                                      style: TextStyle(
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
                                           color: Colors.black, fontSize: 14),
                                     )
                                   ],

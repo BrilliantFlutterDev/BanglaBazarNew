@@ -47,157 +47,150 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(
     LoginEvent event,
   ) async* {
-    if (event is LoginUser) {
+    if (event is RefreshEvent) {
+      yield RefreshState();
+    } else if (event is LoginUser) {
       yield LoadingState();
-      if (event.username.isEmpty) {
-        yield ErrorState(error: '');
-      } else if (event.password.isEmpty) {
-        yield ErrorState(error: '');
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
       } else {
-        var isInternetConnected = await checkInternetConnectivity();
-        if (isInternetConnected == false) {
-          yield InternetErrorState(error: 'Internet not connected');
-        } else {
-          try {
-            dynamic response = await Repository().login(
-                username: event.username,
-                password: event.password,
-                rememberMe: event.rememberMe == 'Y' ? 'Y' : 'N');
-            //print('Bloc Response: ${jsonDecode(response.toString())}');
+        try {
+          dynamic response = await Repository().login(
+              username: event.username,
+              password: event.password,
+              rememberMe: event.rememberMe == 'Y' ? 'Y' : 'N');
+          //print('Bloc Response: ${jsonDecode(response.toString())}');
 
-            if (response != null) {
-              if (response.toString().contains("true")) {
-                SigninResponse loginResponse =
-                    SigninResponse.fromJson(jsonDecode(response.toString()));
-                if (loginResponse.status == true) {
-                  FlutterSecureStorage storage = const FlutterSecureStorage();
+          if (response != null) {
+            if (response.toString().contains("true")) {
+              SigninResponse loginResponse =
+                  SigninResponse.fromJson(jsonDecode(response.toString()));
+              if (loginResponse.status == true) {
+                FlutterSecureStorage storage = const FlutterSecureStorage();
 
-                  AppGlobal.userID = loginResponse.user.UserID;
-                  if (loginResponse.user.UserName != '') {
-                    AppGlobal.userName =
-                        loginResponse.user.UserName.capitalize();
-                  } else {
-                    AppGlobal.userName = loginResponse.user.UserName;
-                  }
-
-                  AppGlobal.birthDay = loginResponse.user.BirthDay!;
-                  AppGlobal.userPhone = loginResponse.user.PhoneNumber;
-
-                  AppGlobal.userEmail = loginResponse.user.EmailAddress;
-                  if (loginResponse.user.Gender != '') {
-                    AppGlobal.gender = loginResponse.user.Gender.capitalize();
-                  } else {
-                    AppGlobal.gender = loginResponse.user.Gender;
-                  }
-
-                  AppGlobal.profilePic = loginResponse.user.ProfilePic;
-
-                  AppGlobal.secretQuestion = loginResponse.user.SecretQuestion!;
-                  AppGlobal.answer = loginResponse.user.Answer!;
-                  AppGlobal.emailAddress = loginResponse.user.EmailAddress;
-                  AppGlobal.phoneNumber = loginResponse.user.PhoneNumber;
-                  AppGlobal.password = loginResponse.user.Password;
-                  AppGlobal.accessCodeEmail =
-                      loginResponse.user.AccessCodeEmail;
-                  AppGlobal.accessCodePhone =
-                      loginResponse.user.AccessCodePhone!;
-                  AppGlobal.emailVerified = loginResponse.user.EmailVerified;
-                  AppGlobal.phoneVerified = loginResponse.user.PhoneVerified!;
-                  AppGlobal.customer = loginResponse.user.Customer;
-                  AppGlobal.deliveryPerson = loginResponse.user.DeliveryPerson!;
-                  AppGlobal.admin = loginResponse.user.Admin!;
-                  AppGlobal.superAdmin = loginResponse.user.SuperAdmin!;
-                  AppGlobal.createdDate = loginResponse.user.CreatedDate!;
-                  AppGlobal.iPAddress = loginResponse.user.IPAddress;
-                  AppGlobal.active = loginResponse.user.Active;
-                  AppGlobal.lastUpdate = loginResponse.user.LastUpdate!;
-                  AppGlobal.adminNote = loginResponse.user.AdminNote!;
-                  AppGlobal.token = loginResponse.token;
-
-                  if (loginResponse.userCardDetails != null) {
-                    ///Save card info
-                    AppGlobal.nameOnCard =
-                        loginResponse.userCardDetails!.Name.capitalize();
-                    AppGlobal.cardNumber =
-                        loginResponse.userCardDetails!.CardNumber;
-                    AppGlobal.expiryDate =
-                        loginResponse.userCardDetails!.ExpirationDate;
-                    AppGlobal.cardUserID =
-                        loginResponse.userCardDetails!.UserID;
-
-                    /// Save user address info
-                    AppGlobal.address1 =
-                        loginResponse.userCardDetails!.Address1.capitalize();
-                    AppGlobal.address2 =
-                        loginResponse.userCardDetails!.Address2.capitalize();
-                    AppGlobal.userAddressCity =
-                        loginResponse.userCardDetails!.City;
-                    AppGlobal.userAddressState =
-                        loginResponse.userCardDetails!.State;
-                    AppGlobal.countryId =
-                        loginResponse.userCardDetails!.CountryID;
-                    AppGlobal.defaultPayment =
-                        loginResponse.userCardDetails!.DefaultPayment;
-                    AppGlobal.zipCode = loginResponse.userCardDetails!.ZipCode;
-                  }
-
-                  if (loginResponse.deliveryDriverDetails != null) {
-                    AppGlobal.deliveryDriverID =
-                        loginResponse.deliveryDriverDetails!.DeliveryDriverID;
-                    AppGlobal.governmentIDDriver =
-                        loginResponse.deliveryDriverDetails!.GovernmentID;
-                    // AppGlobal.governmentIDPicDriver =
-                    //     loginResponse.deliveryDriverDetails!.GovernmentIDPic!;
-                    AppGlobal.address1Driver = loginResponse
-                        .deliveryDriverDetails!.Address1
-                        .capitalize();
-                    AppGlobal.address2Driver = loginResponse
-                        .deliveryDriverDetails!.Address2
-                        .capitalize();
-                    AppGlobal.cityIDDriver =
-                        loginResponse.deliveryDriverDetails!.CityID;
-                    AppGlobal.cityDiver =
-                        loginResponse.deliveryDriverDetails!.City;
-                    AppGlobal.stateDriver =
-                        loginResponse.deliveryDriverDetails!.State;
-                    AppGlobal.zipCodeDriver =
-                        loginResponse.deliveryDriverDetails!.ZipCode;
-                    AppGlobal.countryIDDriver =
-                        loginResponse.deliveryDriverDetails!.CountryID;
-                    AppGlobal.paymentAccountDriver =
-                        loginResponse.deliveryDriverDetails!.PaymentAccount;
-                    AppGlobal.paymentRoutingDriver =
-                        loginResponse.deliveryDriverDetails!.PaymentRouting;
-                    AppGlobal.businessEmailDriver =
-                        loginResponse.deliveryDriverDetails!.BusinessEmail;
-                    AppGlobal.businessPhoneDriver =
-                        loginResponse.deliveryDriverDetails!.BusinessPhone;
-
-                    AppGlobal.gatewayIDDriver =
-                        loginResponse.deliveryDriverDetails!.GatewayID!;
-                  }
-
-                  await storage.write(
-                      key: 'emailAddress',
-                      value: loginResponse.user.EmailAddress);
-                  await storage.write(
-                      key: 'pass', value: loginResponse.user.Password);
-                  await storage.write(
-                      key: 'rememberMe', value: AppGlobal.rememberMe);
-
-                  yield LoginSuccess();
+                AppGlobal.userID = loginResponse.user.UserID;
+                if (loginResponse.user.UserName != '') {
+                  AppGlobal.userName = loginResponse.user.UserName.capitalize();
+                } else {
+                  AppGlobal.userName = loginResponse.user.UserName;
                 }
-              } else {
-                SendOTPResponse sendOTPResponse =
-                    SendOTPResponse.fromJson(jsonDecode(response.toString()));
-                yield ErrorState(error: sendOTPResponse.message);
+
+                AppGlobal.birthDay = loginResponse.user.BirthDay!;
+                AppGlobal.userPhone = loginResponse.user.PhoneNumber;
+
+                AppGlobal.userEmail = loginResponse.user.EmailAddress;
+                if (loginResponse.user.Gender != '') {
+                  AppGlobal.gender = loginResponse.user.Gender.capitalize();
+                } else {
+                  AppGlobal.gender = loginResponse.user.Gender;
+                }
+
+                AppGlobal.profilePic = loginResponse.user.ProfilePic;
+
+                AppGlobal.secretQuestion = loginResponse.user.SecretQuestion!;
+                AppGlobal.answer = loginResponse.user.Answer!;
+                AppGlobal.emailAddress = loginResponse.user.EmailAddress;
+                AppGlobal.phoneNumber = loginResponse.user.PhoneNumber;
+                AppGlobal.password = loginResponse.user.Password;
+                AppGlobal.accessCodeEmail = loginResponse.user.AccessCodeEmail;
+                AppGlobal.accessCodePhone = loginResponse.user.AccessCodePhone!;
+                AppGlobal.emailVerified = loginResponse.user.EmailVerified;
+                AppGlobal.phoneVerified = loginResponse.user.PhoneVerified!;
+                AppGlobal.customer = loginResponse.user.Customer;
+                AppGlobal.deliveryPerson = loginResponse.user.DeliveryPerson!;
+                AppGlobal.admin = loginResponse.user.Admin!;
+                AppGlobal.superAdmin = loginResponse.user.SuperAdmin!;
+                AppGlobal.createdDate = loginResponse.user.CreatedDate!;
+                AppGlobal.iPAddress = loginResponse.user.IPAddress;
+                AppGlobal.active = loginResponse.user.Active;
+                AppGlobal.lastUpdate = loginResponse.user.LastUpdate!;
+                AppGlobal.adminNote = loginResponse.user.AdminNote!;
+                AppGlobal.token = loginResponse.token;
+
+                if (loginResponse.userCardDetails != null) {
+                  ///Save card info
+                  AppGlobal.nameOnCard =
+                      loginResponse.userCardDetails!.Name.capitalize();
+                  AppGlobal.cardNumber =
+                      loginResponse.userCardDetails!.CardNumber;
+                  AppGlobal.expiryDate =
+                      loginResponse.userCardDetails!.ExpirationDate;
+                  AppGlobal.cardUserID = loginResponse.userCardDetails!.UserID;
+
+                  /// Save user address info
+                  AppGlobal.address1 =
+                      loginResponse.userCardDetails!.Address1.capitalize();
+                  AppGlobal.address2 =
+                      loginResponse.userCardDetails!.Address2.capitalize();
+                  AppGlobal.userAddressCity =
+                      loginResponse.userCardDetails!.City;
+                  AppGlobal.userAddressState =
+                      loginResponse.userCardDetails!.State;
+                  AppGlobal.countryId =
+                      loginResponse.userCardDetails!.CountryID;
+                  AppGlobal.defaultPayment =
+                      loginResponse.userCardDetails!.DefaultPayment;
+                  AppGlobal.zipCode = loginResponse.userCardDetails!.ZipCode;
+                }
+
+                if (loginResponse.deliveryDriverDetails != null) {
+                  AppGlobal.deliveryDriverID =
+                      loginResponse.deliveryDriverDetails!.DeliveryDriverID;
+                  AppGlobal.governmentIDDriver =
+                      loginResponse.deliveryDriverDetails!.GovernmentID;
+                  // AppGlobal.governmentIDPicDriver =
+                  //     loginResponse.deliveryDriverDetails!.GovernmentIDPic!;
+                  AppGlobal.address1Driver = loginResponse
+                      .deliveryDriverDetails!.Address1
+                      .capitalize();
+                  AppGlobal.address2Driver = loginResponse
+                      .deliveryDriverDetails!.Address2
+                      .capitalize();
+                  AppGlobal.cityIDDriver =
+                      loginResponse.deliveryDriverDetails!.CityID;
+                  AppGlobal.cityDiver =
+                      loginResponse.deliveryDriverDetails!.City;
+                  AppGlobal.stateDriver =
+                      loginResponse.deliveryDriverDetails!.State;
+                  AppGlobal.zipCodeDriver =
+                      loginResponse.deliveryDriverDetails!.ZipCode;
+                  AppGlobal.countryIDDriver =
+                      loginResponse.deliveryDriverDetails!.CountryID;
+                  AppGlobal.paymentAccountDriver =
+                      loginResponse.deliveryDriverDetails!.PaymentAccount;
+                  AppGlobal.paymentRoutingDriver =
+                      loginResponse.deliveryDriverDetails!.PaymentRouting;
+                  AppGlobal.businessEmailDriver =
+                      loginResponse.deliveryDriverDetails!.BusinessEmail;
+                  AppGlobal.businessPhoneDriver =
+                      loginResponse.deliveryDriverDetails!.BusinessPhone;
+
+                  AppGlobal.gatewayIDDriver =
+                      loginResponse.deliveryDriverDetails!.GatewayID!;
+                }
+
+                await storage.write(
+                    key: 'emailAddress',
+                    value: loginResponse.user.EmailAddress);
+                await storage.write(
+                    key: 'pass', value: loginResponse.user.Password);
+                await storage.write(
+                    key: 'rememberMe', value: AppGlobal.rememberMe);
+
+                yield LoginSuccess();
               }
             } else {
-              yield ErrorState(error: 'Timeout');
+              SendOTPResponse sendOTPResponse =
+                  SendOTPResponse.fromJson(jsonDecode(response.toString()));
+              yield ErrorState(error: sendOTPResponse.message);
             }
-          } catch (e) {
-            yield ErrorState(error: 'Invalid credentials');
+          } else {
+            yield ErrorState(error: 'Timeout');
           }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid credentials');
         }
       }
     } else if (event is SignUpUser) {

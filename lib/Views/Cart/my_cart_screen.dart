@@ -9,22 +9,15 @@ import 'package:bangla_bazar/ModelClasses/update_cart_model.dart' as updateCart;
 import 'package:bangla_bazar/Utils/add_to_cart_local_db.dart' as localDB;
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
-import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/info_dialog.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginscreen.dart';
 import 'package:bangla_bazar/Views/Cart/CartBloc/cart_bloc.dart';
-import 'package:bangla_bazar/Views/Cart/checkout_address_Screen.dart';
 import 'package:bangla_bazar/Views/Cart/checkout_country_selection.dart';
-import 'package:bangla_bazar/Views/Cart/checkout_summary_screen.dart';
-import 'package:bangla_bazar/Views/Cart/previous_address_selection_screen.dart';
 import 'package:bangla_bazar/Views/main_home_page.dart';
 import 'package:bangla_bazar/Widgets/my_cart_product_widget.dart';
-import 'package:bangla_bazar/Widgets/photo_avatar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 class MyCartScreen extends StatefulWidget {

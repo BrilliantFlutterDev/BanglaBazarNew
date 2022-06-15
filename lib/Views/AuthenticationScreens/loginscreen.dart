@@ -22,7 +22,6 @@ class _LoginDemoState extends State<LoginScreen> {
   FlutterSecureStorage storage = const FlutterSecureStorage();
 
   bool visible = false;
-  final _key = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   bool _isObscure = true;
@@ -78,7 +77,7 @@ class _LoginDemoState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (context) => HomePage()),
           );
-        }
+        } else if (state is RefreshState) {}
       },
       builder: (context, state) {
         return ModalProgressHUD(
@@ -171,9 +170,8 @@ class _LoginDemoState extends State<LoginScreen> {
                                     ? const Icon(MyFlutterApp.eye)
                                     : const Icon(MyFlutterApp.eye_off),
                                 onPressed: () {
-                                  setState(() {
-                                    _isObscure = !_isObscure;
-                                  });
+                                  _isObscure = !_isObscure;
+                                  _loginBloc.add(RefreshEvent());
                                 }),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(6.0),
@@ -204,10 +202,10 @@ class _LoginDemoState extends State<LoginScreen> {
                                       rememberMe = state!;
                                       if (state == true) {
                                         AppGlobal.rememberMe = 'true';
-                                        setState(() {});
+                                        _loginBloc.add(RefreshEvent());
                                       } else {
                                         AppGlobal.rememberMe = 'false';
-                                        setState(() {});
+                                        _loginBloc.add(RefreshEvent());
                                       }
                                     },
                                     activeColor: kColorPrimary,
@@ -236,8 +234,8 @@ class _LoginDemoState extends State<LoginScreen> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 20,
+                      SizedBox(
+                        height: screenSize.height * 0.18,
                       ),
                       InkWell(
                         onTap: () {
@@ -269,57 +267,57 @@ class _LoginDemoState extends State<LoginScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 1,
-                            width: screenSize.width * 0.40,
-                            color: kColorFieldsBorders,
-                          ),
-                          const Text(
-                            '  OR  ',
-                            style: TextStyle(color: kColorFieldsBorders),
-                          ),
-                          Container(
-                            height: 1,
-                            width: screenSize.width * 0.40,
-                            color: kColorFieldsBorders,
-                          )
-                        ],
-                      ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       height: 1,
+                      //       width: screenSize.width * 0.40,
+                      //       color: kColorFieldsBorders,
+                      //     ),
+                      //     const Text(
+                      //       '  OR  ',
+                      //       style: TextStyle(color: kColorFieldsBorders),
+                      //     ),
+                      //     Container(
+                      //       height: 1,
+                      //       width: screenSize.width * 0.40,
+                      //       color: kColorFieldsBorders,
+                      //     )
+                      //   ],
+                      // ),
+                      // const SizedBox(
+                      //   height: 20,
+                      // ),
+                      // InkWell(
+                      //   onTap: () {},
+                      //   child: Container(
+                      //       height: screenSize.height * 0.065,
+                      //       width: screenSize.width * 0.90,
+                      //       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //       decoration: BoxDecoration(
+                      //         border: Border.all(color: kColorFieldsBorders),
+                      //         borderRadius: BorderRadius.circular(6),
+                      //         color: kColorWhite,
+                      //       ),
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Image.asset(
+                      //             'assets/images/GoogleIcon.png',
+                      //             height: 25,
+                      //             width: 25,
+                      //           ),
+                      //           const Text(
+                      //             '  Sign in with Google',
+                      //             style: TextStyle(
+                      //                 color: Colors.black, fontSize: 20),
+                      //           ),
+                      //         ],
+                      //       )),
+                      // ),
                       const SizedBox(
                         height: 20,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                            height: screenSize.height * 0.065,
-                            width: screenSize.width * 0.90,
-                            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                            decoration: BoxDecoration(
-                              border: Border.all(color: kColorFieldsBorders),
-                              borderRadius: BorderRadius.circular(6),
-                              color: kColorWhite,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/GoogleIcon.png',
-                                  height: 25,
-                                  width: 25,
-                                ),
-                                const Text(
-                                  '  Sign in with Google',
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 20),
-                                ),
-                              ],
-                            )),
-                      ),
-                      const SizedBox(
-                        height: 30,
                       ),
                       Row(
                         children: <Widget>[

@@ -23,6 +23,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final int productID;
@@ -744,349 +745,363 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   return Padding(
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 10),
-                                    child: Row(
-                                      children: [
-                                        Text(
-                                          '${productDetailsResponse!.variantDetails[i].Name}:',
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black),
-                                        ),
-                                        const SizedBox(
-                                          width: 15,
-                                        ),
-                                        Container(
-                                          height: 80,
-                                          width: screenSize.width * 0.70,
-                                          child: ListView.builder(
-                                            scrollDirection: Axis.horizontal,
-                                            itemCount:
-                                                productDetailsResponse == null
-                                                    ? 0
-                                                    : productDetailsResponse!
-                                                        .variantDetails[i]
-                                                        .values
-                                                        .length,
-                                            itemBuilder: (context, j) {
-                                              return Padding(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                        horizontal: 5),
-                                                child: Container(
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                      color: productDetailsResponse!
-                                                                  .variantDetails[
-                                                                      i]
-                                                                  .selectedVariant ==
-                                                              productDetailsResponse!
-                                                                  .variantDetails[
-                                                                      i]
-                                                                  .values[j]
-                                                                  .ProductVariantCombinationID
-                                                          ? kColorPrimary
-                                                          : kColorFieldsBorders,
-                                                      style: BorderStyle.solid,
-                                                      width: 2.0,
+                                    child: SizedBox(
+                                      height: 80,
+                                      child: Row(
+                                        children: [
+                                          Expanded(
+                                            flex: 1,
+                                            child: Text(
+                                              '${productDetailsResponse!.variantDetails[i].Name}:',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black),
+                                            ),
+                                          ),
+                                          Expanded(
+                                            // height: 80,
+                                            // width: screenSize.width * 0.75,
+                                            flex: 4,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount:
+                                                  productDetailsResponse == null
+                                                      ? 0
+                                                      : productDetailsResponse!
+                                                          .variantDetails[i]
+                                                          .values
+                                                          .length,
+                                              shrinkWrap: true,
+                                              itemBuilder: (context, j) {
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                      .symmetric(horizontal: 5),
+                                                  child: Container(
+                                                    decoration: BoxDecoration(
+                                                      border: Border.all(
+                                                        color: productDetailsResponse!
+                                                                    .variantDetails[
+                                                                        i]
+                                                                    .selectedVariant ==
+                                                                productDetailsResponse!
+                                                                    .variantDetails[
+                                                                        i]
+                                                                    .values[j]
+                                                                    .ProductVariantCombinationID
+                                                            ? kColorPrimary
+                                                            : kColorFieldsBorders,
+                                                        style:
+                                                            BorderStyle.solid,
+                                                        width: 2.0,
+                                                      ),
+                                                      color: Colors.transparent,
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10.0),
                                                     ),
-                                                    color: Colors.transparent,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  ),
-                                                  child: Padding(
-                                                    padding: const EdgeInsets
-                                                            .symmetric(
-                                                        horizontal: 10,
-                                                        vertical: 5),
-                                                    child: InkWell(
-                                                      onTap: () {
-                                                        variantPic.clear();
-                                                        variantPic.add(
-                                                            productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .values[j]
-                                                                .Large
-                                                                .replaceAll(
-                                                                    '\\', '/'));
-                                                        variantPic.add(
-                                                            productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .values[j]
-                                                                .Medium
-                                                                .replaceAll(
-                                                                    '\\', '/'));
-                                                        variantPic.add(
-                                                            productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .values[j]
-                                                                .Small
-                                                                .replaceAll(
-                                                                    '\\', '/'));
-                                                        productPrice = productPrice -
-                                                            productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .lastPriceAdded;
-                                                        productDetailsResponse!
-                                                                .variantDetails[i]
-                                                                .lastPriceAdded =
-                                                            double.parse(
-                                                                productDetailsResponse!
-                                                                    .variantDetails[
-                                                                        i]
-                                                                    .values[j]
-                                                                    .VariantPrice);
-
-                                                        productPrice = productPrice +
-                                                            double.parse(
-                                                                productDetailsResponse!
-                                                                    .variantDetails[
-                                                                        i]
-                                                                    .values[j]
-                                                                    .VariantPrice);
-
-                                                        String price =
-                                                            productPrice
-                                                                .toStringAsFixed(
-                                                                    2);
-                                                        productPrice =
-                                                            double.parse(price);
-
-                                                        if (availableInventory ==
-                                                            -1) {
-                                                          availableInventory =
+                                                    child: Padding(
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          horizontal: 10,
+                                                          vertical: 5),
+                                                      child: InkWell(
+                                                        onTap: () {
+                                                          variantPic.clear();
+                                                          variantPic.add(
                                                               productDetailsResponse!
                                                                   .variantDetails[
                                                                       i]
                                                                   .values[j]
-                                                                  .AvailableInventory;
-                                                          print(
-                                                              '>>>>>>Available Inventory: $availableInventory');
-                                                        }
-                                                        if (availableInventory >
-                                                            productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .values[j]
-                                                                .AvailableInventory) {
-                                                          availableInventory =
+                                                                  .Large
+                                                                  .replaceAll(
+                                                                      '\\',
+                                                                      '/'));
+                                                          variantPic.add(
                                                               productDetailsResponse!
                                                                   .variantDetails[
                                                                       i]
                                                                   .values[j]
-                                                                  .AvailableInventory;
-                                                          print(
-                                                              '>>>>>>Available Inventory: $availableInventory');
-                                                        }
-                                                        if (availableInventory >
-                                                            0) {
-                                                          stock = 'In Stock';
-                                                        } else {
-                                                          stock =
-                                                              'Out of Stock';
-                                                        }
-                                                        if (quantity >
-                                                            availableInventory) {
-                                                          quantity =
-                                                              availableInventory;
-                                                        }
-                                                        // productDetailsResponse!
-                                                        //         .variantDetails[i]
-                                                        //         .selectedVariant =
-                                                        //     productDetailsResponse!
-                                                        //         .variantDetails[
-                                                        //             i]
-                                                        //         .values[j]
-                                                        //         .ProductVariantCombinationID;
+                                                                  .Medium
+                                                                  .replaceAll(
+                                                                      '\\',
+                                                                      '/'));
+                                                          variantPic.add(
+                                                              productDetailsResponse!
+                                                                  .variantDetails[
+                                                                      i]
+                                                                  .values[j]
+                                                                  .Small
+                                                                  .replaceAll(
+                                                                      '\\',
+                                                                      '/'));
+                                                          productPrice = productPrice -
+                                                              productDetailsResponse!
+                                                                  .variantDetails[
+                                                                      i]
+                                                                  .lastPriceAdded;
+                                                          productDetailsResponse!
+                                                                  .variantDetails[i]
+                                                                  .lastPriceAdded =
+                                                              double.parse(
+                                                                  productDetailsResponse!
+                                                                      .variantDetails[
+                                                                          i]
+                                                                      .values[j]
+                                                                      .VariantPrice);
 
-                                                        bool duplicateEntry =
-                                                            false;
-                                                        if (productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .selectedVariant !=
-                                                            -1) {
-                                                          for (int k = 0;
-                                                              k <
-                                                                  addToCartModel
+                                                          productPrice = productPrice +
+                                                              double.parse(
+                                                                  productDetailsResponse!
+                                                                      .variantDetails[
+                                                                          i]
+                                                                      .values[j]
+                                                                      .VariantPrice);
+
+                                                          String price =
+                                                              productPrice
+                                                                  .toStringAsFixed(
+                                                                      2);
+                                                          productPrice =
+                                                              double.parse(
+                                                                  price);
+
+                                                          if (availableInventory ==
+                                                              -1) {
+                                                            availableInventory =
+                                                                productDetailsResponse!
+                                                                    .variantDetails[
+                                                                        i]
+                                                                    .values[j]
+                                                                    .AvailableInventory;
+                                                            print(
+                                                                '>>>>>>Available Inventory: $availableInventory');
+                                                          }
+                                                          if (availableInventory >
+                                                              productDetailsResponse!
+                                                                  .variantDetails[
+                                                                      i]
+                                                                  .values[j]
+                                                                  .AvailableInventory) {
+                                                            availableInventory =
+                                                                productDetailsResponse!
+                                                                    .variantDetails[
+                                                                        i]
+                                                                    .values[j]
+                                                                    .AvailableInventory;
+                                                            print(
+                                                                '>>>>>>Available Inventory: $availableInventory');
+                                                          }
+                                                          if (availableInventory >
+                                                              0) {
+                                                            stock = 'In Stock';
+                                                          } else {
+                                                            stock =
+                                                                'Out of Stock';
+                                                          }
+                                                          if (quantity >
+                                                              availableInventory) {
+                                                            quantity =
+                                                                availableInventory;
+                                                          }
+                                                          // productDetailsResponse!
+                                                          //         .variantDetails[i]
+                                                          //         .selectedVariant =
+                                                          //     productDetailsResponse!
+                                                          //         .variantDetails[
+                                                          //             i]
+                                                          //         .values[j]
+                                                          //         .ProductVariantCombinationID;
+
+                                                          bool duplicateEntry =
+                                                              false;
+                                                          if (productDetailsResponse!
+                                                                  .variantDetails[
+                                                                      i]
+                                                                  .selectedVariant !=
+                                                              -1) {
+                                                            for (int k = 0;
+                                                                k <
+                                                                    addToCartModel
+                                                                        .productDetail![
+                                                                            0]
+                                                                        .productVariantCombinationDetail!
+                                                                        .length;
+                                                                k++) {
+                                                              print(
+                                                                  '>>>>>>>>>>>>>>123');
+                                                              print(addToCartModel
                                                                       .productDetail![
                                                                           0]
-                                                                      .productVariantCombinationDetail!
-                                                                      .length;
-                                                              k++) {
-                                                            print(
-                                                                '>>>>>>>>>>>>>>123');
-                                                            print(addToCartModel
-                                                                    .productDetail![
-                                                                        0]
-                                                                    .productVariantCombinationDetail![
-                                                                        k]
-                                                                    .productVariantCombinationID +
-                                                                productDetailsResponse!
-                                                                    .variantDetails[
-                                                                        i]
-                                                                    .values[j]
-                                                                    .ProductVariantCombinationID);
-                                                            if ((addToCartModel
+                                                                      .productVariantCombinationDetail![
+                                                                          k]
+                                                                      .productVariantCombinationID +
+                                                                  productDetailsResponse!
+                                                                      .variantDetails[
+                                                                          i]
+                                                                      .values[j]
+                                                                      .ProductVariantCombinationID);
+                                                              if ((addToCartModel
+                                                                          .productDetail![
+                                                                              0]
+                                                                          .productVariantCombinationDetail![
+                                                                              k]
+                                                                          .productVariantCombinationID ==
+                                                                      productDetailsResponse!
+                                                                          .variantDetails[
+                                                                              i]
+                                                                          .values[
+                                                                              j]
+                                                                          .ProductVariantCombinationID) ||
+                                                                  (addToCartModel
+                                                                          .productDetail![
+                                                                              0]
+                                                                          .productVariantCombinationDetail![
+                                                                              k]
+                                                                          .productVariantCombinationID ==
+                                                                      productDetailsResponse!
+                                                                          .variantDetails[
+                                                                              i]
+                                                                          .selectedVariant)) {
+                                                                addToCartModel
                                                                         .productDetail![
                                                                             0]
                                                                         .productVariantCombinationDetail![
                                                                             k]
-                                                                        .productVariantCombinationID ==
+                                                                        .productVariantCombinationID =
                                                                     productDetailsResponse!
                                                                         .variantDetails[
                                                                             i]
                                                                         .values[
                                                                             j]
-                                                                        .ProductVariantCombinationID) ||
-                                                                (addToCartModel
-                                                                        .productDetail![
-                                                                            0]
-                                                                        .productVariantCombinationDetail![
-                                                                            k]
-                                                                        .productVariantCombinationID ==
+                                                                        .ProductVariantCombinationID;
+                                                                productDetailsResponse!
+                                                                        .variantDetails[
+                                                                            i]
+                                                                        .selectedVariant =
                                                                     productDetailsResponse!
                                                                         .variantDetails[
                                                                             i]
-                                                                        .selectedVariant)) {
-                                                              addToCartModel
-                                                                      .productDetail![
-                                                                          0]
-                                                                      .productVariantCombinationDetail![
-                                                                          k]
-                                                                      .productVariantCombinationID =
-                                                                  productDetailsResponse!
-                                                                      .variantDetails[
-                                                                          i]
-                                                                      .values[j]
-                                                                      .ProductVariantCombinationID;
-                                                              productDetailsResponse!
-                                                                      .variantDetails[
-                                                                          i]
-                                                                      .selectedVariant =
-                                                                  productDetailsResponse!
-                                                                      .variantDetails[
-                                                                          i]
-                                                                      .values[j]
-                                                                      .ProductVariantCombinationID;
-                                                              duplicateEntry =
-                                                                  true;
-                                                              break;
+                                                                        .values[
+                                                                            j]
+                                                                        .ProductVariantCombinationID;
+                                                                duplicateEntry =
+                                                                    true;
+                                                                break;
+                                                              }
                                                             }
                                                           }
-                                                        }
 
-                                                        if (duplicateEntry ==
-                                                            false) {
-                                                          productDetailsResponse!
-                                                                  .variantDetails[i]
-                                                                  .selectedVariant =
+                                                          if (duplicateEntry ==
+                                                              false) {
+                                                            productDetailsResponse!
+                                                                    .variantDetails[
+                                                                        i]
+                                                                    .selectedVariant =
+                                                                productDetailsResponse!
+                                                                    .variantDetails[
+                                                                        i]
+                                                                    .values[j]
+                                                                    .ProductVariantCombinationID;
+                                                            addToCartModel
+                                                                    .productDetail![
+                                                                        0]
+                                                                    .productID =
+                                                                productDetailsResponse!
+                                                                    .productDetail
+                                                                    .ProductID;
+                                                            addToCartModel
+                                                                    .productDetail![
+                                                                        0]
+                                                                    .quantity =
+                                                                quantity;
+                                                            addToCartModel
+                                                                .productDetail![
+                                                                    0]
+                                                                .productVariantCombinationDetail!
+                                                                .add(cart.ProductVariantCombinationDetail(
+                                                                    productVariantCombinationID: productDetailsResponse!
+                                                                            .variantDetails[
+                                                                                i]
+                                                                            .selectedVariant =
+                                                                        productDetailsResponse!
+                                                                            .variantDetails[i]
+                                                                            .values[j]
+                                                                            .ProductVariantCombinationID));
+                                                          }
+                                                          print('>>>>>>>>>>>');
+                                                          print(addToCartModel
+                                                              .toJson());
+
+                                                          setState(() {});
+                                                        },
+                                                        child: Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Container(
+                                                              height: 50,
+                                                              width: 40,
+                                                              color:
+                                                                  kColorWidgetBackgroundColor,
+                                                              child:
+                                                                  CachedNetworkImage(
+                                                                imageUrl: productDetailsResponse !=
+                                                                        null
+                                                                    ? AppGlobal
+                                                                            .photosBaseURL +
+                                                                        productDetailsResponse!
+                                                                            .variantDetails[
+                                                                                i]
+                                                                            .values[
+                                                                                j]
+                                                                            .Medium
+                                                                            .replaceAll('\\',
+                                                                                '/')
+                                                                    : '',
+                                                                progressIndicatorBuilder:
+                                                                    (context,
+                                                                            url,
+                                                                            downloadProgress) =>
+                                                                        Center(
+                                                                  child: CircularProgressIndicator(
+                                                                      color:
+                                                                          kColorPrimary,
+                                                                      value: downloadProgress
+                                                                          .progress),
+                                                                ),
+                                                                errorWidget: (context,
+                                                                        url,
+                                                                        error) =>
+                                                                    const Icon(Icons
+                                                                        .error),
+                                                              ),
+                                                            ),
+                                                            const SizedBox(
+                                                              height: 3,
+                                                            ),
+                                                            Text(
                                                               productDetailsResponse!
                                                                   .variantDetails[
                                                                       i]
                                                                   .values[j]
-                                                                  .ProductVariantCombinationID;
-                                                          addToCartModel
-                                                                  .productDetail![0]
-                                                                  .productID =
-                                                              productDetailsResponse!
-                                                                  .productDetail
-                                                                  .ProductID;
-                                                          addToCartModel
-                                                              .productDetail![0]
-                                                              .quantity = quantity;
-                                                          addToCartModel
-                                                              .productDetail![0]
-                                                              .productVariantCombinationDetail!
-                                                              .add(cart.ProductVariantCombinationDetail(
-                                                                  productVariantCombinationID: productDetailsResponse!
-                                                                          .variantDetails[
-                                                                              i]
-                                                                          .selectedVariant =
-                                                                      productDetailsResponse!
-                                                                          .variantDetails[
-                                                                              i]
-                                                                          .values[
-                                                                              j]
-                                                                          .ProductVariantCombinationID));
-                                                        }
-                                                        print('>>>>>>>>>>>');
-                                                        print(addToCartModel
-                                                            .toJson());
-
-                                                        setState(() {});
-                                                      },
-                                                      child: Column(
-                                                        crossAxisAlignment:
-                                                            CrossAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          Container(
-                                                            height: 50,
-                                                            width: 40,
-                                                            color:
-                                                                kColorWidgetBackgroundColor,
-                                                            child:
-                                                                CachedNetworkImage(
-                                                              imageUrl: productDetailsResponse !=
-                                                                      null
-                                                                  ? AppGlobal
-                                                                          .photosBaseURL +
-                                                                      productDetailsResponse!
-                                                                          .variantDetails[
-                                                                              i]
-                                                                          .values[
-                                                                              j]
-                                                                          .Medium
-                                                                          .replaceAll(
-                                                                              '\\',
-                                                                              '/')
-                                                                  : '',
-                                                              progressIndicatorBuilder:
-                                                                  (context, url,
-                                                                          downloadProgress) =>
-                                                                      Center(
-                                                                child: CircularProgressIndicator(
-                                                                    color:
-                                                                        kColorPrimary,
-                                                                    value: downloadProgress
-                                                                        .progress),
-                                                              ),
-                                                              errorWidget: (context,
-                                                                      url,
-                                                                      error) =>
-                                                                  const Icon(Icons
-                                                                      .error),
-                                                            ),
-                                                          ),
-                                                          const SizedBox(
-                                                            height: 3,
-                                                          ),
-                                                          Text(
-                                                            productDetailsResponse!
-                                                                .variantDetails[
-                                                                    i]
-                                                                .values[j]
-                                                                .VariantValue,
-                                                            style:
-                                                                const TextStyle(
-                                                                    fontSize:
-                                                                        10),
-                                                          )
-                                                        ],
+                                                                  .VariantValue,
+                                                              style:
+                                                                  const TextStyle(
+                                                                      fontSize:
+                                                                          10),
+                                                            )
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              );
-                                            },
-                                          ),
-                                        )
-                                      ],
+                                                );
+                                              },
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },
@@ -3283,13 +3298,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                   ),
                                   InkWell(
                                     onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => EditProfileScreen(
-                                      //             previousPage: '',
-                                      //           )),
-                                      // );
+                                      Share.share(
+                                          'check out my website https://banglabazar.com');
                                     },
                                     child: Container(
                                         width: 30,
@@ -3310,39 +3320,39 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                           size: 15,
                                         )),
                                   ),
-                                  const SizedBox(
-                                    width: 7,
-                                  ),
-                                  InkWell(
-                                    onTap: () {
-                                      // Navigator.push(
-                                      //   context,
-                                      //   MaterialPageRoute(
-                                      //       builder: (context) => EditProfileScreen(
-                                      //             previousPage: '',
-                                      //           )),
-                                      // );
-                                    },
-                                    child: Container(
-                                        width: 30,
-                                        height: 30,
-                                        decoration: const BoxDecoration(
-                                          shape: BoxShape.circle,
-                                          color: kColorWidgetBackgroundColor,
-                                          // border: Border.all(
-                                          //     color: kColorDarkGreyText, width: 3),
-                                          // image: DecorationImage(
-                                          //   image: Image.asset("assets/icons/eyeicon.png",),
-                                          //   fit: BoxFit.cover,
-                                          // ),
-                                        ),
-                                        child: const Icon(
-                                          MyFlutterApp
-                                              .icon_menu_point_v_outline,
-                                          color: kColorDarkGreyText,
-                                          size: 15,
-                                        )),
-                                  ),
+                                  // const SizedBox(
+                                  //   width: 7,
+                                  // ),
+                                  // InkWell(
+                                  //   onTap: () {
+                                  //     // Navigator.push(
+                                  //     //   context,
+                                  //     //   MaterialPageRoute(
+                                  //     //       builder: (context) => EditProfileScreen(
+                                  //     //             previousPage: '',
+                                  //     //           )),
+                                  //     // );
+                                  //   },
+                                  //   child: Container(
+                                  //       width: 30,
+                                  //       height: 30,
+                                  //       decoration: const BoxDecoration(
+                                  //         shape: BoxShape.circle,
+                                  //         color: kColorWidgetBackgroundColor,
+                                  //         // border: Border.all(
+                                  //         //     color: kColorDarkGreyText, width: 3),
+                                  //         // image: DecorationImage(
+                                  //         //   image: Image.asset("assets/icons/eyeicon.png",),
+                                  //         //   fit: BoxFit.cover,
+                                  //         // ),
+                                  //       ),
+                                  //       child: const Icon(
+                                  //         MyFlutterApp
+                                  //             .icon_menu_point_v_outline,
+                                  //         color: kColorDarkGreyText,
+                                  //         size: 15,
+                                  //       )),
+                                  // ),
                                 ],
                               )
                             ],

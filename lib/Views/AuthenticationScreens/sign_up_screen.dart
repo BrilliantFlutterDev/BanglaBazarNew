@@ -4,6 +4,7 @@ import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/code_verfication.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
+import 'package:bangla_bazar/Views/PrivacyPolicyScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -24,7 +25,6 @@ class _LoginDemoState extends State<SignupScreen> {
   bool _isObscure = true;
   bool _isObscureConfirmPassword = true;
   bool visible = false;
-  final _key = GlobalKey<FormState>();
   TextEditingController fullNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
@@ -42,7 +42,9 @@ class _LoginDemoState extends State<SignupScreen> {
 
   Future<void> getDeviceIP() async {
     var wifiIP = await WifiInfo().getWifiIP();
-    AppGlobal.ipAddress = wifiIP!;
+    if (wifiIP != null) {
+      AppGlobal.ipAddress = wifiIP;
+    }
   }
 
   bool validate() {
@@ -87,6 +89,16 @@ class _LoginDemoState extends State<SignupScreen> {
           textColor: Colors.white,
           fontSize: 12.0);
       return false;
+    } else if (rememberMe == false) {
+      Fluttertoast.showToast(
+          msg: 'Please accept our policies by checkbox to Signup',
+          toastLength: Toast.LENGTH_LONG,
+          gravity: ToastGravity.BOTTOM,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.grey.shade400,
+          textColor: Colors.white,
+          fontSize: 12.0);
+      return false;
     }
     return true;
   }
@@ -125,7 +137,7 @@ class _LoginDemoState extends State<SignupScreen> {
               ),
             ),
           );
-        }
+        } else if (state is RefreshState) {}
       },
       builder: (context, state) {
         return ModalProgressHUD(
@@ -154,7 +166,7 @@ class _LoginDemoState extends State<SignupScreen> {
                                     child: const Text('Skip')),
                               ],
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       SizedBox(
                         height: screenSize.height * 0.10,
                       ),
@@ -169,7 +181,7 @@ class _LoginDemoState extends State<SignupScreen> {
                           padding: const EdgeInsets.all(10),
                           child: Text(
                             '${widget.previousPage == 'UserSignUp' ? '' : 'Driver '}Sign up',
-                            style: TextStyle(fontSize: 26),
+                            style: const TextStyle(fontSize: 26),
                           )),
                       Container(
                           alignment: Alignment.center,
@@ -184,6 +196,7 @@ class _LoginDemoState extends State<SignupScreen> {
                         height: screenSize.height * 0.09,
                         child: TextField(
                           controller: fullNameController,
+                          keyboardType: TextInputType.name,
                           textCapitalization: TextCapitalization.words,
                           decoration: InputDecoration(
                             floatingLabelStyle:
@@ -238,9 +251,9 @@ class _LoginDemoState extends State<SignupScreen> {
                                     ? const Icon(MyFlutterApp.eye)
                                     : const Icon(MyFlutterApp.eye_off),
                                 onPressed: () {
-                                  setState(() {
-                                    _isObscure = !_isObscure;
-                                  });
+                                  _isObscure = !_isObscure;
+
+                                  _loginBloc.add(RefreshEvent());
                                 }),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(6.0),
@@ -269,10 +282,9 @@ class _LoginDemoState extends State<SignupScreen> {
                                     ? const Icon(MyFlutterApp.eye)
                                     : const Icon(MyFlutterApp.eye_off),
                                 onPressed: () {
-                                  setState(() {
-                                    _isObscureConfirmPassword =
-                                        !_isObscureConfirmPassword;
-                                  });
+                                  _isObscureConfirmPassword =
+                                      !_isObscureConfirmPassword;
+                                  _loginBloc.add(RefreshEvent());
                                 }),
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(6.0),
@@ -293,33 +305,91 @@ class _LoginDemoState extends State<SignupScreen> {
                         height: 15,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(left: 10),
+                        padding: const EdgeInsets.only(left: 10, top: 10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
-                                'By creating an account, you agree to BanglaBazar\'s'),
-                            const SizedBox(
-                              height: 10,
-                            ),
                             Row(
-                              children: const [
-                                Text(
-                                  'Conditions of Use ',
-                                  style: TextStyle(color: Colors.blueAccent),
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Theme(
+                                    data: ThemeData(
+                                        unselectedWidgetColor: Colors.grey),
+                                    child: Checkbox(
+                                      value: rememberMe,
+                                      onChanged: (state) {
+                                        rememberMe = state!;
+                                        if (state == true) {
+                                          AppGlobal.rememberMe = 'true';
+                                          _loginBloc.add(RefreshEvent());
+                                        } else {
+                                          AppGlobal.rememberMe = 'false';
+                                          _loginBloc.add(RefreshEvent());
+                                        }
+                                      },
+                                      activeColor: kColorPrimary,
+                                      checkColor: Colors.white,
+                                      materialTapTargetSize:
+                                          MaterialTapTargetSize.padded,
+                                    )),
+                                const SizedBox(
+                                  width: 15,
                                 ),
-                                Text('and '),
-                                Text(
-                                  'Privacy Notice.',
-                                  style: TextStyle(color: Colors.blueAccent),
-                                )
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Text(
+                                        'By creating an account, you agree to '),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const PrivacyPolicyScreen()),
+                                        );
+                                      },
+                                      child: Row(
+                                        children: const [
+                                          Text(
+                                            'BanglaBazar\'s Conditions of Use ',
+                                            style: TextStyle(
+                                                color: Colors.blueAccent),
+                                          ),
+                                          Text('and '),
+                                        ],
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const PrivacyPolicyScreen()),
+                                        );
+                                      },
+                                      child: const Text(
+                                        'Privacy Policy.',
+                                        style:
+                                            TextStyle(color: Colors.blueAccent),
+                                      ),
+                                    )
+                                  ],
+                                ),
                               ],
-                            )
+                            ),
                           ],
                         ),
                       ),
                       const SizedBox(
-                        height: 40,
+                        height: 20,
                       ),
                       InkWell(
                         onTap: () {
@@ -352,61 +422,61 @@ class _LoginDemoState extends State<SignupScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      widget.previousPage == 'UserSignUp'
-                          ? Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  height: 1,
-                                  width: screenSize.width * 0.40,
-                                  color: kColorFieldsBorders,
-                                ),
-                                const Text(
-                                  '  OR  ',
-                                  style: TextStyle(color: kColorFieldsBorders),
-                                ),
-                                Container(
-                                  height: 1,
-                                  width: screenSize.width * 0.40,
-                                  color: kColorFieldsBorders,
-                                )
-                              ],
-                            )
-                          : SizedBox(),
+                      // widget.previousPage == 'UserSignUp'
+                      //     ? Row(
+                      //         mainAxisAlignment: MainAxisAlignment.center,
+                      //         children: [
+                      //           Container(
+                      //             height: 1,
+                      //             width: screenSize.width * 0.40,
+                      //             color: kColorFieldsBorders,
+                      //           ),
+                      //           const Text(
+                      //             '  OR  ',
+                      //             style: TextStyle(color: kColorFieldsBorders),
+                      //           ),
+                      //           Container(
+                      //             height: 1,
+                      //             width: screenSize.width * 0.40,
+                      //             color: kColorFieldsBorders,
+                      //           )
+                      //         ],
+                      //       )
+                      //     : const SizedBox(),
                       const SizedBox(
                         height: 20,
                       ),
-                      widget.previousPage == 'UserSignUp'
-                          ? InkWell(
-                              onTap: () {},
-                              child: Container(
-                                  height: screenSize.height * 0.065,
-                                  width: screenSize.width * 0.90,
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                  decoration: BoxDecoration(
-                                    border:
-                                        Border.all(color: kColorFieldsBorders),
-                                    borderRadius: BorderRadius.circular(6),
-                                    color: kColorWhite,
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/GoogleIcon.png',
-                                        height: 25,
-                                        width: 25,
-                                      ),
-                                      const Text(
-                                        '  Sign up with Google',
-                                        style: TextStyle(
-                                            color: Colors.black, fontSize: 20),
-                                      ),
-                                    ],
-                                  )),
-                            )
-                          : SizedBox(),
+                      // widget.previousPage == 'UserSignUp'
+                      //     ? InkWell(
+                      //         onTap: () {},
+                      //         child: Container(
+                      //             height: screenSize.height * 0.065,
+                      //             width: screenSize.width * 0.90,
+                      //             padding:
+                      //                 const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      //             decoration: BoxDecoration(
+                      //               border:
+                      //                   Border.all(color: kColorFieldsBorders),
+                      //               borderRadius: BorderRadius.circular(6),
+                      //               color: kColorWhite,
+                      //             ),
+                      //             child: Row(
+                      //               mainAxisAlignment: MainAxisAlignment.center,
+                      //               children: [
+                      //                 Image.asset(
+                      //                   'assets/images/GoogleIcon.png',
+                      //                   height: 25,
+                      //                   width: 25,
+                      //                 ),
+                      //                 const Text(
+                      //                   '  Sign up with Google',
+                      //                   style: TextStyle(
+                      //                       color: Colors.black, fontSize: 20),
+                      //                 ),
+                      //               ],
+                      //             )),
+                      //       )
+                      //     : SizedBox(),
                       const SizedBox(
                         height: 30,
                       ),
@@ -426,7 +496,7 @@ class _LoginDemoState extends State<SignupScreen> {
                               ],
                               mainAxisAlignment: MainAxisAlignment.center,
                             )
-                          : SizedBox(),
+                          : const SizedBox(),
                       const SizedBox(
                         height: 30,
                       ),
