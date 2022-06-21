@@ -335,6 +335,11 @@ class Repository {
           {required OrderStatusChangeModel orderStatusChangeModel}) async =>
       MyOrdersProvider.orderStatusChange(
           orderStatusChangeModel: orderStatusChangeModel);
+  Future orderStatusChangePic(
+          {required OrderStatusChangeModel orderStatusChangeModel,
+          required var photo}) async =>
+      MyOrdersProvider.orderStatusChangePic(
+          orderStatusChangeModel: orderStatusChangeModel, photo: photo);
   Future dashBoard({required DashBoardModel dashBoardModel}) async =>
       MyOrdersProvider.dashBoard(dashBoardModel: dashBoardModel);
   Future getDriversOrders(

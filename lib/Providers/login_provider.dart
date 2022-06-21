@@ -659,11 +659,8 @@ class LoginProvider extends BaseProvider {
       String url = '${AppGlobal.baseURL}user/uploadForm';
       Map params = HashMap<String, dynamic>();
       params.putIfAbsent('UserID', () => userId);
-      dynamic response = await WebServices.updateProfilePic(
-        url,
-        params,
-        selectedImage,
-      );
+      dynamic response = await WebServices.postDataWithImage(
+          url, params, selectedImage, "myimg");
       return response;
     } catch (e) {
       print(e.toString());

@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:bangla_bazar/ModelClasses/dashboard_model.dart';
@@ -86,6 +87,28 @@ class MyOrdersProvider extends BaseProvider {
 
       dynamic response =
           await WebServices.apiPostToJson(url, orderStatusChangeModel);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  static Future orderStatusChangePic(
+      {required OrderStatusChangeModel orderStatusChangeModel,
+      required var photo}) async {
+    try {
+      String url = '${AppGlobal.baseURL}deliveryDriver/changeDriverStatus';
+      print(url);
+      Map params = HashMap<String, dynamic>();
+      params.putIfAbsent(
+          'DeliveryDriverID', () => orderStatusChangeModel.DeliveryDriverID);
+      params.putIfAbsent(
+          'OrderNumber', () => orderStatusChangeModel.OrderNumber);
+      params.putIfAbsent('status', () => orderStatusChangeModel.status);
+      dynamic response = await WebServices.postDataWithImageOrderStatus(
+          url, params, photo, "DeliveryConfirmationPic");
+
       return response;
     } catch (e) {
       print(e.toString());

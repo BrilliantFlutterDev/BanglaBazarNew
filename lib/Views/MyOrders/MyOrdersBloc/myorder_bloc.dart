@@ -280,6 +280,36 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
           yield ErrorState(error: 'Invalid credentials');
         }
       }
+    } else if (event is OrderStatusChangePic) {
+      yield LoadingState();
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response = await Repository().orderStatusChangePic(
+              orderStatusChangeModel: event.orderStatusChangeModel,
+              photo: event.selectedImage);
+
+          if (response != null) {
+            OrderStatusChangeResponse orderStatusChangeResponse =
+                OrderStatusChangeResponse.fromJson(
+                    jsonDecode(response.toString()));
+
+            if (orderStatusChangeResponse.status == true) {
+              yield OrderStatusChangeState(
+                  orderStatusChangeResponse: orderStatusChangeResponse);
+            } else {
+              yield ErrorState(error: 'Error');
+            }
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid credentials');
+        }
+      }
     } else if (event is DashBoard) {
       yield LoadingState();
 

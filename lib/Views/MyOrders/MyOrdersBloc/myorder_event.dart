@@ -27,6 +27,11 @@ class OrderStatusChange extends MyOrdersEvent {
   final OrderStatusChangeModel orderStatusChangeModel;
   OrderStatusChange({required this.orderStatusChangeModel});
 }
+class OrderStatusChangePic extends MyOrdersEvent {
+  final OrderStatusChangeModel orderStatusChangeModel;
+  var selectedImage;
+  OrderStatusChangePic({required this.orderStatusChangeModel,required this.selectedImage});
+}
 
 class DashBoard extends MyOrdersEvent {
   final DashBoardModel dashBoardModel;

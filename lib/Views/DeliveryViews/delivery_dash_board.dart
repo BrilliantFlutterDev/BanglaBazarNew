@@ -9,10 +9,12 @@ import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
 import 'package:bangla_bazar/Views/MyOrders/order_details_screen.dart';
+import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
 import 'package:bangla_bazar/Widgets/driver_my_orders_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 class DeliveryDashBoard extends StatefulWidget {
   final String previousPasge;
@@ -53,6 +55,9 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
     'Last 3 Months',
     'Last 6 Months'
   ];
+
+  final ImagePicker _picker = ImagePicker();
+  late XFile? image;
 
   //myorders.OrderDetailsResponse? orderDetailsResponse;
   List<driverOrders.OrderDetails>? orderDetails = [];
@@ -130,13 +135,11 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                     ),
                     InkWell(
                       onTap: () {
-                        orderStatusChangeModel = OrderStatusChangeModel(
-                            DeliveryDriverID:
-                                AppGlobal.deliveryDriverID.toString(),
-                            OrderNumber: orderNumber,
-                            status: 'Delivered');
-                        _myOrdersBloc.add(OrderStatusChange(
-                            orderStatusChangeModel: orderStatusChangeModel!));
+                        ///Todo: code here for change after delivered
+                        Navigator.pop(context);
+                        cameraBottomNavigationSheet(orderNumber);
+
+                        ///
                       },
                       child: Container(
                         height: screenSize.height * 0.05,
@@ -917,6 +920,23 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                                 .productDetail[
                                                                     j]
                                                                 .OrderNumber);
+                                                        // cameraBottomNavigationSheet(
+                                                        //     orderDetails![i]
+                                                        //         .productDetail[
+                                                        //             j]
+                                                        //         .OrderNumber);
+                                                      } else if (orderDetails![
+                                                                  i]
+                                                              .productDetail[j]
+                                                              .ProcessStatus ==
+                                                          'Delivered') {
+                                                        // changeOrderStatusDeliveredBottomSheet(
+                                                        //     orderDetails![i]
+                                                        //         .productDetail[
+                                                        //             j]
+                                                        //         .OrderNumber);
+                                                        /// Todo: only for testing delete after testing
+
                                                       }
                                                     },
                                                     buttonOrderStatus:
@@ -1504,5 +1524,121 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
             )),
       );
     });
+  }
+
+  void cameraBottomNavigationSheet(String orderNumber) {
+    showModalBottomSheet(
+        elevation: 5,
+        context: context,
+        backgroundColor: kColorWidgetBackgroundColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+        ),
+        builder: (context) {
+          var screenSize = MediaQuery.of(context).size;
+          return Container(
+            height: screenSize.height * 0.25,
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      const Text(
+                        'Add Delivered Package Picture',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: screenSize.height * 0.03,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BottomSheetFilterByWidget(
+                          icon: Icons.add_a_photo,
+                          buttonLabel: 'Take picture',
+                          onPressed: () async {
+                            // getImage(
+                            //     picker.pickImage(source: ImageSource.camera));
+                            image = await _picker.pickImage(
+                                source: ImageSource.camera);
+                            if (image != null) {
+                              orderStatusChangeModel = OrderStatusChangeModel(
+                                  DeliveryDriverID:
+                                      AppGlobal.deliveryDriverID.toString(),
+                                  OrderNumber: orderNumber,
+                                  status: 'Delivered');
+                              _myOrdersBloc.add(OrderStatusChangePic(
+                                  orderStatusChangeModel:
+                                      orderStatusChangeModel!,
+                                  selectedImage: image!));
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'Upload of Delivery Image is compulsory',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey.shade400,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0);
+                            }
+                          },
+                        ),
+                        BottomSheetFilterByWidget(
+                          icon: Icons.add_photo_alternate,
+                          buttonLabel: 'Browse gallery',
+                          onPressed: () async {
+                            image = await _picker.pickImage(
+                                source: ImageSource.gallery);
+                            if (image != null) {
+                              orderStatusChangeModel = OrderStatusChangeModel(
+                                  DeliveryDriverID:
+                                      AppGlobal.deliveryDriverID.toString(),
+                                  OrderNumber: orderNumber,
+                                  status: 'Delivered');
+                              _myOrdersBloc.add(OrderStatusChangePic(
+                                  orderStatusChangeModel:
+                                      orderStatusChangeModel!,
+                                  selectedImage: image!));
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'Upload of Delivery Image is compulsory',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey.shade400,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

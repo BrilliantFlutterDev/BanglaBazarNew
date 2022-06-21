@@ -460,7 +460,8 @@ class WebServices {
     }
   }
 
-  static Future updateProfilePic(String url, var params, var image) async {
+  static Future postDataWithImage(
+      String url, var params, var image, String imageParam) async {
     Map<String, String> headers = {
       'Accept': 'application/json',
     };
@@ -473,13 +474,14 @@ class WebServices {
       dio.options.headers["Accept"] = 'application/json';
       dio.options.headers["Content-Type"] = 'application/json';
       dio.options.headers["Authorization"] = 'Bearer ${AppGlobal.token}';
+      dio.options.headers["region"] = AppGlobal.region;
       // dio.options.connectTimeout = 50000;
 
       formData = FormData.fromMap(params);
 
       formData.files.add(
         MapEntry(
-            "myimg",
+            imageParam,
             await MultipartFile.fromFile(image.path,
                 filename: image.path.split('/').last)),
       );
@@ -505,7 +507,60 @@ class WebServices {
       }
     }
     if (response != null) {
-      print('upload image response: $response');
+      print('upload image response: ${jsonDecode(response.toString())}');
+      return response;
+    } else {
+      return response;
+    }
+  }
+
+  static Future postDataWithImageOrderStatus(
+      String url, var params, var image, String imageParam) async {
+    Map<String, String> headers = {
+      'Accept': 'application/json',
+    };
+    dynamic response;
+    Dio dio = Dio();
+    FormData formData;
+    print('>>>>>url: $url');
+    print('>>>>>>>params: ${jsonEncode(params)}');
+    try {
+      dio.options.headers["Accept"] = 'application/json';
+      dio.options.headers["Content-Type"] = 'application/json';
+      dio.options.headers["Authorization"] = 'Bearer ${AppGlobal.token}';
+      dio.options.headers["region"] = AppGlobal.region;
+      // dio.options.connectTimeout = 50000;
+
+      formData = FormData.fromMap(params);
+
+      formData.files.add(
+        MapEntry(
+            imageParam,
+            await MultipartFile.fromFile(image.path,
+                filename: image.path.split('/').last)),
+      );
+
+      response = await dio
+          .post(
+        url,
+        data: formData,
+      )
+          .timeout(const Duration(seconds: 100), onTimeout: () {
+        return response('Connection Timeout');
+      });
+    } on DioError catch (e) {
+      // The request was made and the server responded with a status code
+      // that falls out of the range of 2xx and is also not 304.
+      if (e.response != null) {
+        return e.response;
+      } else {
+        // Something happened in setting up or sending the request that triggered an Error
+        print(e.requestOptions);
+
+        return e.response;
+      }
+    }
+    if (response != null) {
       return response;
     } else {
       return response;

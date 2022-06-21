@@ -9,3 +9,4 @@ const Color kColorWhite = Color(0xFFFFFFFF);
 const Color kColorOrangeText = Color(0xFFFB5402);
 const Color kColorBlueText = Color(0xFF199CC6);
 const Color kColorYellow = Color(0xFFFBBF24);
+const Color kColorBottomSheetText = Color(0xFFABABAB);
