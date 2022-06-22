@@ -293,6 +293,7 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
               photo: event.selectedImage);
 
           if (response != null) {
+            print('||||||||||12');
             OrderStatusChangeResponse orderStatusChangeResponse =
                 OrderStatusChangeResponse.fromJson(
                     jsonDecode(response.toString()));

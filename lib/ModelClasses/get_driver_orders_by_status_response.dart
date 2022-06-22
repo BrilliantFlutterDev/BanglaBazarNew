@@ -147,6 +147,7 @@ class ProductDetail {
   late final String ItemsPrice;
   late final String ItemsEstimatedTax;
   late final String ItemsShippingHandling;
+  late final String PaymentType;
 
   late final List<ProductCombinations> productCombinations;
 
@@ -161,6 +162,7 @@ class ProductDetail {
     ReadyPickupForAdmin = json['ReadyPickupForAdmin'];
     OrderDate = json['OrderDate'];
     PaymentStatus = json['PaymentStatus'];
+    PaymentType = json['PaymentType'];
     BasePrice = json['BasePrice'];
     Currency = json['Currency'];
     UserID = json['UserID'];
@@ -192,6 +194,7 @@ class ProductDetail {
     _data['ReadyPickupForUser'] = ReadyPickupForUser;
     _data['ReadyPickupForAdmin'] = ReadyPickupForAdmin;
     _data['OrderDate'] = OrderDate;
+    _data['PaymentType'] = PaymentType;
     _data['PaymentStatus'] = PaymentStatus;
     _data['BasePrice'] = BasePrice;
     _data['Currency'] = Currency;

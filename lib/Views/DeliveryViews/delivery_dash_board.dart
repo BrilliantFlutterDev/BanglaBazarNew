@@ -7,6 +7,7 @@ import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/app_global.dart';
 import 'package:bangla_bazar/Utils/icons.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
+import 'package:bangla_bazar/Views/DeliveryViews/pay_to_admin_screen.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
 import 'package:bangla_bazar/Views/MyOrders/order_details_screen.dart';
 import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
@@ -61,7 +62,8 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
 
   //myorders.OrderDetailsResponse? orderDetailsResponse;
   List<driverOrders.OrderDetails>? orderDetails = [];
-  void changeOrderStatusDeliveredBottomSheet(String orderNumber) {
+  void changeOrderStatusDeliveredBottomSheet(
+      String orderNumber, bool cod, String orderTotalAmount) {
     showModalBottomSheet(
         elevation: 5,
         context: context,
@@ -80,26 +82,49 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Column(
-                    children: const [
-                      Icon(
-                        MyFlutterApp.completed_d,
-                        color: kColorPrimary,
-                        size: 75,
-                      ),
-                      SizedBox(
+                    children: [
+                      cod
+                          ? Container(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  orderTotalAmount,
+                                  textScaleFactor: 2,
+                                  style: const TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                color: Colors.white,
+                                boxShadow: const [
+                                  BoxShadow(
+                                      color: kColorPrimary, spreadRadius: 3),
+                                ],
+                              ),
+                            )
+                          : const Icon(
+                              MyFlutterApp.completed_d,
+                              color: kColorPrimary,
+                              size: 75,
+                            ),
+                      const SizedBox(
                         height: 15,
                       ),
                       Text(
-                        'Mark as Delivered',
-                        style: TextStyle(color: Colors.black, fontSize: 20),
+                        cod ? 'Collect the Amount' : 'Mark as Delivered',
+                        style:
+                            const TextStyle(color: Colors.black, fontSize: 20),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 5,
                       ),
                       Text(
-                        'Do you want to mark this order as delivered ?',
-                        style:
-                            TextStyle(color: kColorFieldsBorders, fontSize: 14),
+                        cod
+                            ? 'This is a cash on delivery order. Please make sure that you have collected the above mention amount.'
+                            : 'Do you want to mark this order as delivered ?',
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                            color: kColorFieldsBorders, fontSize: 14),
                       )
                     ],
                   ),
@@ -822,7 +847,7 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                                   height: 5,
                                                                 ),
                                                                 Text(
-                                                                  'Order Total : ${(orderDetails![i].totalOrderPrice + orderDetails![i].totalOrderTax + orderDetails![i].totalOrderShippingPrice).toStringAsFixed(2)}',
+                                                                  'Order Total : ${orderDetails![i].productDetail[j].Currency} ${(orderDetails![i].totalOrderPrice + orderDetails![i].totalOrderTax + orderDetails![i].totalOrderShippingPrice).toStringAsFixed(2)}',
                                                                   style: const TextStyle(
                                                                       color: Colors
                                                                           .black,
@@ -919,7 +944,18 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                             orderDetails![i]
                                                                 .productDetail[
                                                                     j]
-                                                                .OrderNumber);
+                                                                .OrderNumber,
+                                                            (orderDetails![i]
+                                                                            .productDetail[
+                                                                                j]
+                                                                            .PaymentType ==
+                                                                        'cod' &&
+                                                                    orderDetails![i]
+                                                                            .PaymentStatus ==
+                                                                        'Pending')
+                                                                ? true
+                                                                : false,
+                                                            "${orderDetails![i].productDetail[j].Currency} ${(orderDetails![i].totalOrderPrice + orderDetails![i].totalOrderTax + orderDetails![i].totalOrderShippingPrice).toStringAsFixed(2)}");
                                                         // cameraBottomNavigationSheet(
                                                         //     orderDetails![i]
                                                         //         .productDetail[
@@ -1321,7 +1357,8 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                     height: 30,
                                   ),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Column(
                                         crossAxisAlignment:
@@ -1365,9 +1402,9 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                           )
                                         ],
                                       ),
-                                      const SizedBox(
-                                        width: 35,
-                                      ),
+                                      // const SizedBox(
+                                      //   width: 35,
+                                      // ),
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.center,
@@ -1409,6 +1446,58 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
                                                 fontSize: 14),
                                           )
                                         ],
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const PayToAdminScreen()),
+                                          );
+                                        },
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            Container(
+                                              width: 85,
+                                              height: 85,
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black26,
+                                                    offset: Offset(0, 8.0),
+                                                    blurRadius: 15.0,
+                                                    spreadRadius: 0.1,
+                                                  ),
+                                                ],
+                                                color: kColorWhite,
+                                              ),
+                                              child: Center(
+                                                child: Container(
+                                                  width: 55,
+                                                  height: 55,
+                                                  child: const Icon(
+                                                    MyFlutterApp.account_fill,
+                                                    color: kColorPrimary,
+                                                    size: 45,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              'Pay to Admin',
+                                              style: const TextStyle(
+                                                  color: Colors.black,
+                                                  fontSize: 14),
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
