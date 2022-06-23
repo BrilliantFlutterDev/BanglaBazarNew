@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:bangla_bazar/ModelClasses/dashboard_model.dart';
 import 'package:bangla_bazar/ModelClasses/dashboard_response.dart';
+import 'package:bangla_bazar/ModelClasses/driver_order_mark_as_paid_response.dart';
 import 'package:bangla_bazar/ModelClasses/get_driver_orders_by_status_response.dart';
 import 'package:bangla_bazar/ModelClasses/get_order_details_response.dart';
 import 'package:bangla_bazar/ModelClasses/order_details_response.dart';
@@ -23,6 +24,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/intl.dart';
 
 import 'package:meta/meta.dart';
+
+import 'package:bangla_bazar/ModelClasses/get_driver_orders_by_status_response.dart'
+    as driverOrders;
 
 part 'myorder_event.dart';
 part 'myorder_state.dart';
@@ -414,6 +418,115 @@ class MyOrdersBloc extends Bloc<MyOrdersEvent, MyOrdersState> {
             } else {
               yield ErrorState(error: 'Error');
             }
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid credentials');
+        }
+      }
+    } else if (event is GetDriversCODOrders) {
+      yield LoadingState();
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response = await Repository()
+              .getDriversCODOrders(status: event.status, offset: event.offset);
+          //print('Bloc Response: ${jsonDecode(response.toString())}');
+
+          if (response != null) {
+            GetDriverOrdersByStatusResponse orderDetailsResponse =
+                GetDriverOrdersByStatusResponse.fromJson(
+                    jsonDecode(response.toString()));
+            print('||||||||||222');
+
+            if (orderDetailsResponse.status == true) {
+              for (int i = 0;
+                  i < orderDetailsResponse.orderDetails.length;
+                  i++) {
+                orderDetailsResponse.orderDetails[i].OrderDate =
+                    DateFormat('yyyy-MM-dd')
+                        .format(DateTime.parse(
+                            orderDetailsResponse.orderDetails[i].OrderDate!))
+                        .toString();
+
+                for (int j = 0;
+                    j <
+                        orderDetailsResponse
+                            .orderDetails[i].productDetail.length;
+                    j++) {
+                  orderDetailsResponse.orderDetails[i].productDetail[j]
+                      .totalProductPrice = orderDetailsResponse
+                          .orderDetails[i].productDetail[j].totalProductPrice +
+                      double.parse(orderDetailsResponse
+                          .orderDetails[i].productDetail[j].BasePrice);
+                  orderDetailsResponse.orderDetails[i].totalOrderTax =
+                      orderDetailsResponse.orderDetails[i].totalOrderTax +
+                          double.parse(orderDetailsResponse.orderDetails[i]
+                              .productDetail[j].ItemsEstimatedTax);
+                  orderDetailsResponse.orderDetails[i].totalOrderShippingPrice =
+                      orderDetailsResponse
+                              .orderDetails[i].totalOrderShippingPrice +
+                          double.parse(orderDetailsResponse.orderDetails[i]
+                              .productDetail[j].ItemsShippingHandling);
+                  orderDetailsResponse.orderDetails[i].totalOrderPrice =
+                      orderDetailsResponse.orderDetails[i].totalOrderPrice +
+                          double.parse(orderDetailsResponse
+                              .orderDetails[i].productDetail[j].ItemsPrice);
+                  for (int k = 0;
+                      k <
+                          orderDetailsResponse.orderDetails[i].productDetail[j]
+                              .productCombinations.length;
+                      k++) {
+                    orderDetailsResponse.orderDetails[i].productDetail[j]
+                        .totalProductPrice = orderDetailsResponse
+                            .orderDetails[i]
+                            .productDetail[j]
+                            .totalProductPrice +
+                        double.parse(orderDetailsResponse
+                            .orderDetails[i]
+                            .productDetail[j]
+                            .productCombinations[k]
+                            .ProductCombinationPrice);
+                  }
+                }
+              }
+              yield GetDriverOrdersState(
+                  getDriverOrdersByStatusResponse: orderDetailsResponse);
+            } else {
+              yield ErrorState(error: 'Error');
+            }
+          } else {
+            yield ErrorState(error: 'Timeout');
+          }
+        } catch (e) {
+          yield ErrorState(error: 'Invalid credentials');
+        }
+      }
+    } else if (event is SetSelectedOrdersMarkAsPaid) {
+      yield LoadingState();
+
+      var isInternetConnected = await checkInternetConnectivity();
+      if (isInternetConnected == false) {
+        yield InternetErrorState(error: 'Internet not connected');
+      } else {
+        try {
+          dynamic response = await Repository().setSelectedOrdersMarkAsPaid(
+              selectedOrders: event.selectedOrders,
+              selectedImage: event.selectedImage);
+          //print('Bloc Response: ${jsonDecode(response.toString())}');
+
+          if (response != null) {
+            DriverOrderMarkAsPaidResponse orderDetailsResponse =
+                DriverOrderMarkAsPaidResponse.fromJson(
+                    jsonDecode(response.toString()));
+            print('||||||||||222');
+
+            yield SetSelectedOrdersMarkAsPaidState(
+                orderDetailsResponse: orderDetailsResponse);
           } else {
             yield ErrorState(error: 'Timeout');
           }

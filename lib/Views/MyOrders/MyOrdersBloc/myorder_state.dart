@@ -46,3 +46,8 @@ class GetDriverOrdersState extends MyOrdersState {
   final GetDriverOrdersByStatusResponse getDriverOrdersByStatusResponse;
   GetDriverOrdersState({required this.getDriverOrdersByStatusResponse});
 }
+
+class SetSelectedOrdersMarkAsPaidState extends MyOrdersState {
+  final DriverOrderMarkAsPaidResponse orderDetailsResponse;
+  SetSelectedOrdersMarkAsPaidState({required this.orderDetailsResponse});
+}

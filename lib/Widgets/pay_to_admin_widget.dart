@@ -74,7 +74,7 @@ class PaytoAdminWidget extends StatelessWidget {
                         fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    'Quantity',
+                    'Quantity : $quantity',
                     style: const TextStyle(
                         fontSize: 14, color: kColorDarkGreyText),
                   ),

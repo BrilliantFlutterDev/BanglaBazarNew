@@ -56,6 +56,7 @@ class OrderDetails {
   double totalOrderPrice = 0.0;
   double totalOrderTax = 0.0;
   double totalOrderShippingPrice = 0.0;
+  bool selectedForCheckout = false;
 
   OrderDetails.fromJson(Map<String, dynamic> json) {
     OrderNumber = json['OrderNumber'];

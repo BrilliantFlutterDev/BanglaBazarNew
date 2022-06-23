@@ -1,13 +1,14 @@
 import 'package:bangla_bazar/Utils/app_colors.dart';
 import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/MyOrders/MyOrdersBloc/myorder_bloc.dart';
-import 'package:bangla_bazar/Views/main_home_page.dart';
+import 'package:bangla_bazar/Widgets/bottom_sheet_choose_pic_source_widget.dart';
 import 'package:bangla_bazar/Widgets/pay_to_admin_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:bangla_bazar/ModelClasses/get_driver_orders_by_status_response.dart'
     as driverOrders;
+import 'package:image_picker/image_picker.dart';
 
 class PayToAdminScreen extends StatefulWidget {
   const PayToAdminScreen({
@@ -25,6 +26,9 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
   final _scrollController = ScrollController();
 
   List<driverOrders.OrderDetails>? orderDetails = [];
+  List<driverOrders.OrderDetails>? orderDetailsTemp = [];
+
+  double totalPriceToPay = 0.0;
 
   @override
   void initState() {
@@ -37,15 +41,13 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
         if (offset < totalPages - 1) {
           offset++;
           loadingNextPage = true;
-          _myOrdersBloc.add(
-              GetDriversOrders(offset: 0, status: statusFilterValueChoose));
+          _myOrdersBloc.add(GetDriversCODOrders(offset: offset, status: 'N'));
           print('Load Next Page');
         }
         print('Load Next Page');
       }
     });
-    _myOrdersBloc
-        .add(GetDriversOrders(offset: 0, status: statusFilterValueChoose));
+    _myOrdersBloc.add(GetDriversCODOrders(offset: 0, status: 'N'));
   }
 
   @override
@@ -67,6 +69,20 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
       } else if (state is InternetErrorState) {
         Fluttertoast.showToast(
             msg: state.error,
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.grey.shade400,
+            textColor: Colors.white,
+            fontSize: 12.0);
+      } else if (state is SetSelectedOrdersMarkAsPaidState) {
+        Navigator.pop(context);
+        if (state.orderDetailsResponse.status == true) {
+          orderDetailsTemp!.clear();
+          _myOrdersBloc.add(GetDriversCODOrders(offset: 0, status: 'N'));
+        }
+        Fluttertoast.showToast(
+            msg: state.orderDetailsResponse.message,
             toastLength: Toast.LENGTH_SHORT,
             gravity: ToastGravity.BOTTOM,
             timeInSecForIosWeb: 1,
@@ -189,10 +205,15 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
                                                                         .productDetail[
                                                                             0]
                                                                         .Medium,
-                                                                    price: orderDetails![
-                                                                            index]
-                                                                        .totalOrderPrice
-                                                                        .toString(),
+                                                                    price: orderDetails![index]
+                                                                            .productDetail[
+                                                                                0]
+                                                                            .Currency +
+                                                                        ' ' +
+                                                                        (orderDetails![index].totalOrderPrice +
+                                                                                orderDetails![index].totalOrderTax +
+                                                                                orderDetails![index].totalOrderShippingPrice)
+                                                                            .toStringAsFixed(2),
                                                                     quantity: orderDetails![
                                                                             index]
                                                                         .productDetail
@@ -205,43 +226,43 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
                                                                               .grey),
                                                                       child:
                                                                           Checkbox(
-                                                                        value: cartDetailsResponse!
-                                                                            .productCartList[index]
+                                                                        value: orderDetails![index]
                                                                             .selectedForCheckout,
                                                                         onChanged:
                                                                             (state) {
-                                                                          cartDetailsResponse!
-                                                                              .productCartList[index]
-                                                                              .selectedForCheckout = state!;
-                                                                          if (cartDetailsResponse!
-                                                                              .productCartList[index]
+                                                                          orderDetails![index].selectedForCheckout =
+                                                                              state!;
+                                                                          if (orderDetails![index]
                                                                               .selectedForCheckout) {
-                                                                            cartDetailsResponseTemp!.productCartList.add(cartDetailsResponse!.productCartList[index]);
-                                                                            cartDetailsResponseTemp!.cartTotalPrice =
-                                                                                cartDetailsResponseTemp!.cartTotalPrice + cartDetailsResponse!.productCartList[index].calculateTotalProductPrice!;
+                                                                            /// UnCommment
+                                                                            orderDetailsTemp!.add(orderDetails![index]);
+                                                                            totalPriceToPay =
+                                                                                totalPriceToPay + (orderDetails![index].totalOrderPrice + orderDetails![index].totalOrderTax + orderDetails![index].totalOrderShippingPrice);
                                                                             String
                                                                                 cartTotalPrice =
-                                                                                cartDetailsResponseTemp!.cartTotalPrice.toStringAsFixed(2);
-                                                                            cartDetailsResponseTemp!.cartTotalPrice =
+                                                                                totalPriceToPay.toStringAsFixed(2);
+                                                                            totalPriceToPay =
                                                                                 double.parse(cartTotalPrice);
-                                                                            cartDetailsResponseTemp!.totalTax =
-                                                                                cartDetailsResponseTemp!.totalTax + cartDetailsResponse!.productCartList[index].perProductTax!;
-                                                                          } else {
-                                                                            cartDetailsResponseTemp!.cartTotalPrice =
-                                                                                cartDetailsResponseTemp!.cartTotalPrice - cartDetailsResponse!.productCartList[index].calculateTotalProductPrice!;
-                                                                            cartDetailsResponseTemp!.productCartList.remove(cartDetailsResponse!.productCartList[index]);
 
-                                                                            cartDetailsResponseTemp!.totalTax =
-                                                                                cartDetailsResponseTemp!.totalTax - cartDetailsResponse!.productCartList[index].perProductTax!;
+                                                                            ///UnComment
+                                                                            // cartDetailsResponseTemp!.totalTax =
+                                                                            //     cartDetailsResponseTemp!.totalTax + cartDetailsResponse!.productCartList[index].perProductTax!;
+                                                                          } else {
+                                                                            totalPriceToPay =
+                                                                                totalPriceToPay - (orderDetails![index].totalOrderPrice + orderDetails![index].totalOrderTax + orderDetails![index].totalOrderShippingPrice);
+                                                                            orderDetailsTemp!.remove(orderDetails![index]);
+
+                                                                            ///Uncomment
+                                                                            // cartDetailsResponseTemp!.totalTax =
+                                                                            //     cartDetailsResponseTemp!.totalTax - cartDetailsResponse!.productCartList[index].perProductTax!;
                                                                           }
 
-                                                                          cartDetailsResponseTemp!.cartTotalPrice = double.parse(cartDetailsResponseTemp!
-                                                                              .cartTotalPrice
-                                                                              .toStringAsFixed(2));
-
-                                                                          cartDetailsResponseTemp!.totalTax = double.parse(cartDetailsResponseTemp!
-                                                                              .totalTax
-                                                                              .toStringAsFixed(2));
+                                                                          totalPriceToPay =
+                                                                              double.parse(totalPriceToPay.toStringAsFixed(2));
+                                                                          //
+                                                                          // cartDetailsResponseTemp!.totalTax = double.parse(cartDetailsResponseTemp!
+                                                                          //     .totalTax
+                                                                          //     .toStringAsFixed(2));
                                                                           setState(
                                                                               () {});
                                                                         },
@@ -310,7 +331,8 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
                                                       color: Colors.black),
                                                 ),
                                                 Text(
-                                                  '0',
+                                                  orderDetailsTemp!.length
+                                                      .toString(),
                                                   style: const TextStyle(
                                                     fontSize: 16,
                                                   ),
@@ -339,17 +361,55 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
                                                     fontSize: 18,
                                                   ),
                                                 ),
-                                                Text(
-                                                  '${cartDetailsResponseTemp != null ? cartDetailsResponseTemp!.productCartList.length > 0 ? cartDetailsResponseTemp!.productCartList[0].Currency : '\$' : '\$'} ${cartDetailsResponseTemp != null ? (cartDetailsResponseTemp!.cartTotalPrice + cartDetailsResponseTemp!.totalTax).toStringAsFixed(2) : 0}',
-                                                  style: const TextStyle(
-                                                      fontSize: 18,
-                                                      color: kColorPrimary),
+                                                Row(
+                                                  children: [
+                                                    orderDetailsTemp!.isNotEmpty
+                                                        ? Text(
+                                                            orderDetailsTemp![0]
+                                                                .productDetail[
+                                                                    0]
+                                                                .Currency,
+                                                            //'${cartDetailsResponseTemp != null ? cartDetailsResponseTemp!.productCartList.length > 0 ? cartDetailsResponseTemp!.productCartList[0].Currency : '\$' : '\$'} ${cartDetailsResponseTemp != null ? (cartDetailsResponseTemp!.cartTotalPrice + cartDetailsResponseTemp!.totalTax).toStringAsFixed(2) : 0}',
+                                                            style: const TextStyle(
+                                                                fontSize: 18,
+                                                                color:
+                                                                    kColorPrimary),
+                                                          )
+                                                        : SizedBox(),
+                                                    Text(
+                                                      ' ' +
+                                                          totalPriceToPay
+                                                              .toString(),
+                                                      //'${cartDetailsResponseTemp != null ? cartDetailsResponseTemp!.productCartList.length > 0 ? cartDetailsResponseTemp!.productCartList[0].Currency : '\$' : '\$'} ${cartDetailsResponseTemp != null ? (cartDetailsResponseTemp!.cartTotalPrice + cartDetailsResponseTemp!.totalTax).toStringAsFixed(2) : 0}',
+                                                      style: const TextStyle(
+                                                          fontSize: 18,
+                                                          color: kColorPrimary),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
                                             const SizedBox(height: 25),
                                             InkWell(
-                                              onTap: () {},
+                                              onTap: () {
+                                                if (orderDetailsTemp!
+                                                    .isNotEmpty) {
+                                                  cameraBottomNavigationSheet();
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          'Please select an order.',
+                                                      toastLength:
+                                                          Toast.LENGTH_SHORT,
+                                                      gravity:
+                                                          ToastGravity.BOTTOM,
+                                                      timeInSecForIosWeb: 1,
+                                                      backgroundColor:
+                                                          Colors.grey.shade400,
+                                                      textColor: Colors.white,
+                                                      fontSize: 12.0);
+                                                }
+                                              },
                                               child: Container(
                                                   height: 45,
                                                   width: screenSize.width,
@@ -390,7 +450,7 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
                                   height: 20,
                                 ),
                                 const Text(
-                                  'Your cart is empty',
+                                  'No orders to pay',
                                   style: TextStyle(fontSize: 22),
                                 ),
                                 const SizedBox(
@@ -405,32 +465,32 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
                                 const SizedBox(
                                   height: 30,
                                 ),
-                                InkWell(
-                                  onTap: () {
-                                    Navigator.of(context).pushAndRemoveUntil(
-                                        MaterialPageRoute(
-                                            builder: (context) => HomePage()),
-                                        (Route<dynamic> route) => false);
-                                  },
-                                  child: Container(
-                                    height: screenSize.height * 0.05,
-                                    width: screenSize.width * 0.43,
-                                    padding:
-                                        const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: kColorPrimary,
-                                    ),
-                                    child: const Center(
-                                      child: Text(
-                                        'Continue Shopping',
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                            color: kColorWhite, fontSize: 12),
-                                      ),
-                                    ),
-                                  ),
-                                ),
+                                // InkWell(
+                                //   onTap: () {
+                                //     Navigator.of(context).pushAndRemoveUntil(
+                                //         MaterialPageRoute(
+                                //             builder: (context) => HomePage()),
+                                //         (Route<dynamic> route) => false);
+                                //   },
+                                //   child: Container(
+                                //     height: screenSize.height * 0.05,
+                                //     width: screenSize.width * 0.43,
+                                //     padding:
+                                //         const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                                //     decoration: BoxDecoration(
+                                //       borderRadius: BorderRadius.circular(10),
+                                //       color: kColorPrimary,
+                                //     ),
+                                //     child: const Center(
+                                //       child: Text(
+                                //         'Continue Shopping',
+                                //         maxLines: 1,
+                                //         style: TextStyle(
+                                //             color: kColorWhite, fontSize: 12),
+                                //       ),
+                                //     ),
+                                //   ),
+                                // ),
                               ],
                             )
                       : const SizedBox(),
@@ -476,5 +536,111 @@ class _PayToAdminScreenState extends State<PayToAdminScreen> {
             )),
       );
     });
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  late XFile? image;
+  void cameraBottomNavigationSheet() {
+    showModalBottomSheet(
+        elevation: 5,
+        context: context,
+        backgroundColor: kColorWidgetBackgroundColor,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+        ),
+        builder: (context) {
+          var screenSize = MediaQuery.of(context).size;
+          return Container(
+            height: screenSize.height * 0.25,
+            child: Padding(
+              padding: const EdgeInsets.all(15),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                          icon: const Icon(
+                            Icons.arrow_back_ios_rounded,
+                            color: Colors.black,
+                          ),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          }),
+                      const Text(
+                        'Add Proof Picture',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: screenSize.height * 0.03,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      children: [
+                        BottomSheetFilterByWidget(
+                          icon: Icons.add_a_photo,
+                          buttonLabel: 'Take picture',
+                          onPressed: () async {
+                            // getImage(
+                            //     picker.pickImage(source: ImageSource.camera));
+                            image = await _picker.pickImage(
+                                source: ImageSource.camera);
+                            if (image != null) {
+                              _myOrdersBloc.add(SetSelectedOrdersMarkAsPaid(
+                                  selectedOrders: orderDetailsTemp!,
+                                  selectedImage: image!));
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'Upload of Proof Image is compulsory',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey.shade400,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0);
+                            }
+                          },
+                        ),
+                        BottomSheetFilterByWidget(
+                          icon: Icons.add_photo_alternate,
+                          buttonLabel: 'Browse gallery',
+                          onPressed: () async {
+                            image = await _picker.pickImage(
+                                source: ImageSource.gallery);
+                            if (image != null) {
+                              _myOrdersBloc.add(SetSelectedOrdersMarkAsPaid(
+                                  selectedOrders: orderDetailsTemp!,
+                                  selectedImage: image!));
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: 'Upload of Proof Image is compulsory',
+                                  toastLength: Toast.LENGTH_SHORT,
+                                  gravity: ToastGravity.BOTTOM,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.grey.shade400,
+                                  textColor: Colors.white,
+                                  fontSize: 12.0);
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }

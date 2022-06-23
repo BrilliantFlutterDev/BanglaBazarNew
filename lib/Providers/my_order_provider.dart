@@ -149,4 +149,45 @@ class MyOrdersProvider extends BaseProvider {
       return null;
     }
   }
+
+  static Future getDriversCODOrders(
+      {required int offset, required String status}) async {
+    try {
+      String url = '${AppGlobal.baseURL}deliveryDriver/get-codOrders';
+      print(url);
+      DriverOrdersByStatusModel driverOrdersByStatusModel =
+          DriverOrdersByStatusModel(
+              status: status,
+              offset: offset.toString(),
+              DeliveryDriverID: AppGlobal.deliveryDriverID.toString(),
+              sort: 'ASC',
+              limit: '20');
+      dynamic response =
+          await WebServices.apiPostToJson(url, driverOrdersByStatusModel);
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  static Future setSelectedOrdersMarkAsPaid(
+      {required var selectedOrders, required var selectedImage}) async {
+    try {
+      String url = '${AppGlobal.baseURL}deliveryDriver/add-depositProof';
+      Map params = HashMap<String, dynamic>();
+      params.putIfAbsent('DeliveryDriverID', () => AppGlobal.userID);
+      for (int i = 0; i < selectedOrders.length; i++) {
+        params.putIfAbsent(
+            'OrderDetail[$i]', () => selectedOrders[i].OrderNumber);
+      }
+      dynamic response = await WebServices.postDataWithImageOrderStatus(
+          url, params, selectedImage, "DriverDepositProof");
+
+      return response;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
 }

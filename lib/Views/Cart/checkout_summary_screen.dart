@@ -5,7 +5,6 @@ import 'package:bangla_bazar/Utils/modalprogresshud.dart';
 import 'package:bangla_bazar/Views/AuthenticationScreens/loginBloc/login_bloc.dart';
 import 'package:bangla_bazar/Views/Cart/stripe_payment_screen.dart';
 import 'package:bangla_bazar/Widgets/selected_products_info.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -578,28 +577,9 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                               ),
                               InkWell(
                                 onTap: () {
+                                  // print(widget.bangladeshPaymentUserData!
+                                  //     .selectedPaymentCountry);
                                   if (widget.bangladeshPaymentUserData!
-                                          .selectedPaymentCountry ==
-                                      16) {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) =>
-                                            BangladeshCheckoutPaymentScreen(
-                                          cartDetailsResponse:
-                                              widget.cartDetailsResponse,
-                                          bangladeshPaymentUserData:
-                                              widget.bangladeshPaymentUserData!,
-                                          productsAndUserCitiesAreSame: widget
-                                              .productsAndUserCitiesAreSame,
-                                          creditCardPayment:
-                                              widget.creditCardPayment,
-                                          pathaoPriceCalculationResponse: widget
-                                              .pathaoPriceCalculationResponse,
-                                        ),
-                                      ),
-                                    );
-                                  } else if (widget.bangladeshPaymentUserData!
                                           .selectedPaymentCountry ==
                                       226) {
                                     Navigator.push(
@@ -619,6 +599,26 @@ class _CheckoutSummaryScreenState extends State<CheckoutSummaryScreen> {
                                                 bangladeshPaymentUserData: widget
                                                     .bangladeshPaymentUserData,
                                               )),
+                                    );
+                                  } else {
+                                    print('>>>>>>>>>>Next Bangladesh');
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            BangladeshCheckoutPaymentScreen(
+                                          cartDetailsResponse:
+                                              widget.cartDetailsResponse,
+                                          bangladeshPaymentUserData:
+                                              widget.bangladeshPaymentUserData!,
+                                          productsAndUserCitiesAreSame: widget
+                                              .productsAndUserCitiesAreSame,
+                                          creditCardPayment:
+                                              widget.creditCardPayment,
+                                          pathaoPriceCalculationResponse: widget
+                                              .pathaoPriceCalculationResponse,
+                                        ),
+                                      ),
                                     );
                                   }
                                 },

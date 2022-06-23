@@ -417,6 +417,8 @@ class _OrderDetailsState extends State<OrderDetails> {
   late String? pickedDate;
   late String? onTheWayDate;
   late String? deliveredDate;
+  late String? markAsPaidDate;
+  late String? approvedDate;
   late String? orderPlacedTime;
   late String? assignedTime;
   late String? pickedTime;
@@ -502,6 +504,22 @@ class _OrderDetailsState extends State<OrderDetails> {
 
             deliveredDate = DateFormat('dd MMM yyyy  hh:mm a')
                 .format(DateTime.parse(deliveredDate!))
+                .toString();
+          }
+          if (historyModel[4].toString() != 'null') {
+            markAsPaidDate = historyModel[4].toString();
+            markAsPaidDate = markAsPaidDate!.replaceAll("\"", "");
+
+            markAsPaidDate = DateFormat('dd MMM yyyy  hh:mm a')
+                .format(DateTime.parse(markAsPaidDate!))
+                .toString();
+          }
+          if (historyModel[5].toString() != 'null') {
+            approvedDate = historyModel[5].toString();
+            approvedDate = approvedDate!.replaceAll("\"", "");
+
+            approvedDate = DateFormat('dd MMM yyyy  hh:mm a')
+                .format(DateTime.parse(approvedDate!))
                 .toString();
           }
         }
@@ -906,6 +924,85 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                           color: kColorWhite,
                                                           fontSize: 11),
                                                     ),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? SizedBox(
+                                                      height:
+                                                          screenSize.height *
+                                                              0.1,
+                                                    )
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? getOrderDetailsResponse!
+                                                              .orderDetails
+                                                              .StatusHistory !=
+                                                          ''
+                                                      ? historyModel[4]
+                                                                  .toString() !=
+                                                              'null'
+                                                          ? Text(
+                                                              markAsPaidDate!,
+                                                              style: const TextStyle(
+                                                                  color:
+                                                                      kColorDarkGreyIcon,
+                                                                  fontSize: 11),
+                                                            )
+                                                          : const Text(
+                                                              '         ----           ',
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      kColorWhite,
+                                                                  fontSize: 11),
+                                                            )
+                                                      : const Text(
+                                                          '         ----           ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  kColorWhite,
+                                                              fontSize: 11),
+                                                        )
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? SizedBox(
+                                                      height:
+                                                          screenSize.height *
+                                                              0.07,
+                                                    )
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? getOrderDetailsResponse!
+                                                              .orderDetails
+                                                              .StatusHistory !=
+                                                          ''
+                                                      ? historyModel[5]
+                                                                  .toString() !=
+                                                              'null'
+                                                          ? Text(
+                                                              approvedDate!,
+                                                              style: const TextStyle(
+                                                                  color:
+                                                                      kColorDarkGreyIcon,
+                                                                  fontSize: 11),
+                                                            )
+                                                          : const Text(
+                                                              '         ----           ',
+                                                              style: TextStyle(
+                                                                  color:
+                                                                      kColorWhite,
+                                                                  fontSize: 11),
+                                                            )
+                                                      : const Text(
+                                                          '         ----           ',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  kColorWhite,
+                                                              fontSize: 11),
+                                                        )
+                                                  : const SizedBox(),
+
                                               // Text(
                                               //   '11:30 PM',
                                               //   style: TextStyle(
@@ -1105,6 +1202,120 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                           fontSize: 14),
                                                     ),
                                                   )),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? Container(
+                                                      height:
+                                                          screenSize.height *
+                                                              0.08,
+                                                      width: 1,
+                                                      color: getOrderDetailsResponse!
+                                                                  .orderDetails
+                                                                  .StatusHistory !=
+                                                              ''
+                                                          ? historyModel[4]
+                                                                      .toString() !=
+                                                                  'null'
+                                                              ? kColorPrimary
+                                                              : kColorFieldsBorders
+                                                          : kColorFieldsBorders,
+                                                    )
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? Container(
+                                                      width: 30,
+                                                      height: 30,
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: kColorWhite,
+                                                          border: Border.all(
+                                                              color: getOrderDetailsResponse!
+                                                                          .orderDetails
+                                                                          .StatusHistory !=
+                                                                      ''
+                                                                  ? historyModel[4]
+                                                                              .toString() !=
+                                                                          'null'
+                                                                      ? kColorPrimary
+                                                                      : kColorFieldsBorders
+                                                                  : kColorFieldsBorders)),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '5',
+                                                          style: TextStyle(
+                                                              color: getOrderDetailsResponse!
+                                                                          .orderDetails
+                                                                          .StatusHistory !=
+                                                                      ''
+                                                                  ? historyModel[4]
+                                                                              .toString() !=
+                                                                          'null'
+                                                                      ? kColorPrimary
+                                                                      : kColorFieldsBorders
+                                                                  : kColorFieldsBorders,
+                                                              fontSize: 14),
+                                                        ),
+                                                      ))
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? Container(
+                                                      height:
+                                                          screenSize.height *
+                                                              0.08,
+                                                      width: 1,
+                                                      color: getOrderDetailsResponse!
+                                                                  .orderDetails
+                                                                  .StatusHistory !=
+                                                              ''
+                                                          ? historyModel[5]
+                                                                      .toString() !=
+                                                                  'null'
+                                                              ? kColorPrimary
+                                                              : kColorFieldsBorders
+                                                          : kColorFieldsBorders,
+                                                    )
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? Container(
+                                                      width: 30,
+                                                      height: 30,
+                                                      decoration: BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: kColorWhite,
+                                                          border: Border.all(
+                                                              color: getOrderDetailsResponse!
+                                                                          .orderDetails
+                                                                          .StatusHistory !=
+                                                                      ''
+                                                                  ? historyModel[5]
+                                                                              .toString() !=
+                                                                          'null'
+                                                                      ? kColorPrimary
+                                                                      : kColorFieldsBorders
+                                                                  : kColorFieldsBorders)),
+                                                      child: Center(
+                                                        child: Text(
+                                                          '6',
+                                                          style: TextStyle(
+                                                              color: getOrderDetailsResponse!
+                                                                          .orderDetails
+                                                                          .StatusHistory !=
+                                                                      ''
+                                                                  ? historyModel[5]
+                                                                              .toString() !=
+                                                                          'null'
+                                                                      ? kColorPrimary
+                                                                      : kColorFieldsBorders
+                                                                  : kColorFieldsBorders,
+                                                              fontSize: 14),
+                                                        ),
+                                                      ))
+                                                  : const SizedBox(),
                                             ],
                                           ),
                                           flex: 2,
@@ -1265,6 +1476,104 @@ class _OrderDetailsState extends State<OrderDetails> {
                                                 height:
                                                     screenSize.height * 0.11,
                                               ),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? SizedBox(
+                                                      height:
+                                                          screenSize.height *
+                                                              0.02,
+                                                    )
+                                                  : const SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? Container(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Text(
+                                                            'Mark as Paid',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16),
+                                                          ),
+                                                          Text(
+                                                            getOrderDetailsResponse!
+                                                                        .orderDetails
+                                                                        .StatusHistory !=
+                                                                    ''
+                                                                ? historyModel[4]
+                                                                            .toString() !=
+                                                                        'null'
+                                                                    ? widget.previousPage ==
+                                                                            'UserMyOrders'
+                                                                        ? 'Did you received the order? If you received the order then open it and enjoy it. Don\'t forget to review the products.'
+                                                                        : 'You mark paid this order amount to admin.'
+                                                                    : ''
+                                                                : '',
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    kColorFieldsBorders,
+                                                                fontSize: 12),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height:
+                                                          screenSize.height *
+                                                              0.11,
+                                                    )
+                                                  : SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? SizedBox(
+                                                      height:
+                                                          screenSize.height *
+                                                              0.02,
+                                                    )
+                                                  : SizedBox(),
+                                              widget.previousPage !=
+                                                      'UserMyOrders'
+                                                  ? Container(
+                                                      child: Column(
+                                                        crossAxisAlignment:
+                                                            CrossAxisAlignment
+                                                                .start,
+                                                        children: [
+                                                          const Text(
+                                                            'Approved',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .black,
+                                                                fontSize: 16),
+                                                          ),
+                                                          Text(
+                                                            getOrderDetailsResponse!
+                                                                        .orderDetails
+                                                                        .StatusHistory !=
+                                                                    ''
+                                                                ? historyModel[5]
+                                                                            .toString() !=
+                                                                        'null'
+                                                                    ? widget.previousPage ==
+                                                                            'UserMyOrders'
+                                                                        ? 'Did you received the order? If you received the order then open it and enjoy it. Don\'t forget to review the products.'
+                                                                        : 'Admin approved the payment you send.'
+                                                                    : ''
+                                                                : '',
+                                                            style: const TextStyle(
+                                                                color:
+                                                                    kColorFieldsBorders,
+                                                                fontSize: 12),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      height:
+                                                          screenSize.height *
+                                                              0.11,
+                                                    )
+                                                  : SizedBox(),
                                             ],
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,

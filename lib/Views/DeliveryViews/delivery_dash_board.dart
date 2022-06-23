@@ -525,8 +525,8 @@ class _DeliveryDashBoardState extends State<DeliveryDashBoard> {
         if (offset < totalPages - 1) {
           offset++;
           loadingNextPage = true;
-          _myOrdersBloc.add(
-              GetDriversOrders(offset: 0, status: statusFilterValueChoose));
+          _myOrdersBloc.add(GetDriversOrders(
+              offset: offset, status: statusFilterValueChoose));
           print('Load Next Page');
         }
         print('Load Next Page');

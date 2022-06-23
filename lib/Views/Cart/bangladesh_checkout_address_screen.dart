@@ -1532,7 +1532,7 @@ class _BangladeshCheckoutAddressScreenState
                                                                 index]
                                                             .isSelected = false;
                                                         selectedPaymentCountryID =
-                                                            -1;
+                                                            16;
 
                                                         _selectedDialogCountry =
                                                             null;

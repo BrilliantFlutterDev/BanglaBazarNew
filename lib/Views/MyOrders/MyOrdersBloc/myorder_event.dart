@@ -27,10 +27,12 @@ class OrderStatusChange extends MyOrdersEvent {
   final OrderStatusChangeModel orderStatusChangeModel;
   OrderStatusChange({required this.orderStatusChangeModel});
 }
+
 class OrderStatusChangePic extends MyOrdersEvent {
   final OrderStatusChangeModel orderStatusChangeModel;
   var selectedImage;
-  OrderStatusChangePic({required this.orderStatusChangeModel,required this.selectedImage});
+  OrderStatusChangePic(
+      {required this.orderStatusChangeModel, required this.selectedImage});
 }
 
 class DashBoard extends MyOrdersEvent {
@@ -42,4 +44,17 @@ class GetDriversOrders extends MyOrdersEvent {
   final int offset;
   final String status;
   GetDriversOrders({required this.offset, required this.status});
+}
+
+class GetDriversCODOrders extends MyOrdersEvent {
+  final int offset;
+  final String status;
+  GetDriversCODOrders({required this.offset, required this.status});
+}
+
+class SetSelectedOrdersMarkAsPaid extends MyOrdersEvent {
+  var selectedOrders;
+  var selectedImage;
+  SetSelectedOrdersMarkAsPaid(
+      {required this.selectedOrders, required this.selectedImage});
 }

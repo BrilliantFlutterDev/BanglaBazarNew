@@ -345,6 +345,13 @@ class Repository {
   Future getDriversOrders(
           {required int offset, required String status}) async =>
       MyOrdersProvider.getDriversOrders(offset: offset, status: status);
+  Future getDriversCODOrders(
+          {required int offset, required String status}) async =>
+      MyOrdersProvider.getDriversCODOrders(offset: offset, status: status);
+  Future setSelectedOrdersMarkAsPaid(
+          {required var selectedOrders, required var selectedImage}) async =>
+      MyOrdersProvider.setSelectedOrdersMarkAsPaid(
+          selectedOrders: selectedOrders, selectedImage: selectedImage);
   Future updatePaymentStatus({
     required String id,
     required String status,
